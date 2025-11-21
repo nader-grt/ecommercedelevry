@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { MailService } from "../../services/MailService";
 
 
-export default class mailUserController  extends BaseController
+export default class sendEmailUserController  extends BaseController
 {
 
 
@@ -23,8 +23,8 @@ export default class mailUserController  extends BaseController
       //  const usersmail = [{  from: "Nader",to: "nader@gmail.com",subject:"dev",html:"hello" }];
                    
                  await this.sendMailUser(to,subject,html)  ;
-                    let message : string = "ok";
-                 return this.ok(res); 
+             
+                 return this.ok(res, { message: "Email sent successfully" });
                 
     }
 

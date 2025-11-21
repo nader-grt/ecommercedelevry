@@ -4,7 +4,7 @@ import { sequelize } from "./models/main.js"; // make sure your path is correct
 import createUserRoutes from "./routes/userRoutes/createUserRoute.js";
 
 import getUserRoutes from "./routes/userRoutes/getUserRoute.js"
-import mailRoutes from "./routes/userRoutes/userMailRoute.js";
+import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 
 const app = express();
 

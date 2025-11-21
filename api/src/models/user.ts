@@ -1,4 +1,13 @@
-import { Sequelize, DataTypes, Model, Optional } from "sequelize";
+import { Sequelize, DataTypes, Model } from "sequelize";
+
+
+export enum Role {
+  ADMIN = "ADMIN",
+  USER = "USER",
+  Supplier= "Supplier",
+}
+
+
 
 // Attributes interface
 export default  interface IUser {
@@ -7,21 +16,18 @@ export default  interface IUser {
   lastName: string;
   phone: string;
   email: string;
+  password?:string ;
+  role?:Role ;
 }
 
-// Optional fields when creating a new user
-interface UserCreationAttributes extends Optional<IUser, "id"> {}
 
-// Sequelize model class with getters and setters
-export class User extends Model<IUser, UserCreationAttributes>
+
+
+export class User extends Model<IUser>
   implements IUser {
 
-  // Private fields for getters/setters
-  private _id!: number;
-  private _firstName!: string;
-  private _lastName!: string;
-  private _phone!: string;
-  private _email!: string;
+
+
 
   // Sequelize-required public fields
   public id!: number;
@@ -32,48 +38,45 @@ export class User extends Model<IUser, UserCreationAttributes>
 
   // Getters
   get getId(): number {
-    return this._id ?? this.id;
+    return this.id ;
   }
 
   get getFirstName(): string {
-    return this._firstName ?? this.firstName;
+    return  this.firstName;
   }
 
   get getLastName(): string {
-    return this._lastName ?? this.lastName;
+    return  this.lastName;
   }
 
   get getPhone(): string {
-    return this._phone ?? this.phone;
+    return  this.phone;
   }
 
   get getEmail(): string {
-    return this._email ?? this.email;
+    return  this.email;
   }
 
   // Setters
-  set setId(value: number) {
-    this._id = value;
-    this.id = value;
-  }
+ 
 
   set setFirstName(value: string) {
-    this._firstName = value;
+   
     this.firstName = value;
   }
 
   set setLastName(value: string) {
-    this._lastName = value;
+  
     this.lastName = value;
   }
 
   set setPhone(value: string) {
-    this._phone = value;
+  
     this.phone = value;
   }
 
   set setEmail(value: string) {
-    this._email = value;
+   
     this.email = value;
   }
 
@@ -92,6 +95,8 @@ export function UserModel(sequelize: Sequelize) {
       lastName: { type: DataTypes.STRING, allowNull: false },
       phone: { type: DataTypes.STRING, allowNull: false },
       email: { type: DataTypes.STRING, allowNull: false, unique: true },
+      // password: { type: DataTypes.STRING, allowNull: false },
+      // role: { type: DataTypes.ENUM(...Object.values(Role)), allowNull: false },
     },
     {
       sequelize,

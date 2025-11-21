@@ -1,5 +1,5 @@
 import    express, { Request, Response, Router } from "express";
-import mailUserController from "../../controllers/mailUser/mailUserController";
+import mailUserController from "../../controllers/mailUser/sendEmailUserController";
 
 
 

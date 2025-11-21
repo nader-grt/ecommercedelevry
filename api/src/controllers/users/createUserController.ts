@@ -41,7 +41,7 @@ export default class createUserController extends BaseController {
 
       return this.ok(res, {
         message: "User created successfully ok ",
-        user: createdUser,
+       // user: createdUser,
       });
     } catch (error: any) {
       console.error(error);

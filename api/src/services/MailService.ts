@@ -1,6 +1,5 @@
 import nodemailer, { Transporter } from "nodemailer";
-import { mailConfig } from "../../config/mailConfig";
-
+import { mailConfig } from "./emailConfig/emailConfig";
 export class MailService {
   private transporter: Transporter;
 
@@ -13,9 +12,22 @@ export class MailService {
     subject: string,
     html: string
   ): Promise<void> {
+
+    const sender = {
+      email: "hello@example.com",
+      name: "Mailtrap Test",
+    };
+    const recipients = [
+      {
+        email: "charguinadar@gmail.com",
+      }
+    ];
+
+
     try {
       await this.transporter.sendMail({
-        from: mailConfig.auth.user,
+        //from: mailConfig.auth.user,
+        from: `"Me" <${mailConfig.auth.user}>`, // sender: your Gmail
         to,
         subject,
         html,
