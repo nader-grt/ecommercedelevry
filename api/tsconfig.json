@@ -13,7 +13,7 @@
     "include": [
       "index.ts",
       "src/**/*.ts",
-      "config/config.ts"
+      "config/config.js"
     ],
     "exclude": [
       "node_modules"

@@ -6,6 +6,13 @@ import createUserRoutes from "./routes/userRoutes/createUserRoute.js";
 import getUserRoutes from "./routes/userRoutes/getUserRoute.js"
 import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 
+
+//v   product route
+
+
+import createProductRoute from "./routes/productRoutes/createProductRoute.js";
+
+
 const app = express();
 
 // Middleware
@@ -15,6 +22,16 @@ app.use(express.json());
 app.use("/api", createUserRoutes);
 app.use("/api", getUserRoutes);
 app.use("/apimail", mailRoutes);
+
+// product 
+
+app.use("/send",createProductRoute)  ;
+
+
+
+
+
+
 
 // Port
 const PORT = 4000;

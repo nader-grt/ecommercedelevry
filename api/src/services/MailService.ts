@@ -26,8 +26,8 @@ export class MailService {
 
     try {
       await this.transporter.sendMail({
-        //from: mailConfig.auth.user,
-        from: `"Me" <${mailConfig.auth.user}>`, // sender: your Gmail
+        from: mailConfig.auth.user,
+        //from: `"Me" <${mailConfig.auth.user}>`, // sender: your Gmail
         to,
         subject,
         html,

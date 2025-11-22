@@ -12,9 +12,9 @@ export  default interface IProduct
 export class Product extends Model<IProduct> 
 implements IProduct{
 
-     public id!:number ;
-     public name:string  ="" ;
-     public price:number =0;
+    public id!: number; 
+     public name!:string   ;
+     public price!:number ;
     
 
 
@@ -51,8 +51,9 @@ export  function ProductModel(sequelize:Sequelize)
     Product.init(
         {
             id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-            name:{type:DataTypes.STRING},
-            price:{type:DataTypes.DOUBLE}
+            price: {type:DataTypes.DOUBLE, allowNull: false },
+            name: { type: DataTypes.STRING, allowNull: false, unique: true },
+           
     }, {
         sequelize,
         tableName: "Products",

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export abstract class BaseController {
   // Child must implement
-  protected abstract executeImpl(req: Request, res: Response): Promise<any>;
+  protected abstract executeImpl(req: Request, res: Response): Promise<any>; //  call in conteroller
 
   // Entry point
   public async execute(req: Request, res: Response): Promise<void> {
@@ -13,6 +13,9 @@ export abstract class BaseController {
       this.fail(res, 'An unexpected error occurred');
     }
   }
+
+
+
 
   
   protected ok(res: Response, dto?: any) {

@@ -1,6 +1,7 @@
 // models/index.ts
-import sequelize from "../../config/config.js";
+import sequelize from "./../dbConfig/config";
 import { UserModel } from "./user.js";
+import { ProductModel } from "./product.js";
 // import { CategoryModel } from "./category.js";
 // import { ProductModel } from "./product.js";
 // import { OrderModel } from "./order.js";
@@ -8,8 +9,8 @@ import { UserModel } from "./user.js";
 
 // Initialize models
 export const User = UserModel(sequelize);
-// export const Category = CategoryModel(sequelize);
-// export const Product = ProductModel(sequelize);
+
+export const Product = ProductModel(sequelize);
 // export const Order = OrderModel(sequelize);
 // export const OrderItem = OrderItemModel(sequelize);
 
