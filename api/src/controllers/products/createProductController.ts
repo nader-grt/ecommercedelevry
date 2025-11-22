@@ -31,14 +31,28 @@ export default class createProductController extends BaseController
 
           const product :any  =  this.productdomain
 
-      
+                
 
-          
+               const isFindProName : boolean =       await productRepo.IsExistProductByName(name)
 
-                 const allProducts : IProduct[]         = await    productRepo.IsExistProduct()  ;
+          console.log("ProName \t ",typeof isFindProName  ,isFindProName)
 
-                 console.log("alllllllllll", typeof allProducts  ,product)
-                 await    this.productrepo.createProduct(product)
+               //  const allProducts : IProduct[]         = await    productRepo.IsExistProduct()  ;
+                  
+                      if(isFindProName)
+                      {
+                this.conflict(res,`Product   already exists with this name ${name}`)
+
+            
+
+                      }else
+                      {
+                        await    this.productrepo.createProduct(product)
+
+                      }
+
+
+                
         
 
              return this.ok(res,"product created with success ok")

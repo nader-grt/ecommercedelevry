@@ -22,4 +22,20 @@ export default class productRepo extends productRepoInterface {
     const listProducts :IProduct[]     = await Product.findAll() ;
          return  listProducts 
   }
+
+  static async IsExistProductByName(nameProduct:string):Promise<boolean> 
+  {
+        
+    const listProducts :IProduct[]     = await Product.findAll() ;
+
+      for(const pro of listProducts)
+      {
+            if(pro.name === nameProduct)
+            {
+              return true ;
+            }
+
+      }
+         return  false 
+  }
 }
