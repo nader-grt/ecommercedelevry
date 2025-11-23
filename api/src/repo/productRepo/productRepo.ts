@@ -3,7 +3,7 @@ import { Product } from "../../models/main";
 import IProduct from "../../models/product";
 import productRepoInterface from "./productRepoInterface";
 
-export default class productRepo extends productRepoInterface {
+export default class ProductRepo extends productRepoInterface {
   public async FindAllProducts() {}
 
   public async FindProductById(id: number): Promise<void> {}

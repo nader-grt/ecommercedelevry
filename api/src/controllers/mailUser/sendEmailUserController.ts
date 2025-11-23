@@ -16,11 +16,8 @@ export default class sendEmailUserController  extends BaseController
     protected async executeImpl(req: Request, res: Response): Promise<any> 
     {
 
-        console.log("req.body",req.body)
-                 const {to,subject,html}  =  req.body
-  
-          
-      //  const usersmail = [{  from: "Nader",to: "nader@gmail.com",subject:"dev",html:"hello" }];
+     
+                 const {to,subject,html}  =  req.body;
                    
                  await this.sendMailUser(to,subject,html)  ;
              

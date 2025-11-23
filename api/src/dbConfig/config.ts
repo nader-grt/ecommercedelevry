@@ -9,7 +9,7 @@ const sequelize = new Sequelize( process.env.DB_NAME!,  process.env.DB_USER!,  p
   host:  process.env.DB_HOST,
   port: Number( process.env.DB_PORT),
   dialect: "mysql",
-  logging: false, // <-- disable all SQL logs
+  logging: false, 
 });
 
 
