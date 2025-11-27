@@ -19,6 +19,11 @@ module.exports = {
         type: Sequelize.DOUBLE,
         allowNull: false,
       },
+      nameImage:{
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
+      },
     
       createdAt: {
         allowNull: false,

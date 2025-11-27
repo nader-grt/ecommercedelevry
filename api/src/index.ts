@@ -11,6 +11,7 @@ import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 
 
 import createProductRoute from "./routes/productRoutes/createProductRoute.js";
+import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
 
 
 const app = express();
@@ -26,6 +27,8 @@ app.use("/apimail", mailRoutes);
 // product 
 
 app.use("/send",createProductRoute)  ;
+
+app.use("/api",updateProductRoute)  ;
 
 
 

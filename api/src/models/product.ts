@@ -6,6 +6,7 @@ export  default interface IProduct
   id?:number ;
   name:string ;
   price:number;
+  nameImage:string ;
 }
 
 
@@ -15,6 +16,7 @@ implements IProduct{
     public id!: number; 
      public name!:string   ;
      public price!:number ;
+     public nameImage!: string;
     
 
 
@@ -42,6 +44,17 @@ implements IProduct{
          this.price  = value;
      }
 
+     public get getNameImage():string
+     {
+        return this.nameImage ;
+     }
+
+
+     public set setNameImage(value:string)
+     {
+         this.nameImage  = value;
+     }
+
 
 }
 
@@ -53,6 +66,7 @@ export  function ProductModel(sequelize:Sequelize)
             id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
             price: {type:DataTypes.DOUBLE, allowNull: false },
             name: { type: DataTypes.STRING, allowNull: false, unique: true },
+            nameImage: { type: DataTypes.STRING, allowNull: false, unique: true },
            
     }, {
         sequelize,

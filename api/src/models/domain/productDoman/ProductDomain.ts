@@ -4,9 +4,10 @@ export default class ProductDomain
 
   //  private _id :number = 0;
 
-    private name:string = "";
+    private name: string = "";
 
-    private price:number = 0 ;
+    private price: number = 0 ;
+    private nameImage  : string = "";
 
           
          public get getName():string
@@ -26,6 +27,20 @@ export default class ProductDomain
 
          public set setPrice(value:number)
          {
+        
              this.price  = value ;
+         }
+
+
+         //work with image 
+         public get getImageProduct():string
+         {
+            return this.nameImage ;
+         }
+    
+    
+         public set setImageProduct(value:string)
+         {
+             this.nameImage  = value;
          }
 }

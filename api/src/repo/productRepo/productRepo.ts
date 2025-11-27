@@ -1,4 +1,5 @@
 
+import FileHandler from "../../filesystem/fileHandle";
 import { Product } from "../../models/main";
 import IProduct from "../../models/product";
 import productRepoInterface from "./productRepoInterface";
@@ -25,7 +26,9 @@ export default class ProductRepo extends productRepoInterface {
 
   static async IsExistProductByName(nameProduct:string):Promise<boolean> 
   {
-        
+                const  listImagesFromDirectory =  await FileHandler.getAllImages()
+
+             
     const listProducts :IProduct[]     = await Product.findAll() ;
 
       for(const pro of listProducts)
@@ -35,6 +38,13 @@ export default class ProductRepo extends productRepoInterface {
               return true ;
             }
 
+      }
+
+
+      for (const img  of listImagesFromDirectory) {
+            if(img === nameProduct)true
+               
+        
       }
          return  false 
   }

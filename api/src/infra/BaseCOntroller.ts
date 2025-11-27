@@ -8,6 +8,8 @@ export abstract class BaseController {
   // Entry point
   public async execute(req: Request, res: Response): Promise<void> {
     try {
+
+  
       await this.executeImpl(req, res);
     } catch (err) {
       this.fail(res, 'An unexpected error occurred');
