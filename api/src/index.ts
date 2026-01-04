@@ -14,6 +14,16 @@ import createProductRoute from "./routes/productRoutes/createProductRoute.js";
 import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
 
 
+// category route
+
+import createCategoryRoute from "./routes//categoryRoute/createCategoryRoute.js";
+
+
+import registerRoute from "./routes/authRoute/registerUserRoute.js";
+import loginRoute from "./routes/authRoute/loginUserRoute.js";
+import logoutRoute from "./routes/authRoute/logoutUserRoute.js";
+
+
 const app = express();
 
 // Middleware
@@ -32,6 +42,24 @@ app.use("/api",updateProductRoute)  ;
 
 
 
+
+
+// category
+app.use("/api",createCategoryRoute)  ;
+
+
+
+
+
+
+
+
+
+//auth routes can be added similarly
+
+app.use("/api",registerRoute)  ;
+app.use("/api",loginRoute)  ;
+app.use("/api",logoutRoute)  ;
 
 
 

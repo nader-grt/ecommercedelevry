@@ -1,7 +1,6 @@
 
 
 import { Request, Response, Router } from "express";
-import createProductController from "../../controllers/products/createProductController";
 import FileHandler, { folderPath } from "../../filesystem/fileHandle";
 import updateProductController from "../../controllers/products/updateProductController";
 

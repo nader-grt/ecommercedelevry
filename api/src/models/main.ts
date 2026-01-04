@@ -2,6 +2,7 @@
 import sequelize from "./../dbConfig/config";
 import { UserModel } from "./user.js";
 import { ProductModel } from "./product.js";
+import { CategoriesModel } from "./category";
 // import { CategoryModel } from "./category.js";
 // import { ProductModel } from "./product.js";
 // import { OrderModel } from "./order.js";
@@ -11,6 +12,12 @@ import { ProductModel } from "./product.js";
 export const User = UserModel(sequelize);
 
 export const Product = ProductModel(sequelize);
+
+export const Category = CategoriesModel(sequelize);
+
+
+
+//  Category.create({name:"Electronics"})
 // export const Order = OrderModel(sequelize);
 // export const OrderItem = OrderItemModel(sequelize);
 

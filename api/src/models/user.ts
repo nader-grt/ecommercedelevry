@@ -6,9 +6,37 @@ export enum Role {
   USER = "USER",
   Supplier= "Supplier",
 }
+//  E RD   DIAGRAM ENTITY RELATIONSHIP 
+
+//5  STEP 
+
+/**
+ * 
+ * 
+
+STEP 1  IDENTIFY ENTITY 
+
+STEP 2  EXIST RELATIONSHIP  BETWEEN ENTITIES 
+
+STEP 3  TYPE OF RELATIONSHIP one to one  or one to many  many to one  many to many  selef refrenceing 
+
+STEP 4  CARDINALITY ORDINARITY  ( MIN AND MAX   (OPTIONAL  OR MANDATRY OR REQUIRED)
+
+STEP 5 ATTRIBUTES  )
 
 
 
+
+
+
+
+
+
+
+
+
+
+ */
 // Attributes interface
 export default  interface IUser {
   id?: number;
@@ -18,6 +46,8 @@ export default  interface IUser {
   email: string;
   password?:string ;
   role?:Role ;
+  city?:string ;
+  address?:string ;
 }
 
 
@@ -95,8 +125,24 @@ export function UserModel(sequelize: Sequelize) {
       lastName: { type: DataTypes.STRING, allowNull: false },
       phone: { type: DataTypes.STRING, allowNull: false },
       email: { type: DataTypes.STRING, allowNull: false, unique: true },
-      // password: { type: DataTypes.STRING, allowNull: false },
+       password: { type: DataTypes.STRING, allowNull: false },
       // role: { type: DataTypes.ENUM(...Object.values(Role)), allowNull: false },
+      role: {
+        type: DataTypes.ENUM("ADMIN", "USER", "Supplier"),
+        values: Object.values(Role),
+        allowNull: false,
+        defaultValue: Role.USER,
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
     },
     {
       sequelize,

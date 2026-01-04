@@ -25,8 +25,8 @@ module.exports = {
 
 npx sequelize-cli migration:generate --name create-Products
 
-
-
+npx sequelize-cli migration:generate --name create-Categories
+//categories
 
 
 
@@ -54,8 +54,16 @@ or
 
 
 
-   * 
-   * 
-   * 
+ createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"),
+      },
+
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"),
+      },
 
    */

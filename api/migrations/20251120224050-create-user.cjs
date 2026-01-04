@@ -26,6 +26,27 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: false,
+      },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: false,
+      },
+      role: {
+        type: Sequelize.ENUM('user', 'admin','supplier'),
+        allowNull: false,
+        defaultValue: 'user',
+      }
+      ,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
