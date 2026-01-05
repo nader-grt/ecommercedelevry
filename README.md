@@ -11,7 +11,7 @@ This project is an e-commerce application with delivery management system.
 ## 🗂 Database ERD
 The following diagram represents the database structure:
 
-![ERD Diagram](diagrams/ecommerce-delivery-erd.png)
+![ERD Diagram](diagrams/Diagramecommercedelevry.drawio.png)
 
 ## 🛠 Tech Stack
 - Backend: Node.js / Express
