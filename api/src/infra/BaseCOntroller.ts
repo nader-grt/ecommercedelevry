@@ -35,9 +35,10 @@ export abstract class BaseController {
   protected notFound(res: Response, message?: string) {
     return res.status(404).json({ error: message || 'Not found' });
   }
-  protected badRequest(res:Response,message:string)
+  protected badRequest(res:Response,message:any)
   {
-    return res.status(400).json({error:message || 'Bad Request'})
+    return res.status(400).json({error:message || 'Bad Request'}) ;
+    //return res.status(400).json({ error: error.details[0].message });
   }
 
   protected conflict(res: Response, message?: string) {
