@@ -14,6 +14,6 @@ The following diagram represents the database structure:
 ![ERD Diagram](diagrams/Diagramecommercedelevry.drawio.png)
 
 ## 🛠 Tech Stack
-- Backend: Node.js / Express
+- Backend: Node.js / Express / Typescript / Oriente Object Programing
 - Database: MySQL
 - Frontend: React
