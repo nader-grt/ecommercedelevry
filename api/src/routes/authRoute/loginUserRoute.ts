@@ -4,18 +4,20 @@
 import { Request, Response, Router } from "express";
 
 import LoginController from "../../controllers/auth/LoginController";
+import { verifyToken } from "../../middleware/verifyToken";
 
 
+const loginRoute  =  new LoginController() ;
 
 
 const router = Router();
 
 
-   const loginUserRoute  =  new LoginController() ;
+ 
 
-   router.post("/login", (req:Request,res:Response) => {
-    console.log("Logout req" , req.body)
-    loginUserRoute.execute(req,res)    
+   router.post("/login", verifyToken,(req:Request,res:Response) => {
+    console.log("Login req" , req.body)
+    loginRoute.execute(req,res)    
 });
 
 export default router
