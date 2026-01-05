@@ -44,31 +44,16 @@ export default class LoginController extends BaseController {
 
       const { error, value } = userSchemaLogin.validate(userInputLogin);
 
-      console.log("Validation Error:", error, "222222222222222", value);
-      if (!email || !password) {
-        // return this.clientError(res, "Email and password are required") ;
-        return this.badRequest(res, error?.details);
-      }
+     
+      if (error) {
+            return this.badRequest(res, error.details[0].message);
+          }
+
+      const user = await this._registerUserRepo.FindUserByEmail(email);
+
+      
     } catch (error) {}
   }
 }
 
-/**
- * 
- * 
- * 
- * 
- * 
- * 
- * Validation Error: [Error [ValidationError]: "password" is not allowed to be empty] {
-  _original: { email: 'nader2.ali@test.com', password: '' },
-  details: [
-    {
-      message: '"password" is not allowed to be empty',
-      path: [Array],
-      type: 'string.empty',
-      context: [Object]
-    }
-  ]
-}
- */
+

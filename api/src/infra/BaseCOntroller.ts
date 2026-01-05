@@ -53,6 +53,13 @@ export abstract class BaseController {
     return res.status(200).json(dto);
   }
 
+
+  protected invalideCredentiel(res:Response,message?:string)
+  {
+      return res.status(401).json({ message: message });
+  }
+
+
   protected paginate(res: Response, dto: any, pagination: { limit: number; offset: number; count: number }) {
     res.setHeader('Content-Range', `items ${pagination.offset}-${pagination.offset + pagination.limit}/${pagination.count}`);
     return res.status(200).json(dto);
