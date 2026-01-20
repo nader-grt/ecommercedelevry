@@ -2,7 +2,7 @@ import { User } from "../../../models/main";
 import userRepoInterface from "./useRepoInterface";
 
 
-export default class registerUserRepo extends userRepoInterface {
+export default class UserRepo extends userRepoInterface {
 
 
     public  async registerUser(user:any):Promise<void> 
@@ -44,5 +44,21 @@ export default class registerUserRepo extends userRepoInterface {
        }
 
     }
+
+    public async getUserById(id: number): Promise<any> {
+      try {
+        const user = await User.findOne({
+          where: {
+            id: id
+          },
+        });
+    
+        return user; // null
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    //employeeId
 
 }

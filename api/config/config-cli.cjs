@@ -26,9 +26,40 @@ module.exports = {
 npx sequelize-cli migration:generate --name create-Products
 
 npx sequelize-cli migration:generate --name create-Categories
-//categories
+//categories  npx sequelize-cli db:migrate:undo:all
 
 
+npx sequelize-cli migration:generate --name create-Employees
+
+//
+deliverer
+
+npx sequelize-cli migration:generate --name create-deliverers
+
+//SECRITRY
+npx sequelize-cli migration:generate --name create-secrtries
+//supllier
+npx sequelize-cli migration:generate --name create-suplliers
+
+
+//order
+
+npx sequelize-cli migration:generate --name create-orders
+
+
+//settings
+
+npx sequelize-cli migration:generate --name create-setting
+
+
+OrderItems
+
+npx sequelize-cli migration:generate --name create-OrderItems
+
+
+dayWorks
+
+npx sequelize-cli migration:generate --name create-dayWorks
 
 run  xampp  
 

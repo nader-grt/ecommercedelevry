@@ -3,44 +3,45 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Products', {
+    await queryInterface.createTable('Settings', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+
+      emailPlatform: {
         type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-      },
-      nameImage:{
-        type: Sequelize.STRING,
-        unique: true,
         allowNull: false,
       },
 
-      // categoryId: {
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: "categories",
-      //     key: "id",
-      //   },
-      //   onUpdate: "CASCADE",
-      //   onDelete: "CASCADE",
-      // },
-    
+      phonePlatform: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      logoPlatform: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
+      addressPlatform: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
+      ownerPlatform: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -49,9 +50,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
-   
-      await queryInterface.dropTable('Products');
-    
+  async down (queryInterface) {
+    await queryInterface.dropTable('Settings');
   }
 };

@@ -21,22 +21,13 @@ export class Category extends Model<ICategory> implements ICategory {
 export function CategoriesModel(sequelize: Sequelize) {
   Category.init(
     {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
+      id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+      name: { type: DataTypes.STRING, allowNull: false, unique: true },
     },
     {
       sequelize,
       tableName: "Categories",
-      timestamps: false,
+      timestamps: true,
     }
   );
 

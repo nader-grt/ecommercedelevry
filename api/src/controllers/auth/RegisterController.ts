@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 import userDomain from "../../models/domain/auth/user/userDomain";
-import registerUserRepo from "../../repo/auth/userRepo/registerUserRepo";
+
 import { Role } from "../../models/user";
 import { createToken } from "../../middleware/createToken";
+import UserRepo from "../../repo/auth/userRepo/registerUserRepo";
 
-export interface RegisterUserRequestDTO {
+export interface IRegisterUserRequestDTO {
   firstName: string;
   lastName: string;
   phone: string;
@@ -13,15 +14,15 @@ export interface RegisterUserRequestDTO {
   password: string;
   city: string;
   address: string;
-  role?: Role;
+  role?: string | any;
 }
 
 export default class RegisterController extends BaseController {
   private _userDomain: userDomain; // prepare from request body
-  private _registerUserRepo: registerUserRepo; // db repo to save user data
+  private _UserRepo: UserRepo; // db repo to save user data
 
   private async _ReadUser(
-    userDomainRequest: RegisterUserRequestDTO
+    userDomainRequest: IRegisterUserRequestDTO
   ): Promise<any> {
     let userPasswordHashed: any = new userDomain();
 
@@ -36,7 +37,7 @@ export default class RegisterController extends BaseController {
       email: (this._userDomain.setEmail = userDomainRequest.email),
       password: userPasswordHashed.password, // ,
       city: (this._userDomain.setCity = userDomainRequest.city),
-      role: (this._userDomain.setRole = Role.USER),
+      role: (this._userDomain.setRole = userDomainRequest.role    ),//Role.USER
       address: (this._userDomain.setAddress = userDomainRequest.address),
     };
 
@@ -55,15 +56,15 @@ export default class RegisterController extends BaseController {
   constructor() {
     super();
     this._userDomain = new userDomain();
-    this._registerUserRepo = new registerUserRepo();
+    this._UserRepo = new UserRepo();
   }
 
   protected async executeImpl(req: Request, res: Response): Promise<any> {
-    const { firstName, lastName, phone, email, password, city, address } =
+    const { firstName, lastName, phone, email, password, city, address,role } =
       req.body;
 
     // console.log("object \t ",{ firstName, lastName, phone, email, password, city, address })
-
+             console.log("reqqqqqqqqqqqqqq",req,"///////////////// \n \n")
     const dtoUser: any = {
       firstName,
       lastName,
@@ -72,11 +73,12 @@ export default class RegisterController extends BaseController {
       password,
       city,
       address,
+      role
     };
 
     try {
       const user = await this._ReadUser(dtoUser);
-      const isExistUser: any = await registerUserRepo.IsExistUser(
+      const isExistUser: any = await UserRepo.IsExistUser(
         dtoUser.email
       );
 
@@ -86,11 +88,26 @@ export default class RegisterController extends BaseController {
         return;
       }
 
-      let token: any = createToken(user.email, user.role);
+   
 
-      await this._registerUserRepo.registerUser(user);
+    const resultUser =  await this._UserRepo.registerUser(user);
 
-      this.ok(res, { message: "User registered successfully", token: token });
+
+    const isExistUseremail: any = await this._UserRepo.FindUserByEmail(
+      dtoUser.email
+    );
+    console.log(resultUser,"******************************end",isExistUser,"isExistUseremail \n*******",isExistUseremail.id)
+
+    //FindUserByEmail
+    let token: any
+    if(isExistUseremail.id)
+    {
+      token = createToken(user.email, user.role,isExistUseremail.id);
+    }
+
+       
+
+      this.ok(res, { message: "User registered successfully", token });
     } catch (error) {
       console.log(error);
     }

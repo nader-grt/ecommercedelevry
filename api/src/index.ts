@@ -5,16 +5,8 @@ import createUserRoutes from "./routes/userRoutes/createUserRoute.js";
 
 import getUserRoutes from "./routes/userRoutes/getUserRoute.js"
 import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
-
-
-//v   product route
-
-
 import createProductRoute from "./routes/productRoutes/createProductRoute.js";
 import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
-
-
-// category route
 
 import createCategoryRoute from "./routes//categoryRoute/createCategoryRoute.js";
 
@@ -22,6 +14,14 @@ import createCategoryRoute from "./routes//categoryRoute/createCategoryRoute.js"
 import registerRoute from "./routes/authRoute/registerUserRoute.js";
 import loginRoute from "./routes/authRoute/loginUserRoute.js";
 import logoutRoute from "./routes/authRoute/logoutUserRoute.js";
+
+
+import createemployeeRoute from  "./routes/EmployeeRoute/CreateEmployeeRoute.js"
+
+import createdeleryRoute from  "./routes/DelevryRoute/CreateDelevryRoute.js"
+import updatedeleryRoute from  "./routes/DelevryRoute/UpdateDelevryRoute..js"
+import deletedeleryRoute from  "./routes/DelevryRoute/DeleteDelevryRoute..js"
+import getdeleryRoute from  "./routes/DelevryRoute/GetDelevryRoute..js"
 
 
 
@@ -43,6 +43,14 @@ app.use("/send",createProductRoute)  ;
 app.use("/api",updateProductRoute)  ;
 
 
+//employee 
+app.use("/api",createemployeeRoute)  ;
+
+// delevry  createdeleryRoute
+app.use("/api",createdeleryRoute)  ;
+app.use("/api",updatedeleryRoute)  ;
+app.use("/api",deletedeleryRoute)  ;
+app.use("/api",getdeleryRoute)  ;
 
 
 

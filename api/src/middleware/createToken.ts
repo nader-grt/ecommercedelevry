@@ -3,12 +3,13 @@ import jsonwebtoken  from 'jsonwebtoken';
 import { Role } from '../models/user';
 
 
-export function createToken(email:string,role:Role): string {
+export function createToken(email:string,role:Role,id:number): string {
 
 
     const payload = {
         email: email,
-        role: role
+        role: role,
+        id:id ,
         };
 
     const token :any =    jsonwebtoken.sign(payload,process.env.JWT_SECRET as string,)

@@ -1,16 +1,17 @@
 import bcrypt from 'bcrypt';
+import { Role } from '../../../user';
 
 
 export default class userDomain {
-    private id?: number;
-    private firstName: string = "";
-    private lastName: string ="";
-    private phone: string ="";
-    private email: string ="";
-    private password?: string ="";
-    private role?: string;
-    private city?: string;
-    private address?: string;
+    protected id?: number;
+    protected firstName: string = "";
+    protected lastName: string ="";
+    protected phone: string ="";
+    protected email: string ="";
+    protected password?: string ="";
+    protected role?: string ="";
+    protected city?: string;
+    protected address?: string;
 
     // constructor(
     //     firstName: string,
@@ -62,7 +63,7 @@ export default class userDomain {
         return this.password;
     }
 
-    public get  getRole(): string | undefined {
+    public get  getRole(): string | any {
         return this.role;
     }
 
@@ -107,7 +108,7 @@ public set setPassword(password: string) {
 
 
     public set setRole(role: string) {
-        this.role = role;
+        this.role = role.toUpperCase();
     }
 
     public set setCity(city: string) {

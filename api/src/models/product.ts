@@ -7,6 +7,7 @@ export  default interface IProduct
   name:string ;
   price:number;
   nameImage:string ;
+  categoryId?: number;
 }
 
 
@@ -67,6 +68,7 @@ export  function ProductModel(sequelize:Sequelize)
             price: {type:DataTypes.DOUBLE, allowNull: false },
             name: { type: DataTypes.STRING, allowNull: false, unique: true },
             nameImage: { type: DataTypes.STRING, allowNull: false, unique: true },
+            categoryId: { type: DataTypes.INTEGER, allowNull: false },
            
     }, {
         sequelize,
