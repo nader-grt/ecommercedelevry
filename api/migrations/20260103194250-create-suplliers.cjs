@@ -24,14 +24,21 @@ module.exports = {
         unique: true,
       },
 
-      companyemail: {
+      companyEmail: {
         type: Sequelize.STRING,
         allowNull: true,
       },
 
-      address: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true, // one-to-one
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
 
       contactPerson: {

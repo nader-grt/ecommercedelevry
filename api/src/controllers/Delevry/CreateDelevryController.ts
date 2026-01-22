@@ -87,7 +87,7 @@ export default class CreateDelevryController extends BaseController {
 
        let   delevryDomain:any ;
        let userIsDelevry :any ;
-      
+      let empDelevry:any ;
 
 
 
@@ -96,13 +96,19 @@ export default class CreateDelevryController extends BaseController {
      
         if(delevryId)
             {
-             delevryDomain =  await   this.createDelevryDomain(resultDelevryDTO,delevryId) ;
-             userIsDelevry = await this._DeleveryRepo.getUserDelevredById(delevryId)  ;
+
+              empDelevry  =   await this._DeleveryRepo.getEmployeeIsDelevredById(delevryId)
+              const data = empDelevry.get({ plain: true });
+             delevryDomain =  await   this.createDelevryDomain(resultDelevryDTO,data.employee.TempID) ;
+           //  userIsDelevry = await this._DeleveryRepo.getUserDelevredById(delevryId)  ;
+
+      
             }
  
- 
- 
-        console.log("  delevryDomain *-***** ", delevryDomain ,"userIsDelevry  ",userIsDelevry ,"delevryId" ,delevryId)
+             // console.log("empDelevry empDelevry 2222222 empDelevry        ",empDelevry)
+
+
+          
 
                         await this._DeleveryRepo.createDelevry(delevryDomain)
 

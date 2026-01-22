@@ -1,21 +1,22 @@
 import { Request, Response, Router } from "express";
 import createCategoryController from "../../controllers/category/createCategoryController.";
+import GetCategoryController from "../../controllers/category/GetCategoryController";
 import { verifyToken } from "../../middleware/verifyToken";
 
 
 const router = Router();
 
 
-const createCategoryRoute  =  new createCategoryController()
+const getCategoryRoute  =  new GetCategoryController()
 
 
 
 
 
-// ca  we give a name  to function uploadMiddleware  using on postman 
-router.post("/createcategory", verifyToken,(req:Request,res:Response) => {
+
+router.get("/get/category",verifyToken, (req:Request,res:Response) => {
         console.log("req" , req.body)
-    createCategoryRoute.execute(req,res)
+        getCategoryRoute.execute(req,res)
 })
 
 

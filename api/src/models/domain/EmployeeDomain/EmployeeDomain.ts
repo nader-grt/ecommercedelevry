@@ -19,7 +19,7 @@ export default class EmployeesDomain extends userDomain
       {
          this.salary = salary;
       }
-      public get sethiredAt():Date
+      public get gethiredAt():Date
       {
         return this.hiredAt ;
       }

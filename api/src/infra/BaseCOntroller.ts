@@ -24,6 +24,11 @@ export abstract class BaseController {
     return res.status(200).json(dto);
   }
 
+    
+  protected resultValue(res: Response,message:string, dto?: any) {
+    return res.status(200).json({message, dto});
+  }
+
   protected created(res: Response, dto?: any) {
     return res.status(201).json(dto);
   }

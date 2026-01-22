@@ -19,10 +19,11 @@ export default interface ISupllier {
   id?: number;
   companyName?: string;
   companyPhone:String;
-  companyemail:String;
-  address:String;
+  companyEmail:String;
+ // address:String;
   contactPerson:String;
   employeeId?:Number;
+  userId?:number;
 
 
 }
@@ -31,53 +32,14 @@ export class Supllier extends Model<ISupllier> implements ISupllier {
   public id!: number;
   public companyName!: string;
   public   companyPhone!:String;
-  public   companyemail!:String;
-  public   address!:String;
+  public   companyEmail!:String;
+ // public   address!:String;
   public   contactPerson!:String;
+  public userId!: number;
 
 
 }
 
-/**
- * 
- * @param sequelize 
- * 
- * 
- * 
-
-
-      companyName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-
-      companyPhone: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-
-      companyemail: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-
-      address: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-
-      contactPerson: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-
-    
-
- Employees
- * @returns 
- */
 
 export function SupplierModel(sequelize: Sequelize) {
     Supllier.init(
@@ -85,9 +47,10 @@ export function SupplierModel(sequelize: Sequelize) {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       companyName: { type: DataTypes.STRING, allowNull: false },
       companyPhone: { type: DataTypes.STRING, allowNull: false },
-      companyemail: { type: DataTypes.STRING, allowNull: false },
+      companyEmail: { type: DataTypes.STRING, allowNull: false },
       //address
-      address: { type: DataTypes.STRING, allowNull: false },
+   //   address: { type: DataTypes.STRING, allowNull: false },
+   userId: { type: DataTypes.INTEGER, allowNull: false },
       contactPerson: { type: DataTypes.STRING, allowNull: false },
  
     },

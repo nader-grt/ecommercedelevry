@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import DeleteSupplierController from "../../controllers/Supplier/DeleteSupplierController";
+import { verifyToken } from "../../middleware/verifyToken";
 
 
 
@@ -12,8 +13,7 @@ const DeleteSupplierRoute  =  new DeleteSupplierController()
 
 
 
-// ca  we give a name  to function uploadMiddleware  using on postman 
-router.post("/create/delevry",(req:Request,res:Response) => {
+router.delete("/delete/supplier/:id",verifyToken,(req:Request,res:Response) => {
    
     DeleteSupplierRoute.execute(req,res)
 })

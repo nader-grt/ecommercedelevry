@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import GetSupplierController from "../../controllers/Supplier/GetSupplierController";
+import { verifyToken } from "../../middleware/verifyToken";
 
 
 
@@ -11,8 +12,8 @@ const GetSupplierRoute  =  new GetSupplierController()
 
 
 
-// ca  we give a name  to function uploadMiddleware  using on postman 
-router.post("/get/supplier",(req:Request,res:Response) => {
+
+router.get("/get/supplier",verifyToken,(req:Request,res:Response) => {
    
     GetSupplierRoute.execute(req,res)
 })
