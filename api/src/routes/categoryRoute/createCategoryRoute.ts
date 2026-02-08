@@ -13,7 +13,7 @@ const createCategoryRoute  =  new createCategoryController()
 
 
 // ca  we give a name  to function uploadMiddleware  using on postman 
-router.post("/createcategory", verifyToken,(req:Request,res:Response) => {
+router.post("/create/category", verifyToken,(req:Request,res:Response) => {
         console.log("req" , req.body)
     createCategoryRoute.execute(req,res)
 })

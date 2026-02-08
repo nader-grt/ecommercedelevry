@@ -1,17 +1,24 @@
-import { Employee, User } from "../../models/main";
+import { Employee, sequelize, User } from "../../models/main";
 import IEmployeeRepoInterface from "./IEmployeeRepoInterface";
-
+import { Op, fn, col, Transaction } from "sequelize";
 
 export default class EmployeeRepo extends IEmployeeRepoInterface
 {
 
 
-    public async createEmployee(emp:any):Promise<any> 
+    public async createEmployee(emp:any,userId:number):Promise<any> 
     {
 
         try {
                 
-            await  Employee.create(emp)
+          //  console.log("emp into repo  ",emp)
+            await  Employee.create({
+                
+                    salary: emp.salary,
+                    hiredAt: emp.hiredAt,
+                    userId: userId,
+                  
+            })
          } catch (error) {
             console.log(error) ;
             
@@ -28,7 +35,7 @@ export default class EmployeeRepo extends IEmployeeRepoInterface
                 hiredAt: emp.hiredAt,
                 userId: emp.userId,
               },
-              { where: { id: empid} }) ;
+              { where: { userId: empid} }) ;
 
     
              
@@ -46,11 +53,16 @@ export default class EmployeeRepo extends IEmployeeRepoInterface
         try {
             
             const  emp  =  await  Employee.findOne( { where: { id: id } } ) ;
-             if(emp)
-             {
-                return emp ;
-             }
-             return null ;
+            if (!emp) return null;
+        
+                const e = emp?.get({ plain: true });
+                return {
+                  employeeId: e.id,
+                   salary: e.salary,
+                   user: e.userId,
+                   hiredDate: e.hiredAt
+                 };
+          
         } catch (error) {
             
         }
@@ -61,29 +73,120 @@ export default class EmployeeRepo extends IEmployeeRepoInterface
      {
      
         const  emp  =  await  Employee.findOne( { where: { id: id } } ) ;
-    try {
+            try {
+              if (!emp) return null;
         
-        if(emp)
-            {
-               return emp ;
+                const e = emp?.get({ plain: true });
+
+                return {
+                 // employeeId: e.id,
+                  salary: e.salary,
+                 // user: e.userId,
+                  hiredDate: e.hiredAt
+                };
+            } catch (error) {
+                
             }
-            return null ;
-    } catch (error) {
-        
-    }
 
      }
 
      public async deleteEmployee(id:number,userid?:number):Promise<any> 
      {
-
+               const t = await sequelize.transaction();
           try {
-            const  emp  =  await  Employee.destroy( { where: { id: id } } ) ;
-                                 await User.destroy({where :{id:userid}})
+       
+
+            const emp = await Employee.destroy(
+              {
+                where: { id: id },
+                transaction: t
+              }
+            );
+                                 await User.destroy(
+                                  {
+                                    where :{id:userid},
+                                
+                                    transaction: t
+                                })
             console.log("empppppppppp",emp)
+            await t.commit();
           } catch (error) {
-            
+            await t.rollback();
           }
 
      }
+
+//   type: Sequelize.ENUM('user', 'admin','supplier','deliverer','secrtrie'),
+
+public static async FindAllIdsExistWithEmp(): Promise<number[]> {
+
+  const users = await User.findAll({
+    attributes: [
+      [fn('DISTINCT', col('id')), 'id']
+    ],
+    where: {
+      role: {
+        [Op.in]: ['deliverer', 'secrtrie']
+      }
+    },
+    raw: true
+  });
+
+ 
+  return users.map((u: any) => u.id);
+}
+
+
+public static async FindEmployeeBefore(userId?:number ,dayWorkid?:number):Promise<boolean | any>
+{
+             try {
+                const exists = await Employee.findOne({
+                    where: {
+                      userId:userId,
+                      
+                    },
+                  });
+                return exists ? true :false
+             } catch (error) {
+                console.log(error)
+             }
+                
+}
+
+
+public static async FindEmployeeBeforeByEmpId(empId?:number ,dayWorkid?:number):Promise<boolean | any>
+{
+             try {
+                const exists = await Employee.findOne({
+                    where: {
+                      id:empId,
+                      
+                    },
+                  });
+                return exists ? true :false
+             } catch (error) {
+                console.log(error)
+             }
+                
+}
+
+
+     public  static  async  getEmpUsersByRole(role: string):Promise<any> {
+      
+        const RoleName = role.charAt(0).toUpperCase() + role.slice(1);
+      
+        const users = await User.findAll({
+          attributes: [
+            ['id', `${RoleName}Id`],
+            ['role', `${RoleName}Role`],
+          ],
+          where: {
+            role: role,
+          },
+          raw: true,
+        });
+      
+        return users;
+      }
+      
 }

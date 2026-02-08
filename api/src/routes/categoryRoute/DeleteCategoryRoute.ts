@@ -13,8 +13,8 @@ const deleteCategoryRoute  =  new DeleteCategoryController()
 
 
 
-router.delete("/delete/category", verifyToken ,(req:Request,res:Response) => {
-        console.log("req" , req.body)
+router.delete("/delete/category/:id", verifyToken ,(req:Request,res:Response) => {
+        console.log("req delete categoryy  " )
         deleteCategoryRoute.execute(req,res)
 })
 

@@ -5,10 +5,11 @@ export default class EmployeesDomain extends userDomain
 
     private salary!:number ;
       private hiredAt!: Date ;
-      private userId!: number;
+      protected userId!: number;
       
       constructor() {
         super();
+        this.salary  = 0 ;
       }
 
       public get getSalary():number

@@ -26,15 +26,7 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
 
-      // daysOfWork: {
-      //   type: Sequelize.STRING,
-      //   allowNull: false,
-      // },
-
-      workingTime: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+   
 
       carType: {
         type: Sequelize.STRING,

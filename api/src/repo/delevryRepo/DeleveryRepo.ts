@@ -1,5 +1,8 @@
-import { Deliverer, Employee, User } from "../../models/main";
+import { Sequelize } from "sequelize";
+import { Deliverery } from "../../models/Delevery";
+import { Deliverer, Employee, sequelize, User } from "../../models/main";
 import IDelevryRepo from "./IDelevryRepo";
+import DelevryDomain from "../../models/domain/deleveryDomain/DelevryDomain";
 
 
 
@@ -43,7 +46,12 @@ export default  class  DeleveryRepo   extends IDelevryRepo
     {
 
 
-        const  delivery  =  await  Deliverer.findOne( { where: { id: id } } ) ;
+        const  delivery  =  await  Deliverer.findOne( 
+          { 
+          where: { id: id },
+          raw :true
+        
+        } ) ;
         if(delivery)
         {
            return delivery ;
@@ -54,9 +62,30 @@ export default  class  DeleveryRepo   extends IDelevryRepo
     }
 
     public  async      DeleteDelevryByID(delevryid:number,empId?:number,userid?:number):Promise<any>
-    {  const delevry :any = await Deliverer.destroy( { where: { id: delevryid } } ) ;
-      const  emp  =  await  Employee.destroy( { where: { id:empId } } ) ;
-      await User.destroy({where :{id:userid}})
+    {  
+                    const t = await sequelize.transaction();
+
+             try {
+              if (delevryid) {
+                await Deliverer.destroy({ where: { id: delevryid }, transaction: t });
+              }
+          
+          
+              if (empId) {
+                await Employee.destroy({ where: { id: empId }, transaction: t });
+              }
+          
+              if (userid) {
+                await User.destroy({ where: { id: userid }, transaction: t });
+              }
+          
+          
+              await t.commit();
+            //  return { success: true, message: "Deleted successfully" };
+             } catch (error) {
+              await (await t).rollback()
+                console.log(error)
+             }
 
     }
 
@@ -64,11 +93,13 @@ export default  class  DeleveryRepo   extends IDelevryRepo
     {
 
                  try {
+
+              
                     const  delevryResult  =  await  Deliverer.update(  {
 
-                workingTime: delevry.workingTime,
+         
                 carType  :  delevry.carType,
-               employeeId:delevry.employeeId
+               employeeId: delevry.deliveryEmployeeId
                       },
                       { where: { id: delevryid} }) ;
 
@@ -77,62 +108,58 @@ export default  class  DeleveryRepo   extends IDelevryRepo
                         return delevryResult
                       }
                     return null ;
-            
+                 //   return await Deliverer.findByPk(delevryid);
                  } catch (error) {
                     
                  }
     }
 
-    static async FindDelevryById(userId:number):Promise<any>
+    static async FindDelevryById(id:number):Promise<any>
     {
         
      try {
-        
 
-      const user = await User.findOne({
-        where: { id: userId },
-        include: [
-          {
-            association: "employee",
-            include: [
-              {
-                association: "deliverer",
-              },
-            ],
-          },
-        ],
-      });
-    
-      if (!user) return null;
-    
-      const result:any = user.get({ plain: true });
-    
-      return result;
+      const result = await Deliverer.findOne({
+        where:{employeeId:id},
+        raw:true 
+      })
+   
+
+     return result ;
      } catch (error) {
-      
+      console.log(error)
      }
 
     }
 
-    public async getUserDelevredById(id: number): Promise<any> {
+    public async getUserDelevredById(id?: number): Promise<any> {
         try {
         
-          const result = await User.findAll({
+          const result = await Employee.findAll({
             attributes: [
-              ["id", "TusersID"],
-              "role",
-              "firstName",
+              ["id", "EmployeeID"],
+              "salary",
+              "userId",
             ],
             include: [
               {
-                model: Employee,
-                attributes: [["id", "TempID"]],
-                required: true, // INNER JOIN
+                model: User,
+                as: "user",
+                attributes: [
+                  ["id", "UserID"],
+                  "firstName",
+                  "role",
+                ],
+                required: false, 
               },
             ],
+            raw :true
           });
 
 
+
+      
+                return  result.filter((e:any) => e?.EmployeeID === id)
         } catch (error) {
           console.error(error);
           throw error;
@@ -164,6 +191,20 @@ export default  class  DeleveryRepo   extends IDelevryRepo
         }
       }
       
-      
+      public static async FindDelivery(id:number):Promise<any>
+      {
+                try {
+                           const resulteDelivery =        await Deliverer.findOne({
+                                    where:{id},
+                                    raw:true 
+                                   })
+                                   if(!resulteDelivery) return null ;
+
+                                   return resulteDelivery ;
+                } catch (error) {
+                  console.log(error)
+                }
+
+      }
 
 }

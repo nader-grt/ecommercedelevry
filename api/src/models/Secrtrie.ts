@@ -17,8 +17,7 @@ export enum Role {
 
 export default interface ISecrtrie {
   id?: number;
-  daysOfWork?: number;
-  canManageAppointments:Boolean;
+ nbrAppointments:number;
   employeeId?:Number;
 
 
@@ -27,7 +26,8 @@ export default interface ISecrtrie {
 export class Secrtrie extends Model<ISecrtrie> implements ISecrtrie {
   public id!: number;
   public daysOfWork!: number;
-  public   canManageAppointments!:Boolean;
+  public   nbrAppointments!:number;
+  public   employeeId!:Number;
 
 
 }
@@ -52,14 +52,14 @@ export class Secrtrie extends Model<ISecrtrie> implements ISecrtrie {
           onUpdate: 'CASCADE',
         },
   
-        daysWorking: {
-          type: Sequelize.STRING, // : "Sun-Mon-Tue"
-          allowNull: false,
-        },
+        // daysWorking: {
+        //   type: Sequelize.STRING, // : "Sun-Mon-Tue"
+        //   allowNull: false,
+        // },
         canManageAppointments: {
           type: Sequelize.BOOLEAN,
           defaultValue: true,
-        },
+        },,
     
     
     
@@ -72,8 +72,8 @@ export function SecretaryModel(sequelize: Sequelize) {
     Secrtrie.init(
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      daysOfWork: { type: DataTypes.STRING, allowNull: false },
-      canManageAppointments: { type: DataTypes.INTEGER, allowNull: false },
+ 
+      nbrAppointments: { type: DataTypes.INTEGER, defaultValue: 0 },
       employeeId: { type: DataTypes.INTEGER, allowNull: false },
  
     },

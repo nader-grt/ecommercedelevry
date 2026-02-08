@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import { Role } from '../../../user';
+import IUser, { Role } from '../../../user';
+import IUserResponse from '../../../../repo/userRepo/userRepo';
 
 
 export default class userDomain {
@@ -126,5 +127,23 @@ public set setPassword(password: string) {
         // = hashedPassword;
         return hashedPassword;
         }
+    }
+
+    public toGetAllUsers(data? :any):IUserResponse[]
+    {  
+        console.log("DDDDDDDDDDDDDDD  ",typeof data , data )
+          const users :IUserResponse[] = data.map((user:IUserResponse) => {
+
+             return {
+                id:user.id,
+                firstName:user.firstName,
+                lastName:user.lastName,
+                phone:user.phone,
+                email:user.email,
+                city:user.city,
+                address:user.address
+             }
+          })
+        return users ;
     }
 }

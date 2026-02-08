@@ -13,7 +13,7 @@ const updateCategoryRoute  =  new UpdateCategoryController()
 
 
 router.put("/update/category",verifyToken, (req:Request,res:Response) => {
-        console.log("req" , req.body)
+       // console.log("req *******  up " , req.body)
         updateCategoryRoute.execute(req,res)
 })
 

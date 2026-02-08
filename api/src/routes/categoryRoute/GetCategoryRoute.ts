@@ -14,7 +14,7 @@ const getCategoryRoute  =  new GetCategoryController()
 
 
 
-router.get("/get/category",verifyToken, (req:Request,res:Response) => {
+router.get("/get/category/:id",verifyToken, (req:Request,res:Response) => {
         console.log("req" , req.body)
         getCategoryRoute.execute(req,res)
 })

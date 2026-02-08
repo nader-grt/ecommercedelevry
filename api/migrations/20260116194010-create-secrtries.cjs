@@ -31,9 +31,9 @@ module.exports = {
         //   type: Sequelize.STRING, // : "Sun-Mon-Tue"
         //   allowNull: false,
         // },
-        canManageAppointments: {
-          type: Sequelize.BOOLEAN,
-          defaultValue: true,
+        nbrAppointments: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
         },
   
         createdAt: {

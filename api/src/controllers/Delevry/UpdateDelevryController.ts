@@ -2,68 +2,62 @@ import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 import { RequestAuth } from "../../middleware/verifyToken";
 import DeleveryRepo from "../../repo/delevryRepo/DeleveryRepo";
-
-
-
-
+import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
 
 export default class UpdateDelevryController extends BaseController {
-
-    protected _DeleveryRepo:DeleveryRepo;
+  protected _DeleveryRepo: DeleveryRepo;
 
   constructor() {
     super();
-    this._DeleveryRepo  = new DeleveryRepo() ;
-  
+    this._DeleveryRepo = new DeleveryRepo();
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
-   // const { id } = req.params;  
- 
 
-    const { workingTime,carType} =
-    req.body;
 
-   // const delevryid = Number(id) ;
+    const { carType, employeeId } = req.body;
 
-    const userid = req.user?.id;
-    console.log("Number(userid) Number(userid)   ",Number(userid))
+  
+
     try {
-     
-        let delevryResult :any =           await DeleveryRepo.FindDelevryById(Number(userid))  
-             let delevery :any = delevryResult.employee?.deliverer
-            if(delevery === null)
-            {
-                return this.notFound(res)
-            }
+      const idsUserTypeRole: number[] =
+        await EmployeeRepo.FindAllIdsExistWithEmp();//index from table users 
+    
+      const [idDeliverer, idSecrtrie] = idsUserTypeRole;
 
-            console.log("delevery delevery update ",delevery)
-            if(workingTime)
-            {
-                delevery.workingTime = workingTime;
-            }
+   
+      if (!idDeliverer) {
+        return this.notFound(res, " DelivererId    not fount by this  role ");
+      }
+      let delevryResult: any = await DeleveryRepo.FindDelevryById(
+        Number(employeeId)
+      );
 
-         
-            if(carType)
-                {
-                    delevery.carType = carType 
-                }
+    
 
-
-                console.log("before  enter sequilze " ,delevery)
-              let delevryResultValue =      await this._DeleveryRepo.UpdateDelevryByID(delevery,Number(delevery.id)) ;
+      if (delevryResult === null) {
+        return this.notFound(res, "delivery not found ");
+      }
 
 
-              console.log("After    sequilze " ,delevryResultValue)
-              if(delevryResultValue)
-              {
-                return this.ok(res," delevry updated ")
-              }
+
+      if (carType) {
+        delevryResult.carType = carType;
+      }
+
+         let delevryResultValue =      await this._DeleveryRepo.UpdateDelevryByID(delevryResult,Number(delevryResult.id)) ;
+
       
+      if(delevryResultValue)
+      {
+      
+        return this.ok(res," delevry updated ")
+      }
+      // }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
-    return this.ok(res, "updated delevry   with success ok");
+    
   }
 }

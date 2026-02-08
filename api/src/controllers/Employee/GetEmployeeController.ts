@@ -19,21 +19,24 @@ export default class GetEmployeeController extends BaseController
           
         const {id} = req.params ;
         const empId = Number(id) ;
-         let employee :any ;
+         let empfound :any ;
 
                try {
                 
-
+               
+      
                if(empId)
                 {
-                 employee = await this._employeeRepo.getEmployeeById(empId) ;
+                  empfound  = await EmployeeRepo.FindEmployeeById(empId)  ;
                 }
-                if(employee === null)
+                if(empfound === null)
                 {
                     return this.notFound(res,`this id ${empId} not found`);
                 }
 
-                return this.resultValue(res,"employe found",employee) ;
+
+                console.log(" empfound is last result    ",empfound )
+                return this.resultValue(res,"employe found",empfound) ;
 
                } catch (error) {
                 

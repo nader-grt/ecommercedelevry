@@ -7,13 +7,14 @@ import { IRegisterUserRequestDTO } from "../auth/RegisterController";
 import UserRepo from "../../repo/auth/userRepo/registerUserRepo";
 import { userRepo } from "../../repo/userRepo/userRepo";
 import { RequestAuth } from "../../middleware/verifyToken";
+import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
 
 
 export default interface IDelevry
 {
 
  
-  workingTime:string ;
+
   carType:string;
   employeeId?:number;
 
@@ -38,7 +39,6 @@ export default class CreateDelevryController extends BaseController {
         
     
         return {
-          workingTime: (this._DelevryDomain.setWorkingTime = delevryRequest.workingTime),
           carType: (this._DelevryDomain.setCarType = delevryRequest.carType),
           employeeId: delevryRequest.employeeId,
       
@@ -55,7 +55,7 @@ export default class CreateDelevryController extends BaseController {
       
         const delevry = new DelevryDomain();
       
-        delevry.setWorkingTime = delevryRequest.workingTime;
+    
         delevry.setCarType = delevryRequest.carType;
         delevry.setDelevryId = employeeId;
       
@@ -72,13 +72,13 @@ export default class CreateDelevryController extends BaseController {
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
-    const { workingTime,carType} =
+    const { carType ,employeeId} =
     req.body;
-    const delevryId = req.user?.id;
+    const delevryIdEmp = Number(employeeId)
 
 
     const dtoDelevry: any = {
-        workingTime,
+      delevryIdEmp,
         carType,
       
       };
@@ -87,36 +87,77 @@ export default class CreateDelevryController extends BaseController {
 
        let   delevryDomain:any ;
        let userIsDelevry :any ;
-      let empDelevry:any ;
+    //  let empDelevry:any ;
 
-
+  
 
     
     try {
-     
-        if(delevryId)
+      userIsDelevry = await this._DeleveryRepo.getUserDelevredById(delevryIdEmp)  ;
+
+
+
+
+      if(userIsDelevry[0]?.EmployeeID  === delevryIdEmp )
+      {
+
+             return this.resultValue(res,` delevery exist befor by ${delevryIdEmp}`)
+      }
+
+      const existEmp =       await EmployeeRepo.FindEmployeeBeforeByEmpId(Number(delevryIdEmp))
+
+      if(!existEmp)
+      {
+       return this.resultValue(res,`employee not found yet by this  number  ${delevryIdEmp}`)
+      }
+
+      const idsUserTypeRole :number[] = await EmployeeRepo.FindAllIdsExistWithEmp()  ;
+
+
+      
+
+
+
+
+      if(idsUserTypeRole.length == 0)
+      {
+       return this.notFound(res," ids  of role   not fount  ")  
+      }
+      const [idSecrtrie, idDeliverer] = idsUserTypeRole;
+
+const resultUserDelevry : any =    await EmployeeRepo.getEmpUsersByRole("deliverer")  ;
+            
+          
+          if(!idsUserTypeRole.includes(resultUserDelevry[0].DelivererId))
+          {
+
+            return this.notFound(res," DelivererId    not fount by this  role ")  
+          }
+
+
+        if(idDeliverer)
             {
 
-              empDelevry  =   await this._DeleveryRepo.getEmployeeIsDelevredById(delevryId)
-              const data = empDelevry.get({ plain: true });
-             delevryDomain =  await   this.createDelevryDomain(resultDelevryDTO,data.employee.TempID) ;
-           //  userIsDelevry = await this._DeleveryRepo.getUserDelevredById(delevryId)  ;
+            
+//idDeliverer
+              
+              delevryDomain =  await   this.createDelevryDomain(resultDelevryDTO,delevryIdEmp) ;
+         
 
       
             }
  
-             // console.log("empDelevry empDelevry 2222222 empDelevry        ",empDelevry)
-
-
           
 
-                        await this._DeleveryRepo.createDelevry(delevryDomain)
 
-                        this.ok(res, { message: "delevry  created  successfully" });
-    } catch (error) {
-      
-    }
 
-   // return this.ok(res, "delevry created with success ok1");
+                     //   await this._DeleveryRepo.createDelevry(delevryDomain)
+
+                      //  this.ok(res, { message: "delevry  created  successfully" });
+              } catch (error) {
+                console.log(error)
+              }
+
+
   }
 }

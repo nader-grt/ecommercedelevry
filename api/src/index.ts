@@ -1,10 +1,17 @@
 import express from "express";
 import { sequelize } from "./models/main.js"; // make sure your path is correct
-
+import cors from "cors";
 import createUserRoutes from "./routes/userRoutes/createUserRoute.js";
 
-import getUserRoutes from "./routes/userRoutes/getUserRoute.js"
+import getUserRoutes from "./routes/userRoutes/GetUserRoute.js"
+import getAllUserRoutes from "./routes/userRoutes/GetAllUserByRoleRoute.js"
+import deleteUserRoutes from "./routes/userRoutes/DeleteUserRoute.js"
+import updateUserRoutes from "./routes/userRoutes/UpdateUserRoute.js"
 import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
+
+
+
+
 import createProductRoute from "./routes/productRoutes/createProductRoute.js";
 import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
 
@@ -12,6 +19,7 @@ import createCategoryRoute from "./routes//categoryRoute/createCategoryRoute.js"
 import deleteCategoryRoute from "./routes//categoryRoute/DeleteCategoryRoute.js";
 import updateCategoryRoute from "./routes//categoryRoute/UpdateCategoryRoute.js";
 import getCategoryRoute from "./routes//categoryRoute/GetCategoryRoute.js";
+import getAllCategoryRoute from "./routes//categoryRoute/GetAllCategoryRoute.js";
 
 
 import registerRoute from "./routes/authRoute/registerUserRoute.js";
@@ -35,20 +43,47 @@ import updateSupplierRoute from  "./routes/SupplierRoute/UpdateSupplierRoute..js
 import deleteSupplierRoute from  "./routes/SupplierRoute/DeleteSupplierRoute..js"
 import getSupplierRoute from  "./routes/SupplierRoute/GetSupplierRoute.js"
 
+//Secretary
+
+
+import createSecretaryRoute from  "./routes/SecretaryRoute/CreateSecretaryRoute.js"
+import updateSecretaryRoute from  "./routes/SecretaryRoute/UpdateSecretaryRoute.js"
+import deleteSecretaryRoute from  "./routes/SecretaryRoute/GetSecretaryRoute.js"
+import getSecretaryRoute from  "./routes/SecretaryRoute/GetSecretaryRoute.js"
+
+
+import createDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/CreateDelivererDayWorkRoute.js"
+import updateDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/UpdateDelivererDayWorkRoute.js"
+import deleteDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/DeleteDelivererDayWorkRoute.js"
+import getDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/GetDelivererDayWorkRoute.js"
+
+
+import { corsOptions } from "./corsConfig/corsConfig.js";
+
+
+import createDayWorkRoute from "./routes/DayWorkRoute/CreateWorkDayRoute.js"
+import getDayWorkRoute from "./routes/DayWorkRoute/GetWorkDayRoute.js"
+
 const app = express();
 
 // Middleware
 app.use(express.json());
 
+
+
+// 2️ CORS before roue
+app.use(cors(corsOptions));
 // Routes
-app.use("/api", createUserRoutes);
+//app.use("/api", createUserRoutes);
 app.use("/api", getUserRoutes);
+app.use("/api", getAllUserRoutes);
+app.use("/api", updateUserRoutes);
+app.use("/api", deleteUserRoutes);
+
 app.use("/apimail", mailRoutes);
 
 // product 
-
 app.use("/send",createProductRoute)  ;
-
 app.use("/api",updateProductRoute)  ;
 
 
@@ -76,8 +111,30 @@ app.use("/api",createCategoryRoute)  ;
 app.use("/api",deleteCategoryRoute)  ;
 app.use("/api",updateCategoryRoute)  ;
 app.use("/api",getCategoryRoute)  ;
+app.use("/api",getAllCategoryRoute)
+
+//DelivererDayWork
+app.use("/api",createDelivererDayWorkRoute)  ;
+app.use("/api",updateDelivererDayWorkRoute)  ;
+app.use("/api",deleteDelivererDayWorkRoute)  ;
+app.use("/api",getDelivererDayWorkRoute)  ;
+
+//secretary 
+app.use("/api",createSecretaryRoute)  ;
+app.use("/api",updateSecretaryRoute)  ;
+app.use("/api",deleteSecretaryRoute)  ;
+app.use("/api",getSecretaryRoute)  ;
 
 
+//dayworking 
+
+app.use("/api",createDayWorkRoute)  ;
+app.use("/api",getDayWorkRoute)  ;
+
+
+
+
+//Secretary
 
 
 

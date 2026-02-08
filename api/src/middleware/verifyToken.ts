@@ -22,6 +22,8 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
 
     const token:any = authHeader?.split(' ')[1]
 
+    console.log("token*******",token )
+
     if(!token)
     {
         return res.status(401).json({message:"Access Denied. No token provided"}) ;
@@ -41,3 +43,30 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
 
     //return "not implemented" ;
 }
+
+//  token user eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlkIjoyLCJpYXQiOjE3NjkyODE2Nzd9.eqrYjvB0Goh3tGhFXDZkAKgzB0ImD0-TxfhKuNxcQng
+
+
+/**
+ * 
+ * 
+ * 
+
+
+{
+  
+  "firstName": "user",
+  "lastName": "Martin5",
+  "phone": "21655008007",
+  "email": "user@test.com",
+  "password": "123456",
+  "city": "gassrine",
+  "address": "address 123 address",
+  "role":"user"
+}
+
+
+
+
+
+ */

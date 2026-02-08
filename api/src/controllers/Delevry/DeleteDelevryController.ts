@@ -23,13 +23,23 @@ export default class DeleteDelevryController extends BaseController {
     const {id}  = req.params;
     const deleveryId = Number(id) ;
     let deleveryFounded : any ;
-    const userid = req.user?.id;
+   // let  data:any | null   = null;
 
  
     
     try {
 
-      let userDelevery :any = await DeleveryRepo.FindDelevryById(Number(userid)) ;
+     let empDelevry  =   await  this._deleveryRepo.getEmployeeIsDelevredById(6) ;
+          
+    let  data:any  = empDelevry.get({ plain: true });
+
+  
+    const { TusersID: userId, employee } = data;
+    const empId = employee?.TempID;
+    
+    console.log({ userId, empId });
+
+
       deleveryFounded  =           await this._deleveryRepo.GetDelevryByID(Number(deleveryId))  
 
       if(deleveryFounded === null)
@@ -37,10 +47,10 @@ export default class DeleteDelevryController extends BaseController {
           return this.notFound(res)
       }
 
-
-     // console.log("userDelevery 1" ,userDelevery)
-      console.log("get deleveryFounded 2",deleveryFounded) //3 userDelevery.id user 2 userDelevery.employee.id employee
-                      await this._deleveryRepo.DeleteDelevryByID(Number(deleveryId),Number(userDelevery.employee.id),Number(userDelevery.id))
+//(delevryid:number,empId?:number,userid?:number)
+ 
+     console.log("get deleveryFounded 2",deleveryFounded) 
+                    await this._deleveryRepo.DeleteDelevryByID(Number(deleveryFounded.id),Number(empId),Number(userId))
       return this.ok(res, "delevery deleted with success  ");
       
     } catch (error) {

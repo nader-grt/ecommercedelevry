@@ -29,7 +29,9 @@ export default class GetDelevryController extends BaseController {
     try {
      
         const delevryResult :any =           await this._deleveryRepo.GetDelevryByID(delevryid)  
-        
+        if (delevryResult === null) {
+          return this.notFound(res, "delivery not found ");
+        }
         //employee?.deliverer
     //    const delevery : any = delevryResult.employee?.deliverer
         return this.resultValue(res, "get delevry   with success ",{delevryResult});

@@ -5,11 +5,11 @@ export default class DelevryDomain extends EmployeesDomain
 
 
 
-  //  protected daysOfWork: string = "";  //number
-
-    private workingTime: string = "";
+  
     private carType: string = "";
    private employeeId! :number ;
+
+  
 
     constructor() {
         super();
@@ -25,16 +25,16 @@ export default class DelevryDomain extends EmployeesDomain
         //      this.daysOfWork  = value ;
         //  }
 
-         public get getWorkingTime():string
-         {
-            return  this.workingTime ;
-         }
+        //  public get getWorkingTime():string
+        //  {
+        //     return  this.workingTime ;
+        //  }
 
-         public set setWorkingTime(value:string)
-         {
+        //  public set setWorkingTime(value:string)
+        //  {
         
-             this.workingTime  = value ;
-         }
+        //      this.workingTime  = value ;
+        //  }
 
 
          //work with image 
@@ -56,9 +56,26 @@ export default class DelevryDomain extends EmployeesDomain
          public toPersistence():any {
              return {
 
-                workingTime: this.workingTime,
+            
                 carType  :  this.carType,
                 employeeId:this.employeeId
              };
+         }
+
+         public toResponse(data?:any)
+         {
+          console.log("dataaaaaaaaaa  ",data)
+          return {
+        //   this.userId : 1,
+            // this.empUserId : data.employee.empUserId,
+            // this.delivererId : data.employee.deliverer.delivererId,
+            // this.carType : data.employee.deliverer.carType,
+            // this.employeeId : data.employee.deliverer.employeeId,
+            userId: data.TUsersId,
+    employeeId: data.employee?.TEmpId ?? null,
+    delivererId: data.employee?.deliverer?.TdelivererID ?? null,
+    carType: data.employee?.deliverer?.TDeleverycarType ?? null,
+    deliveryEmployeeId: data.employee?.deliverer?.TDeliveryId ?? null,
+          }
          }
 }

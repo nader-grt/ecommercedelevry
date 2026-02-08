@@ -25,7 +25,7 @@ export abstract class BaseController {
   }
 
     
-  protected resultValue(res: Response,message:string, dto?: any) {
+  protected resultValue(res: Response,message?:string, dto?: any) {
     return res.status(200).json({message, dto});
   }
 

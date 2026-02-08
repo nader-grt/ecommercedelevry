@@ -1,39 +1,121 @@
 import { User } from "../../models/main";
-import IUser from "../../models/user";
+import IUser, { Role } from "../../models/user";
 import IUserRepoInterface from "./userRepoInterface";
+
+
+export default interface IUserResponse {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+
+  role?: Role;
+  city?: string;
+  address?: string;
+}
+
 
 export class userRepo extends IUserRepoInterface {
 
 
-    public async CreateUser():Promise<void> 
+
+    public async DeleteUser(userId:number):Promise<any | null> 
     {
+            try {
+                const user :any |null = await User.destroy({
+                  where:{id:userId}
+                }) ;
 
-
-    }
-
-    public async DeleteUser():Promise<void> 
-    {
-
+                if(user === null) return null ;
+            } catch (error) {
+              console.log(error)
+            }
         
     }
 
-  public async FindUserById(id: number): Promise<void> {
-    const user: any = await User.findByPk(id);
-  }
+    public static async FindUserByEmail(email:string):Promise<any>
+    {
+              try {
 
-  public async FindAllUsers(): Promise<IUser[]> {
-    const listUsers: IUser[] = await User.findAll();
+                    const user =      await User.findOne({
+                            where:{email:email},
+                            raw :true
+                          })
+                          if(!user) return null ;
 
-    return listUsers;
-  }
-
-  public static async existUserId(userID: number): Promise<{}> {
-    const listUsers: IUser[] = await User.findAll();
-
-    for (const user of listUsers) {
-        if(user.id  === userID)
-            return user 
+                return user ;
+              } catch (error) {
+                console.log(error)
+              }
     }
-    return {};
+
+  public async FindUserById(id: number): Promise<IUserResponse | any > {
+                try {
+                  const resultUser= await User.findByPk(id);
+                  if(!resultUser) return null ;
+                                        
+                  const user = resultUser.get({ plain: true }) as IUserResponse;
+                  return user ? [user] : null;
+                        
+                } catch (error) {
+                  console.log(error)
+                }
+  }
+
+  public static async  FindAllUsersByRoleIsUser(role:string): Promise<any> {
+    const listUsers = await User.findAll({where:{role:role,}});
+
+   
+            try {
+              if (!listUsers.length) return [];
+
+              const users = listUsers.map(user =>
+                user.get({ plain: true })
+              );
+              console.log("userssss  ",users as IUserResponse[])
+              return users as IUserResponse[];
+            } catch (error) {
+              console.log(error)
+            }
+  }
+
+  public static async existUserId(id: number): Promise<boolean | undefined> {
+                     try {
+                      const user: IUserResponse | null = await User.findOne({
+
+                        where:{id:id},
+                        raw:true
+                      });
+
+                        if(!user || user === undefined) return false
+                      return true;
+                     } catch (error) {
+                      console.log(error)
+                     }
+  }
+
+
+  public async updateUser(user:IUserResponse,userid?:number):Promise<any> 
+  {
+         try {
+                const u:any =      await   User.update(
+                      {
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        phone: user.phone,
+                        address: user.address
+                      },
+                      {
+                        where: { id: userid }
+                      }
+                        )
+
+                        if(!u) return null ;
+                        return u ;
+         } catch (error) {
+          console.log(error)
+         }
+
   }
 }

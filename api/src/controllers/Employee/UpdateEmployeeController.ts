@@ -34,54 +34,59 @@ export default class UpdateEmployeeController extends BaseController
        }
 
       public async executeImpl(req: RequestAuth, res: Response): Promise<any> {
-        const {salary ,hiredAt} =
+        const {salary ,hiredAt ,userIdRole} =
         req.body;
         const {id}  = req.params;
-        const empId = Number(id) ;
-        let employeeFounded :any ;
+        const empId = Number(userIdRole) ;
+        let employeeFounded: EmployeesDomain | null = null;
               
-        const userId = req.user?.id;
 
-//    const empDtoUptated:any = {
 
-//    }
+        const idsUserTypeRole :number[] = await EmployeeRepo.FindAllIdsExistWithEmp()  ;
         try {
-            if(empId)
-                {
-                   employeeFounded  = await EmployeeRepo.FindEmployeeById(empId) ;
-                   console.log("employeeFounded ********** new \t ",employeeFounded)
-                }
 
+            if(!idsUserTypeRole.includes(empId))
+            {
+
+              return this.notFound(res," employee   not fount can not not updated any thing ")  
+
+
+            }
+            employeeFounded  = await this._employeeRepo.getEmployeeById(Number(id)) ;
+            if (!employeeFounded) {
+              return this.notFound(res, "Employee not found");
+            }
+           
+     
                 if(salary)
                 {
-                    //  salary: (this._EmployeesDomain.setSalary = empRequest.salary),
-              //  hiredAt: (this._EmployeesDomain.sethiredAt = stringToDate(empRequest.hiredAt)),
-              //  userid:empRequest.userid
-              this._employeesDomain.setSalary =Number(salary) ;
-                    employeeFounded.salary = this._employeesDomain.getSalary  ;
+            
+       
+                    employeeFounded.setSalary = +salary ;
                 }
 
-                // stringToDate(hiredAt)
 
                 if(hiredAt)
                 {
 
-                    this._employeesDomain.sethiredAt =stringToDate(hiredAt) ;
-                    employeeFounded.hiredAt =  this._employeesDomain.gethiredAt
+                  //  this._employeesDomain.sethiredAt =stringToDate(hiredAt) ;
+                    employeeFounded.sethiredAt =  stringToDate(hiredAt) ;
                 }
 
-                if(userId)
+                if(empId)
                 {
-                 //   this._employeesDomain.setUserId = userId ;
-                    employeeFounded.userId   = userId;
+                 
+                    employeeFounded.setUserId   = empId;
                 }
 
 
-                console.log(employeeFounded,"resultttttttttttttttttttttt")
-             const  resultEmployeeUpdated =    await     this._employeeRepo.updateEmployee(employeeFounded,empId)
+              
+              const  resultEmployeeUpdated =    await     this._employeeRepo.updateEmployee(employeeFounded,empId)
              if(resultEmployeeUpdated)
              {
-               return this.ok(res," employee updated with success !")
+
+          
+               return this.resultValue(res," employee updated with success !",employeeFounded)
             }
 
         } catch (error) {

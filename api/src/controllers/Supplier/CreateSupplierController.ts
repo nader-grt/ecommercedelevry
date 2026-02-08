@@ -40,7 +40,7 @@ export default class CreateSupplierController extends BaseController {
    {
 
 
-    console.log("buildinnng  ",supplierResult)
+   
       const supplier = new SupplierDomain() ;
       supplier.setCompanyName = supplierResult.companyName ;
       supplier.setCompanyPhone = supplierResult.companyPhone;

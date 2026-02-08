@@ -96,7 +96,7 @@ export default class RegisterController extends BaseController {
     const isExistUseremail: any = await this._UserRepo.FindUserByEmail(
       dtoUser.email
     );
-    console.log(resultUser,"******************************end",isExistUser,"isExistUseremail \n*******",isExistUseremail.id)
+
 
     //FindUserByEmail
     let token: any

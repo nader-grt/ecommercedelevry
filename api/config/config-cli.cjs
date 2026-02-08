@@ -18,6 +18,8 @@ module.exports = {
 
    npx sequelize-cli db:migrate:undo
 
+    npx sequelize-cli db:migrate
+
    All 
   
   npx sequelize-cli db:migrate:undo:all
@@ -60,6 +62,27 @@ npx sequelize-cli migration:generate --name create-OrderItems
 dayWorks
 
 npx sequelize-cli migration:generate --name create-dayWorks
+
+dayWorks
+
+npx sequelize-cli migration:generate --name create-dayWorks
+
+
+deliverersdayWorks
+
+npx sequelize-cli migration:generate --name create-deliverersdayWorks
+
+secrtries
+
+npx sequelize-cli migration:generate --name create-secrtriesdayWorks
+
+
+view 
+npx sequelize-cli migration:generate --name create-deliverer-work-days-view
+
+
+//  create indexes for remove duplicate and table middlke deliverer_dayWorks
+npx sequelize-cli migration:generate --name add-unique-to-deliverer-dayworks
 
 run  xampp  
 
