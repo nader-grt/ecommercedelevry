@@ -3,15 +3,26 @@ import userDomain from "../auth/user/userDomain";
 export default class EmployeesDomain extends userDomain
 {
 
-    private salary!:number ;
-      private hiredAt!: Date ;
-      protected userId!: number;
+  private employeeId!: number;
+  private salary!: number;
+  private hiredAt!: Date;
+  protected userId!: number;
       
-      constructor() {
-        super();
-        this.salary  = 0 ;
-      }
+  constructor(props?: {
+    employeeId: number;
+    salary: number;
+    hiredAt: Date;
+    userId: number;
+  }) {
+    super();
 
+    if (props) {
+      this.employeeId = props.employeeId;
+      this.salary = props.salary;
+      this.hiredAt = props.hiredAt;
+      this.userId = props.userId;
+    }
+  }
       public get getSalary():number
       {
         return this.salary ;
@@ -29,10 +40,19 @@ export default class EmployeesDomain extends userDomain
          this.hiredAt = hireAt;
       }
 
-
-      set setUserId(value: number) {
-        this.userId = value;
+     public get empid() {
+        return this.employeeId;
       }
+    
+    public  updateSalary(value: number) {
+        if (value <= 0) throw new Error("Invalid salary");
+        this.salary = value;
+      }
+    
+   public   updateHiredAt(date: Date) {
+        this.hiredAt = date;
+      }
+    
     
       public toPersistence():any {
         return {

@@ -1,14 +1,20 @@
 import { Request, Response, Router } from "express";
 import { verifyToken } from "../../middleware/verifyToken";
 import DeleteEmployeeController from "../../controllers/Employee/DeleteEmployeeController";
+import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
+import DeleteEmployeeUseCase from "../../useCases/EmployeeUseCase/DeleteEmployeeUseCase";
 
 
 
 
 const router = Router();
 
+const empRepo = new EmployeeRepo()  ;
 
-const deleteEmployeeController  =  new DeleteEmployeeController()
+const deleteEmployeeUseCase  = new  DeleteEmployeeUseCase(empRepo)
+
+
+const deleteEmployeeController  =  new DeleteEmployeeController(deleteEmployeeUseCase)
 
 
 

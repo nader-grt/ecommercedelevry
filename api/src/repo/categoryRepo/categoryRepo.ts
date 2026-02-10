@@ -9,7 +9,7 @@ export  interface ICategoryRepo  {
 export default class CategoryRepo extends categoryRepoInterface {
 
 
-    public  async createCategory(category:ICategoryRepo):Promise<void> 
+    public  async createCategory(category:any):Promise<void> 
     { 
           
              try {
@@ -58,18 +58,20 @@ export default class CategoryRepo extends categoryRepoInterface {
             }
             public async UpdateCategoryById(category:any):Promise<any> {
               
+
+               // console.log("ccccccccccc repoooooooooooo  ",category)
                 const t = await Category.sequelize!.transaction();
                 try {
                     
                    
 
-                           const { id, name } = category;
+                           const { categoryId, name } = category;
 
                            // [affectedCount, affectedRows]
                            const [resultCategoryCount] = await Category.update(
                                { name },
                                {
-                                   where: { id },
+                                   where: { id:categoryId },
                                    transaction: t 
                                   // returning: true // for fetch all rwos after updated
                                }
@@ -78,11 +80,11 @@ export default class CategoryRepo extends categoryRepoInterface {
                           
 
                       
-                           const updatedCategory = await Category.findOne({ where: { id },    transaction: t });
+                           const updatedCategory = await Category.findOne({ where: { id:categoryId },    transaction: t });
                        
                        
                        
-                      //     return { affectedCountCategory, affectedRowsCategory };
+                   
 
                       await t.commit();
                            const categoryResult  = new CategoryDomain() ;
@@ -96,6 +98,8 @@ export default class CategoryRepo extends categoryRepoInterface {
                             
                           
   
+
+                        //    console.log("updatedCategory.dataValues  ",updatedCategory.dataValues)
                            
                             return categoryResult.getToResponseCategory(updatedCategory.dataValues) ;
                 } catch (error) {

@@ -11,7 +11,7 @@ import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 
 
 
-
+// product  
 import createProductRoute from "./routes/productRoutes/createProductRoute.js";
 import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
 
@@ -83,7 +83,7 @@ app.use("/api", deleteUserRoutes);
 app.use("/apimail", mailRoutes);
 
 // product 
-app.use("/send",createProductRoute)  ;
+app.use("/api",createProductRoute)  ;
 app.use("/api",updateProductRoute)  ;
 
 

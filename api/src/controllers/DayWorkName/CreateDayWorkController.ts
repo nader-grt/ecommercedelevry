@@ -1,21 +1,18 @@
 import { Request, Response } from "express"
 import { BaseController } from "../../infra/BaseCOntroller"
-import DayWorkDomain from "../../models/domain/DayWorkDomain/DayWorkDomain";
-import DayWorkRepo from "../../repo/dayWorkRepo/DayWorkRepo";
+
 import { RequestAuth } from "../../middleware/verifyToken";
+import CreateDayWorkUseCase from "../../useCases/DayWorkNameUseCase/CreateDayWorkUseCase";
 
 
 
 export default class CreateDayWorkController extends BaseController
 {
 
-protected __dayWorkDomain:DayWorkDomain;
-protected  _dayWorkRepo:DayWorkRepo
-      constructor()
-      {
+
+
+      constructor(private createDayWorkUseCase: CreateDayWorkUseCase) {
         super();
-         this.__dayWorkDomain = new DayWorkDomain() ;
-         this._dayWorkRepo  =  new DayWorkRepo()
       }
   protected  async executeImpl(req: RequestAuth, res: Response): Promise<any> {
       const {nameDay}  = req.body ;
@@ -23,14 +20,15 @@ protected  _dayWorkRepo:DayWorkRepo
 
       try {
          
-        const nameWorkDay = new DayWorkDomain() ;
+     
 
-        if(nameDay)
-        {
-            nameWorkDay.setNameDay = nameDay ;
+
+        if (!nameDay) {
+          return this.fail(res, "nameDay is required");
         }
+          const result = await this.createDayWorkUseCase.execute(nameDay);
 
-             await this._dayWorkRepo.createNameDay(nameWorkDay) ;
+            // await this._dayWorkRepo.createNameDay(nameWorkDay) ;
           return this.ok(res,"create name day with success") ;
       } catch (error) {
         

@@ -2,12 +2,14 @@
 export default class ProductDomain
 {
 
-  //  private _id :number = 0;
+
 
     private name: string = "";
 
     private price: number = 0 ;
     private nameImage  : string = "";
+    private   categoryId!: number;
+    private supplierId!:number;
 
           
          public get getName():string
@@ -42,5 +44,27 @@ export default class ProductDomain
          public set setImageProduct(value:string)
          {
              this.nameImage  = value;
+         }
+
+         public get getCategoryId():number
+         {
+            return this.categoryId ;
+         }
+    
+    
+         public set setCategoryId(value:string)
+         {
+             this.nameImage  = value;
+         }
+
+         public get getSupplierId():number
+         {
+            return this.supplierId ;
+         }
+    
+    
+         public set setSupplierId(value:number)
+         {
+             this.supplierId   = value;
          }
 }

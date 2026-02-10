@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // أو Customers إذا عندك جدول Customers
+          model: 'Users', //
           key: 'id',
         },
         onUpdate: 'CASCADE',

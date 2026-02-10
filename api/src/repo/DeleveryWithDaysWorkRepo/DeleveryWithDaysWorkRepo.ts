@@ -2,7 +2,7 @@ import {  DelivererDayWork, sequelize } from "../../models/main";
 
 import IDelivererDayWork from "../../models/DelivererDayWork";
 import IDeleveryWithDaysWorkRepo from "./IDeleveryWithDaysWorkRepo";
-import { QueryTypes } from "sequelize";
+import { QueryTypes, Transaction } from "sequelize";
 
 
 
@@ -101,31 +101,117 @@ export default class DeleveryWithDaysWorkRepo extends IDeleveryWithDaysWorkRepo
                console.log(error)
            }
     }
-          public async UpdateDeleveryWithDaysWork(updatedeliveryDay :any ,deleveryId_dayworkId?:number):Promise<any>
+          public async UpdateDeleveryWithDaysWork(updateNewdeliveryDay :any ,deliveryid :number,olddayworkid:number):Promise<any>
           {
             const t = await sequelize.transaction();
+            let updateDelivery :any;
                        try {
-                         
 
-                        await DelivererDayWork.update({
+                        console.log("repoooooooooooooo  update ",updateNewdeliveryDay)
+                        //{ nbrHours: 4, dayWorkid: 1 }
+                        const {nbrHours,dayWorkid} =updateNewdeliveryDay
+                          //new from body request 
+                          const existing = await DelivererDayWork.findOne({
+                            where: { delivererid: deliveryid, dayWorkid:dayWorkid},
+                            transaction: t
+                          });
 
+                      if(existing)
+                      {
+
+                        console.log("*******************    hereeeeeeeeeeeeeeee  ")
+                       
+
+                        if (dayWorkid === olddayworkid) {
+
+                          updateDelivery =     await existing.update({nbrHours},{ transaction: t })  ;
+
+                        }
+                        else {
+
+                          updateDelivery =     await existing.update({nbrHours},{ transaction: t })  ;
+
+                          await DelivererDayWork.destroy({
+                            where :{
+                              delivererid:deliveryid,
+                              dayWorkid:olddayworkid
+                            },
+                            transaction: t
+
+                           })
+
+
+
+                        }
+
+                            
+                            
+                      }else
+                      {
+
+                        updateDelivery =   await DelivererDayWork.update({
+                          nbrHours:nbrHours,
+                          dayWorkid:dayWorkid
                         },
                         {
-                          where:{}
+                          where :{
+                            delivererid:deliveryid,
+                            dayWorkid:olddayworkid
+                          },
+                          transaction: t
                         }
                       )
+                     
 
+                      }
+
+                       
 
 
 
                           await t.commit() ;
 
-                          return null
+
+                          console.log("updateDelivery updateDelivery ffin  repoooo    ",updateDelivery)
+
+                          const resultSuccesOrFailedUpdateDelivery = updateDelivery[0] === 0 ? false :true  ;
+
+                          console.log(" resultSuccesOrFailedUpdateDelivery  ",resultSuccesOrFailedUpdateDelivery)
+                          return resultSuccesOrFailedUpdateDelivery
                          
                        } catch (error) {
                         await t.rollback()
                           console.log(error)
                        }
+          }
+
+
+          public async DeleteDeleveryWithDaysWork(deliveryid :number,olddayworkid:number):Promise<any>
+          {
+
+            const t = await sequelize.transaction();
+
+            //  console.log(" deliveryid :number,olddayworkid:",deliveryid ,olddayworkid )
+            let deleteDelivery:any ;
+                      try {
+                        
+                        deleteDelivery =     await DelivererDayWork.destroy({
+                          where :{
+                            delivererid:deliveryid,
+                            dayWorkid:olddayworkid
+                          },
+                          transaction: t
+
+                         })
+
+                        // console.log("deleteeeeeeee  in reppo  deleteDelivery  ",deleteDelivery)
+                         const resultSuccesOrFailedDeleteDelivery = deleteDelivery[0] === 0 ? false :true  ;
+                  await t.commit()
+                    return resultSuccesOrFailedDeleteDelivery ;
+                      } catch (error) {
+                       await  t.rollback()
+                        console.log(error)
+                      }
           }
 
 }

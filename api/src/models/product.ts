@@ -8,6 +8,7 @@ export  default interface IProduct
   price:number;
   nameImage:string ;
   categoryId?: number;
+  supplierId?:number;
 }
 
 
@@ -65,10 +66,28 @@ export  function ProductModel(sequelize:Sequelize)
     Product.init(
         {
             id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-            price: {type:DataTypes.DOUBLE, allowNull: false },
-            name: { type: DataTypes.STRING, allowNull: false, unique: true },
-            nameImage: { type: DataTypes.STRING, allowNull: false, unique: true },
-            categoryId: { type: DataTypes.INTEGER, allowNull: false },
+            name: {
+                type: DataTypes.STRING,
+                unique: true,
+                allowNull: false,
+              },
+              price: {
+                type: DataTypes.DOUBLE,
+                allowNull: false,
+              },
+              nameImage: {
+                type: DataTypes.STRING,
+                unique: true,
+                allowNull: false,
+              },
+              categoryId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+              },
+              supplierId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+              }
            
     }, {
         sequelize,

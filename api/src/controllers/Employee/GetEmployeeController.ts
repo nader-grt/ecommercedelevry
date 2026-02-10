@@ -1,45 +1,61 @@
 import { Request, Response } from "express"
 import { BaseController } from "../../infra/BaseCOntroller"
-import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
 import { RequestAuth } from "../../middleware/verifyToken";
+import GetEmployeeUseCase from "../../useCases/EmployeeUseCase/GetEmployeeUseCase";
 
 
 
 export default class GetEmployeeController extends BaseController
 {
-
-          protected _employeeRepo: EmployeeRepo ;
-                  constructor()
+               
+                  private ResponseEmp(emp:any)
+                  {
+                    return {
+                      salary:emp.salary ,
+            hiredAt: emp.hiredAt
+                    }
+                  }
+          private usecase!:GetEmployeeUseCase ;
+                  constructor(getEmployeeUseCase:GetEmployeeUseCase)
                   {
                     super() ;
-                    this._employeeRepo = new EmployeeRepo()
+                 
+                    this.usecase = getEmployeeUseCase ;
                   }
 
       public async executeImpl(req: RequestAuth, res: Response): Promise<any> {
           
         const {id} = req.params ;
-        const empId = Number(id) ;
+        const employeeId:number = Number(id) ;
+        const userId :number = Number(req.user?.id )
+
+  
+
+     
          let empfound :any ;
 
                try {
-                
-               
+                const dtoemp = {
+                  employeeId,
+                  userId
+                }
+                     
+                           const resultEmp =              await this.usecase.execute(dtoemp)
+
+                         // console.log("resultttt  ",resultEmp)
       
-               if(empId)
-                {
-                  empfound  = await EmployeeRepo.FindEmployeeById(empId)  ;
-                }
-                if(empfound === null)
-                {
-                    return this.notFound(res,`this id ${empId} not found`);
-                }
 
+                           const emp = this.ResponseEmp(resultEmp.data) 
+        
+                           if(!resultEmp.success)
+                           {
+                            return this.resultValue(res,resultEmp.data) ;
+                           }
 
-                console.log(" empfound is last result    ",empfound )
-                return this.resultValue(res,"employe found",empfound) ;
+                return this.resultValue(res,"employe with success ",emp) ;
 
                } catch (error) {
-                
+                console.log(error)
                }
       }
 

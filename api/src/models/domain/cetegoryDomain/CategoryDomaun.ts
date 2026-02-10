@@ -30,6 +30,11 @@ export default class CategoryDomain
             return this.categoryId ;
          }
 
+
+         public set setCategoryId(value:number)
+         {
+             this.categoryId = value;
+         }
        
 
         public getToResponseCategory(data?:any)

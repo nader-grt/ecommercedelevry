@@ -7,6 +7,6 @@ export default abstract class IDayWorkRepo {
   
     public  abstract      GetAllNameDays():Promise<any>;
   
-    public abstract getUserNameDayById(id: number): Promise<any> ;
+   // public abstract getUserNameDayById(id: number): Promise<any> ;
   }
   

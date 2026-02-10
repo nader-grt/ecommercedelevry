@@ -8,7 +8,7 @@ import { verifyToken } from "../../middleware/verifyToken";
 const router =Router() ;
 const deleteDelivererDayWorkRoute= new DeleteDelivererDayWorkController()
 
-router.delete("/deleteday/deliverers/:delivererid/day-works/:dayWorkId",verifyToken,(req:Request,res:Response) => {
+router.delete("/deleteday/deliverers/:delivererid/day-works/:dayWorkid",verifyToken,(req:Request,res:Response) => {
 
     deleteDelivererDayWorkRoute.execute(req,res) ;
 })

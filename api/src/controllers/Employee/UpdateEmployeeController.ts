@@ -4,6 +4,7 @@ import { RequestAuth } from "../../middleware/verifyToken"
 import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo"
 import EmployeesDomain from "../../models/domain/EmployeeDomain/EmployeeDomain";
 import { stringToDate } from "../../util/conversionDateString";
+import UpdateEmployeeUseCase from "../../useCases/EmployeeUseCase/UpdateEmployeeUseCase";
 
 
 
@@ -12,82 +13,51 @@ export default class UpdateEmployeeController extends BaseController
              protected _employeeRepo:EmployeeRepo ;
              protected _employeesDomain:EmployeesDomain;
 
-             private updateEmployeeDomain(
-                empupdate: any,
-                userId: number
-              ): EmployeesDomain {
-              
-                const employee = new EmployeesDomain();
-              
-                // employee.setSalary = empRequest.salary;
-                // employee.sethiredAt = stringToDate(empRequest.hiredAt);
-                // employee.setUserId = userId;
-              
-                return employee;
-              }
-
-       constructor()
+            private usecase!:UpdateEmployeeUseCase
+       constructor(updateEmployeeUseCase:UpdateEmployeeUseCase)
        {
         super() 
         this._employeeRepo  = new EmployeeRepo()
          this._employeesDomain = new EmployeesDomain();
+
+         this.usecase = updateEmployeeUseCase
        }
 
       public async executeImpl(req: RequestAuth, res: Response): Promise<any> {
-        const {salary ,hiredAt ,userIdRole} =
+        const {salary ,hiredAt ,employeeId} =
         req.body;
         const {id}  = req.params;
-        const empId = Number(userIdRole) ;
+        const empId = Number(employeeId) ;
         let employeeFounded: EmployeesDomain | null = null;
               
 
 
-        const idsUserTypeRole :number[] = await EmployeeRepo.FindAllIdsExistWithEmp()  ;
+       
         try {
 
-            if(!idsUserTypeRole.includes(empId))
-            {
 
-              return this.notFound(res," employee   not fount can not not updated any thing ")  
-
-
-            }
-            employeeFounded  = await this._employeeRepo.getEmployeeById(Number(id)) ;
-            if (!employeeFounded) {
-              return this.notFound(res, "Employee not found");
-            }
-           
-     
-                if(salary)
-                {
+          const empDto = {
             
-       
-                    employeeFounded.setSalary = +salary ;
-                }
+              salary,
+              hiredAt,
+              employeeId
+  
 
-
-                if(hiredAt)
-                {
-
-                  //  this._employeesDomain.sethiredAt =stringToDate(hiredAt) ;
-                    employeeFounded.sethiredAt =  stringToDate(hiredAt) ;
-                }
-
-                if(empId)
-                {
-                 
-                    employeeFounded.setUserId   = empId;
-                }
-
-
+          }
+          
+                  const result =            await this.usecase.execute(empDto)
+                
+                  console.log("rrrrrrrrrrrrr  ",result)
               
-              const  resultEmployeeUpdated =    await     this._employeeRepo.updateEmployee(employeeFounded,empId)
-             if(resultEmployeeUpdated)
+           
+             if(result.succes)
              {
 
           
-               return this.resultValue(res," employee updated with success !",employeeFounded)
+               return this.resultValue(res," employee updated with success !",result)
             }
+
+            return this.fail(res,result.message)
 
         } catch (error) {
             console.log(error)

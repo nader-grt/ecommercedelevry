@@ -6,7 +6,7 @@ import UpdateDelivererDayWorkController from "../../controllers/DelivererDayWork
 
 const router = Router() ;
 const updateDelivererDayWorkRoute = new UpdateDelivererDayWorkController() ;
-
+//oldDayWorkId
 router.put("/updateDay/deliverers/:delivererid/day-works/:oldDayWorkid",verifyToken,(req:Request,res:Response)=> {
     updateDelivererDayWorkRoute.execute(req,res) ;
 });

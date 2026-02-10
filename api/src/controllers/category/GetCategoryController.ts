@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import CategoryDomain from "../../models/domain/cetegoryDomain/CategoryDomaun";
-import CategoryRepo from "../../repo/categoryRepo/categoryRepo";
-import { RequestAuth } from "../../middleware/verifyToken";
+import GetCategoryUseCase from "../../useCases/categoryUseCase/GetCategoryUseCase";
 
 
 
@@ -11,14 +9,13 @@ import { RequestAuth } from "../../middleware/verifyToken";
 
 export default class GetCategoryController extends BaseController
 {
-      public _categoryRepo : CategoryRepo ;// prepare repo to use its methods
-      public  _categoryDomain : CategoryDomain  // prepare from request body
-
-       constructor()
+    
+      private usecase!:GetCategoryUseCase
+       constructor(getCategoryUseCase :GetCategoryUseCase  )
        {super() ;
 
-              this._categoryRepo = new CategoryRepo() ;// prepare repo to use its methods
-              this._categoryDomain = new CategoryDomain() // prepare from request body
+           
+              this.usecase = getCategoryUseCase ;
        }
       protected async executeImpl(req: Request, res: Response): Promise<any> {
           const {id} = req.params ;
@@ -26,11 +23,10 @@ export default class GetCategoryController extends BaseController
             console.log("categoryId    ",categoryId)
                       try {
 
-                        console.log(" req get category  " ,req )
-                        const resultCategory :any = await CategoryRepo.FindCategoryById(categoryId) ;
-
-                        console.log("*******  category  controller    is  " ,resultCategory)
-
+                    
+                    
+                                        
+                   const      resultCategory =   await     this.usecase.execute(Number(categoryId))
                         if(resultCategory)
                         {
                               return this.resultValue(res," find category by success ",resultCategory)

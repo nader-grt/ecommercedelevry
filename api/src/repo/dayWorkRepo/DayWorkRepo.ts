@@ -29,9 +29,20 @@ export default class DayWorkRepo extends IDayWorkRepo
                }
     }
  
-    public async getUserNameDayById(id: number): Promise<any> 
+    public  static async FindNameDayByWorkDayId(workDayId: number): Promise<any> 
     {
+             try {
 
+              console.log("repoooooooooo  workDayId  ",workDayId)
+          const nameDayWork :any =    await DayWork.findOne({
+               where :{ id:workDayId},
+               raw:true
+              })
+
+              return nameDayWork === null ? null : nameDayWork ;
+             } catch (error) {
+                     console.log(error)
+             }
 
     }
 }

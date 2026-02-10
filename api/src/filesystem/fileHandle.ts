@@ -14,29 +14,6 @@ export const folderPath = path.join(__dirname, "productimages");
 //source
 
 //file:///home/nader/Pictures/  absolute path
-/**
- * 
- * 
- * 
-
-
-class A {
-  private destination: string;
-  private upload: multer.Multer;
-
-
-
-
-
-}
-
-const a  =  new A()
-const b =  new A("")
-
-const c  =  new A("")
-
-
- */
 
 export default class FileHandler {
   private destination: string;
@@ -70,18 +47,6 @@ export default class FileHandler {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-  
 
   // Get full path of file
   public getFilePath(filename: string) {

@@ -22,10 +22,37 @@ export default class createProductController extends BaseController {
   }
 
   protected async executeImpl(req: Request, res: Response): Promise<any> {
-    const { name, price } = req.body;
+    const { name, price ,categoryId ,supplierId} = req.body;
     const  file:any  = req.file
 
-//"eeeeeeeee(rtçààà"
+
+    console.log(" create productttttt   controller   2") ;
+
+  
+
+    const priceNumber = Number(price);
+    const categoryIdNumber = Number(categoryId);
+    const supplierIdNumber = supplierId ? Number(supplierId) : null;
+
+
+    console.log(" reqqq 3 req of file   ",req.file)  ;
+
+    console.log(" req of body   ", { name, price ,categoryId ,supplierId}  )
+
+    if (!file) {
+      return this.badRequest(res, "Product image is required");
+    }
+
+/**
+ * 
+const productDomain = new ProductDomain();
+productDomain.setName = name;
+productDomain.setPrice = Number(price);
+productDomain.setImageProduct = file.filename;
+productDomain.setCategoryId = Number(categoryId);
+productDomain.setSupplierId = supplierId ? Number(supplierId) : null;
+}
+ */
 
  
     this.productdomain.setName = name;
@@ -44,12 +71,12 @@ export default class createProductController extends BaseController {
     try {
      
       if (product) {
-        await this.productrepo.createProduct(product);
+       // await this.productrepo.createProduct(product);
       } 
     } catch (error) {
       console.error(error);
     }
 
-    return this.ok(res, "product created with success ok");
+    return this.ok(res, "product created with success 2222ok");
   }
 }

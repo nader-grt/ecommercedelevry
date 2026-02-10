@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import CategoryRepo from "../../repo/categoryRepo/categoryRepo";
-import CategoryDomain from "../../models/domain/cetegoryDomain/CategoryDomaun";
+import GetAllCategoriesUseCase from "../../useCases/categoryUseCase/GetAllCategoriesUseCase";
 
 
 
@@ -9,21 +8,20 @@ export default class GetAllCategoriesController extends BaseController
 {
 
 
-    public _categoryRepo : CategoryRepo ;// prepare repo to use its methods
-      public  _categoryDomain : CategoryDomain  // prepare from request body
-
-       constructor()
+   
+  private usecase!:GetAllCategoriesUseCase;
+       constructor(getAllCategoriesUseCase:GetAllCategoriesUseCase)
        {super() ;
 
-              this._categoryRepo = new CategoryRepo() ;// prepare repo to use its methods
-              this._categoryDomain = new CategoryDomain() // prepare from request body
+             
+              this.usecase = getAllCategoriesUseCase
        }
 
     protected async executeImpl(req: Request, res: Response): Promise<any> {
         
 
                 try {
-                       const categoriesName =      await this._categoryRepo.GetAllCategories()  ;
+                       const categoriesName =      await this.usecase.execute()  ;
 
                        if(categoriesName.length === 0)
                        {

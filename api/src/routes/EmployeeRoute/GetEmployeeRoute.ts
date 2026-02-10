@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { verifyToken } from "../../middleware/verifyToken";
 import GetEmployeeController from "../../controllers/Employee/GetEmployeeController";
+import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
+import GetEmployeeUseCase from "../../useCases/EmployeeUseCase/GetEmployeeUseCase";
 
 
 
@@ -8,7 +10,10 @@ import GetEmployeeController from "../../controllers/Employee/GetEmployeeControl
 const router = Router();
 
 
-const getEmployeeController  =  new GetEmployeeController()
+const empRepo = new EmployeeRepo()
+
+const getEmployeeUseCase = new GetEmployeeUseCase(empRepo)
+const getEmployeeController  =  new GetEmployeeController(getEmployeeUseCase)
 
 
 

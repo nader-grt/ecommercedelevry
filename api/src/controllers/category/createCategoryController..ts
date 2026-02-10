@@ -1,21 +1,17 @@
 import { BaseController } from "../../infra/BaseCOntroller";
 import { Request, Response } from "express";
-import ProductRepo from "../../repo/productRepo/productRepo";
-import CategoryRepo from "../../repo/categoryRepo/categoryRepo";
-import CategoryDomain from "../../models/domain/cetegoryDomain/CategoryDomaun";
+
+
+import CreateCategoryUseCase from "../../useCases/categoryUseCase/createCategoryUseCase";
 
 export  default class createCategoryController  extends  BaseController
 {
 
-        public categoryRepo : CategoryRepo ;// prepare repo to use its methods
-        public  categoryDomain : CategoryDomain  // prepare from request body
-
-        constructor( )
-        {
-            super() ;
-            this.categoryRepo = new CategoryRepo() ;
-            this.categoryDomain = new CategoryDomain() ;
-        }
+    private usecase!: CreateCategoryUseCase
+    constructor( createCategoryUseCase: CreateCategoryUseCase) {
+        super();
+        this.usecase = createCategoryUseCase
+      }
 
     protected async executeImpl(req:Request,res:Response): Promise<void> {
                 const {name}  = req.body ;
@@ -27,12 +23,13 @@ export  default class createCategoryController  extends  BaseController
                     this.conflict(res,"Invalid name") ;
                     return ;
                 }
-
-                 
-                  this.categoryDomain.setName = name ;
-
-             
-           await this.categoryRepo.createCategory({name}) ;
+                // if (!name) {
+                //      this.conflict(res, "Category name is required");
+                //   }
+            
+                  const result = await  this.usecase.execute(name);
+            
+               
 
                     this.ok(res,"category created successfully") ;
              } catch (error) {
