@@ -11,7 +11,11 @@ export default class DeleteProductController  extends BaseController
 
     protected async executeImpl(req: Request, res: Response): Promise<any> {
         
-
+                    try {
+                        
+                    } catch (error) {
+                        
+                    }
         
     }
 }

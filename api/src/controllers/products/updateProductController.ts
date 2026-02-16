@@ -1,35 +1,84 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import ProductRepo from "../../repo/productRepo/productRepo";
-import FileHandler, { folderPath } from "../../filesystem/fileHandle";
-import ProductDomain from "../../models/domain/productDoman/ProductDomain";
+
+import UpdateProductUseCase from "../../useCases/productUseCase/UpdateProductUseCase";
 
 
 
 export default class updateProductController extends BaseController
 {
 
-    public   _productRepo: ProductRepo;
-    public    fileHandle : FileHandler ;
-    public   productDomain : ProductDomain
+  
+    private _usecaseupdateProduct!:UpdateProductUseCase
 
 
-    constructor()
+    constructor(updateProductUseCase:UpdateProductUseCase)
     {  super()
-        this._productRepo  =  new ProductRepo()  ;
-            this.productDomain  =  new ProductDomain()
-        this.fileHandle  =  new  FileHandler(folderPath)
+       
+
+        this._usecaseupdateProduct = updateProductUseCase ;
     }
 
         protected  async executeImpl(req: Request, res: Response): Promise<any> {
             
          
-            const {name,price}  = req.body  ;
-            const  file:any  =  req.file ;
+            const { name, price, categoryId, supplierId } = req.body;
+            const file = req.file;
+            const {id} = req.params ;
+            const productId = Number(id)
 
-               //    console.log("req.body",req.body, "req.file",req.file)
+                        
+    if (!file) {
+        return this.badRequest(res, "Product image is required");
+      }
+                    
+                        const dto = {
+                            nameProduct: name,
+                            priceProduct: Number(price),
+                            categoryIdProduct: Number(categoryId),
+                            supplierIdProduct: supplierId ? Number(supplierId) : null,
+                            imageName: file.filename,
+                            productIdProduct:productId
+                        };
+                        const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif","image/avif"];
+                        const MAX_SIZE = 7 * 1024 * 1024 ;
 
-                return   this.ok(res,"any ")
+
+
+                            try {
+                                
+
+
+
+                            if (!allowedMimeTypes.includes(file.mimetype)) {
+                                return res.status(400).json({
+                                message: "Invalid file type. Only JPEG, PNG, GIF allowed",
+                                });
+                            }
+
+
+                            console.log("file compare ",{fileSize:file.size,maxSize:MAX_SIZE})
+                            if (file.size > MAX_SIZE) {
+                              return res.status(400).json({
+                                message: `File is too large. Maximum allowed size is ${MAX_SIZE / (1024*1024)} MB`,
+                              });
+                            }
+
+
+                         const result =    await this._usecaseupdateProduct.execute(dto)  ;
+
+                         if(!result.success)
+                            {
+                                // { success: false, message: " product failed for updated " };
+
+                             return  this.fail(res,result.message) ;
+                            }
+                                return   this.ok(res,result.message) ;
+                            } catch (error) {
+                                console.log(error)
+                            }
+
+               
         }
 
 }

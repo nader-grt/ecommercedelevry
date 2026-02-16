@@ -15,6 +15,20 @@ export const folderPath = path.join(__dirname, "productimages");
 
 //file:///home/nader/Pictures/  absolute path
 
+
+export interface MulterFile {
+  fieldname: string;     
+  originalname: string;   
+  encoding: string;
+  mimetype: string;     
+  size: number;         
+  destination: string;   
+  filename: string;      
+  path: string;         
+  buffer?: Buffer;       
+}
+
+
 export default class FileHandler {
   private destination: string;
   private upload: multer.Multer;
@@ -28,13 +42,10 @@ export default class FileHandler {
     const storage = multer.diskStorage({
       destination: this.destination,
       filename: (_req: Request, file: any, cb: any) => {
-        // const ext = path.extname(file.originalname);
 
-        //  const filename = `${Date.now()}-${Math.random().toString(36)}${ext}`;
-      
-      //  cb(null, filename );
-
-        cb(null,file.originalname)
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      const ext = path.extname(file.originalname);
+      cb(null, `${uniqueSuffix}${ext}`);
       },
     });
 
@@ -43,6 +54,7 @@ export default class FileHandler {
 
   // Middleware for routes
   public uploadMiddlewareImage(name :string  =""): any {
+
     return this.upload.single(name); 
   }
 
@@ -62,19 +74,23 @@ export default class FileHandler {
   }
 
   // Save a file object (from multer)
-  public async save(file: Express.Multer.File):Promise<any> {
+  public async save(file:string):Promise<any> {
     return {
-      filename: file.filename,
-      path: this.getFilePath(file.filename),
+      filename: file,
+      path: this.getFilePath(file),
     };
   }
 
 
-  public async update(oldFilename: string, file: Express.Multer.File):Promise<any> {
+  public async update(oldFilename: string, file: string):Promise<any> {
     // Remove old file
-    await this.removeFile(oldFilename);
-    // Save new file
-    return this.save(file);
+
+    console.log("oldd file  ",oldFilename , file)
+     await this.removeFile(oldFilename);
+     // Save new file
+     return this.save(file);
+
+    //return null
   }
 
 

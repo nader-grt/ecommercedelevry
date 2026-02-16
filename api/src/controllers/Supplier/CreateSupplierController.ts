@@ -90,7 +90,7 @@ export default class CreateSupplierController extends BaseController {
       supplier = this.buildSupplier(resultReadSupplier,userSupplierId) ;
      }
 
-      console.log(supplier, "5555555555","resultSupplier resultSupplier ",resultReadSupplier,"nnnnnnnnnnulll id   ",userSupplierId)
+    //  console.log(supplier, "5555555555","resultSupplier resultSupplier ",resultReadSupplier,"nnnnnnnnnnulll id   ",userSupplierId)
 
       if(supplier)
       {

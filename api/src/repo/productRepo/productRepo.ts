@@ -1,23 +1,59 @@
 
 
-import FileHandler from "../../filesystem/fileHandle";
+
+import { Op } from "sequelize";
+import ProductDomain from "../../models/domain/productDoman/ProductDomain";
 import { Product, sequelize } from "../../models/main";
-import IProduct from "../../models/product";
 import productRepoInterface from "./productRepoInterface";
 
 export default class ProductRepo extends productRepoInterface {
+
+
+  private cache: any = null;
+private cacheTime = 0;
   public async FindAllProducts() {}
 
-  public async FindProductById(id: number): Promise<void> {}
 
-  public async createProduct(product:any):Promise<void> 
+  async findById(id: number) {
+    return Product.findByPk(id);
+  }
+  
+  public async GetProductById(id: number): Promise<any> {
+
+                 const t = await sequelize.transaction()
+                      try {
+                        
+                    const p =     await Product.findOne({
+                          where:{id:id},
+                          raw:true
+                        })
+
+                             if(!p) return null
+
+                             return p ;
+                      } catch (error) {
+                          console.log(error)
+                      }
+  }
+
+  public async createProduct(product:ProductDomain,categoryId:number,supplierId:number ):Promise<void> 
   {    
                 
             const t = await sequelize.transaction()
 
          try {
-          await  Product.create(product,{transaction:t})
 
+      //    console.log("pro repoooooooo is p  is  ",product ,categoryId,supplierId)
+          await Product.create(
+            {
+              name: product.getName,
+              price: product.getPrice,
+              nameImage: product.getImageProduct,
+              categoryId: categoryId,
+              supplierId: supplierId,
+            },
+            { transaction: t }
+          );
           await t.commit();
          } catch (error) {
           await t.rollback()
@@ -27,7 +63,7 @@ export default class ProductRepo extends productRepoInterface {
   }
 
 
-  static async IsExistProductByName(nameProduct: string): Promise<boolean> {
+  public async IsExistProductByName(nameProduct: string): Promise<boolean> {
     const t = await sequelize.transaction(); // 
 
     try {
@@ -47,12 +83,105 @@ export default class ProductRepo extends productRepoInterface {
   }
 
   static async IsExistProductByImage(nameImage: string): Promise<boolean> {
-    try {
-      const product = await Product.findOne({ where: { nameImage } });
-      return product !== null;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+            try {
+              const product = await Product.findOne({ where: { nameImage } });
+              return product !== null;
+            } catch (error) {
+              console.log(error);
+              return false;
+            }
   }
+
+
+
+            private  async getRandomProducts(limit:number):Promise<any> 
+            {
+                      try {
+
+                        console.log("limin in fn private ",limit)
+                        const maxId:number = await Product.max("id");
+                        console.log("maxxxxxxxxxxxx id",maxId)
+                        if (!maxId) return [];
+                      
+                        const randomId = Math.floor(Math.random() * maxId);
+                      
+                    //    console.log("randomidd ",randomId)
+                        return await Product.findAll({
+                          where: {
+                            id: {
+                              [Op.gte]: randomId
+                            }
+                          },
+                          limit,
+                          order: [["id", "ASC"]],
+                          raw:true,
+                        });
+                      } catch (error) {
+                        
+                      }
+            }
+
+          public async  getRandomProductsCached(limit:number) {
+            const now = Date.now();
+
+            if (this.cache && now - this.cacheTime < 5 * 60 * 1000) {
+              return this.cache; // from cache
+            }
+
+            const data = await this.getRandomProducts(limit);
+
+            console.log("data getRandomProductsCached  ",data)
+
+            this.cache = data;
+            this.cacheTime = now;
+
+            return data;
+          }
+
+
+
+          public  async getProductByCategoryId(categoryId:number):Promise<any> 
+          {
+                          
+                          try {
+                            
+                      const listProductCategry =     await  Product.findAll({
+                              where:{categoryId:categoryId},
+                              raw:true
+                            })
+
+                            if(!listProductCategry) return null
+
+                            return listProductCategry ;
+                          } catch (error) {
+                            console.log(error)
+                          }
+          }
+
+
+
+          public async DeleteProductById(id:number):Promise<any> 
+          {
+                     try {
+                      //1771029842687-836705519.jpg
+
+                   const deletedCount =   await  Product.destroy({
+                        where:{id:id}
+                      })
+
+
+                      if (deletedCount === 0) {
+                        throw new Error("Product not found");
+                      }
+
+
+                      return {success:true}
+
+
+                     } catch (error) {
+                                 return {success:false}
+                     }
+
+          }
+
 }

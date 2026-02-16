@@ -3,6 +3,8 @@ import { verifyToken } from "../../middleware/verifyToken";
 import DeleteEmployeeController from "../../controllers/Employee/DeleteEmployeeController";
 import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
 import DeleteEmployeeUseCase from "../../useCases/EmployeeUseCase/DeleteEmployeeUseCase";
+import { userRepo } from "../../repo/userRepo/userRepo";
+
 
 
 
@@ -10,11 +12,10 @@ import DeleteEmployeeUseCase from "../../useCases/EmployeeUseCase/DeleteEmployee
 const router = Router();
 
 const empRepo = new EmployeeRepo()  ;
+const userepo = new userRepo(); 
 
-const deleteEmployeeUseCase  = new  DeleteEmployeeUseCase(empRepo)
-
-
-const deleteEmployeeController  =  new DeleteEmployeeController(deleteEmployeeUseCase)
+const deleteEmployeeUseCase  = new  DeleteEmployeeUseCase(empRepo,userepo) ;
+const deleteEmployeeController  =  new DeleteEmployeeController(deleteEmployeeUseCase) ;
 
 
 

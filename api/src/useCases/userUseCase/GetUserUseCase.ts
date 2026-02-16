@@ -1,0 +1,56 @@
+import express, { Request, Response } from "express";
+import { userRepo } from "../../repo/userRepo/userRepo";
+import { Role } from "../../models/user";
+
+interface IGetUser
+{
+      userId:number;
+      currentUserRole?: Role;
+}
+
+export default class GetUserUseCase  {
+
+
+                    private _usecaseUseRepo!:userRepo
+                    constructor(useusecaseuser:userRepo)
+                    {
+                             this._usecaseUseRepo = useusecaseuser ;
+                    }
+
+                    async execute(dto:IGetUser):Promise<any>
+                    {
+                            
+                                      try {
+                                        
+
+                                      
+
+
+                                        if (dto.currentUserRole?.toLowerCase() !== Role.ADMIN.toLowerCase()) {
+                                            return {
+                                              success: false,
+                                              message: "Only admin can get user"
+                                            };
+                                          }
+                                       const user =          await this._usecaseUseRepo.FindUserById(dto.userId) ;
+
+
+                                       if(!user)
+                                       {
+                                        return {success:false,message:"user not found "}
+                                       }
+
+
+
+
+
+                                       return {success:true,user:user}
+
+
+                                      } catch (error) {
+                                        console.log(error)
+                                        return { success: false, message: "Server error" };
+                                      }
+                        
+                    }
+}

@@ -1,19 +1,37 @@
-
-
 import { Request, Response, Router } from "express";
 import FileHandler, { folderPath } from "../../filesystem/fileHandle";
 import updateProductController from "../../controllers/products/updateProductController";
+import CategoryRepo from "../../repo/categoryRepo/categoryRepo";
+import SupplierRepo from "../../repo/SupplierRepo/SupplierRepo";
+import ProductRepo from "../../repo/productRepo/productRepo";
+import UpdateProductUseCase from "../../useCases/productUseCase/UpdateProductUseCase";
+import { verifyToken } from "../../middleware/verifyToken";
 
 const router = Router();
 
- const   updateProductRoute  =  new updateProductController()  ;
+const categoryRepo = new CategoryRepo();
+const supplierRepo = new SupplierRepo();
+const productRepo = new ProductRepo();
+export const fileHandler = new FileHandler(folderPath);
+const updateProductUseCase = new UpdateProductUseCase(
+   fileHandler,
+  productRepo,
+  categoryRepo,
+  supplierRepo
+);
 
 
- const fileHandler = new FileHandler( folderPath);
- router.put("/updateproduct/:id",fileHandler.uploadMiddlewareImage("imageName") ,(req:Request,res:Response) => {
-    console.log("reqqqqqqq",req)
-    updateProductRoute.execute(req,res)
+const updateProductRoute = new updateProductController(updateProductUseCase);
 
- })
 
- export  default router
+router.put(
+  "/updateproduct/:id",
+  verifyToken,
+  fileHandler.uploadMiddlewareImage("imageName"),
+  (req: Request, res: Response) => {
+ 
+    updateProductRoute.execute(req, res);
+  }
+);
+
+export default router;

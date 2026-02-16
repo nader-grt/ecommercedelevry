@@ -1,34 +1,61 @@
+import { Role } from "../../models/user";
 import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
+import { userRepo } from "../../repo/userRepo/userRepo";
 
-
+interface DeleteEmployeeDTO {
+    empId: number;
+    userId?: number; // 
+  }
 
 
 export default class DeleteEmployeeUseCase
 {
                
    
-    private usecaseRepo!:EmployeeRepo ;
-    constructor(employeeRepo:EmployeeRepo)
+    private usecaseEmpRepo!:EmployeeRepo ;
+    private usercaseUserRepo!:userRepo ;
+    constructor(employeeRepo:EmployeeRepo,userepo:userRepo)
     {
-       this.usecaseRepo = employeeRepo ;
+       this.usecaseEmpRepo = employeeRepo ;
+       this.usercaseUserRepo = userepo
     }
 
-    async execute(empId:number):Promise<any>
+    async execute(  dto: DeleteEmployeeDTO):Promise<any>
     {
 
-
+                       const { empId, userId } = dto;
      
                     try {
 
 
-                     //   employee =        await EmployeeRepo.FindEmployeeById(empId) ;
+                 
 
-                     const employee = await this.usecaseRepo.getEmployeeById(empId);
+                     const employee = await this.usecaseEmpRepo.getEmployeeById(empId);
                      if (!employee) return {message:"Employee not found"};
                  
-                     console.log("eeeeee usecase beforeeee   ",employee)
+                    // console.log("eeeeee usecase beforeeee   ",employee)
+
+                     // Number(employee.userId) this user is delevero  or secretary  
+                     const user = await this.usercaseUserRepo.FindUserById(Number(userId));
+
+                     if (!user) return { success: false, message: "user not found" };
+                 
+                  
         
-                       // await 
+                     if (user[0].role.toLowerCase() !== Role.ADMIN.toLowerCase()) {
+                        return { success: false, message: "Access denied: only admin can delete" };
+                      }
+                      
+
+   
+
+                            console.log("object")
+                   await this.usecaseEmpRepo.deleteEmployee(empId,Number(employee.userId))
+
+                                    //   Update the user's role back to normal (USER)
+                                //  await this.usercaseUserRepo.updateRole(employee.userId, Role.USER);
+
+                              return { success: true, message: "Employee deleted and role updated" };
                     } catch (error) {
                         console.log(error)
                     }

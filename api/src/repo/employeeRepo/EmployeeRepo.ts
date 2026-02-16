@@ -106,22 +106,24 @@ export default class EmployeeRepo extends IEmployeeRepoInterface
      public async deleteEmployee(id:number,userid?:number):Promise<any> 
      {
                const t = await sequelize.transaction();
+
+           
           try {
        
 
-            const emp = await Employee.destroy(
-              {
-                where: { id: id },
-                transaction: t
-              }
-            );
+                            const emp = await Employee.destroy(
+                              {
+                                where: { id: id },
+                                transaction: t
+                              }
+                            );
                                  await User.destroy(
                                   {
                                     where :{id:userid},
                                 
                                     transaction: t
                                 })
-            console.log("empppppppppp",emp)
+          //  console.log("empppppppppp")
             await t.commit();
           } catch (error) {
             await t.rollback();

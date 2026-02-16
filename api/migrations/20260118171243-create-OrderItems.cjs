@@ -29,7 +29,7 @@ module.exports = {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT', // 
+        onDelete: 'RESTRICT', 
       },
 
       quantity: {

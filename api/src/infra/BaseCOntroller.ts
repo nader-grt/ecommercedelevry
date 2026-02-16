@@ -20,17 +20,17 @@ export abstract class BaseController {
 
 
   
-  protected ok(res: Response, dto?: any) {
-    return res.status(200).json(dto);
+  protected ok(res: Response, data?: any) {
+    return res.status(200).json(data);
   }
 
     
-  protected resultValue(res: Response,message?:string, dto?: any) {
-    return res.status(200).json({message, dto});
+  protected resultValue(res: Response,message?:string, data?: any) {
+    return res.status(200).json({message, data});
   }
 
-  protected created(res: Response, dto?: any) {
-    return res.status(201).json(dto);
+  protected created(res: Response, data?: any) {
+    return res.status(201).json(data);
   }
 
   protected fail(res: Response, message: string) {
@@ -54,8 +54,8 @@ export abstract class BaseController {
     return res.sendStatus(204);
   }
 
-  protected updated(res: Response, dto?: any) {
-    return res.status(200).json(dto);
+  protected updated(res: Response, data?: any) {
+    return res.status(200).json(data);
   }
 
 
@@ -65,8 +65,8 @@ export abstract class BaseController {
   }
 
 
-  protected paginate(res: Response, dto: any, pagination: { limit: number; offset: number; count: number }) {
+  protected paginate(res: Response, data: any, pagination: { limit: number; offset: number; count: number }) {
     res.setHeader('Content-Range', `items ${pagination.offset}-${pagination.offset + pagination.limit}/${pagination.count}`);
-    return res.status(200).json(dto);
+    return res.status(200).json(data);
   }
 }

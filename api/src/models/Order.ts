@@ -1,16 +1,72 @@
 import { Sequelize,Model,DataTypes } from "sequelize";
 
 
-export default interface IOrder {
+export const enum STATUS 
+{
+PENDING = 0, 
+PAID = 1, 
+SHIPPED  =2  ,
+ DELIVERED  = 3,
+  CANCELLED=4 
 
+}
+
+export default interface IOrder {
+  id?:number ;
+  orderDate:Date;
+  customerId:number;
+  totalAmount:number ;
+  status:STATUS
 
 
 }
 
 
+
+/*
+
+
+
+      orderDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+
+      customerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users', //
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+      },
+
+      totalAmount: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+        defaultValue: 0,
+      },
+
+      status: {
+        type: Sequelize.ENUM('pending', 'paid', 'shipped', 'delivered', 'cancelled'),
+        allowNull: false,
+        defaultValue: 'pending',
+      },
+
+
+
+*/
+
 export class Order extends Model<IOrder> implements IOrder {
    
-
+        public id!: number ;
+         public orderDate!: Date;
+         public customerId!:number;
+         public totalAmount!:number ;
+         public status!:STATUS ;
 
   }
 
@@ -19,23 +75,20 @@ export class Order extends Model<IOrder> implements IOrder {
   export function OrderModel(sequelize: Sequelize) {
     Order.init(
       {
-        // id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        // firstName: { type: DataTypes.STRING, allowNull: false },
-        // lastName: { type: DataTypes.STRING, allowNull: false },
-        // phone: { type: DataTypes.STRING, allowNull: false },
-        // email: { type: DataTypes.STRING, allowNull: false, unique: true },
-        // password: { type: DataTypes.STRING, allowNull: false },
-        // role: {
-        //   type: DataTypes.ENUM(...Object.values(Role)),
-        //   allowNull: false,
-        //   defaultValue: Role.USER,
-        // },
-        // city: { type: DataTypes.STRING, allowNull: false },
-        // address: { type: DataTypes.STRING, allowNull: false },
+        id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+         orderDate: { type: DataTypes.DATE, allowNull: false },
+         customerId: { type: DataTypes.INTEGER, allowNull: false },
+        totalAmount: { type: DataTypes.DOUBLE, allowNull: false },
+     
+        status: {
+          type: DataTypes.ENUM('pending', 'paid', 'shipped', 'delivered', 'cancelled'),
+          allowNull: false,
+          //defaultValue: Role.USER,
+        },
       },
       {
         sequelize,
-        tableName: "Users",
+        tableName: "Orders",
         timestamps: true,
       }
     );

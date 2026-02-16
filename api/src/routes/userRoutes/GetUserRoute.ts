@@ -1,12 +1,19 @@
 import  { Request, Response, Router } from "express";
-import GetUserCOntroller from "../../controllers/users/getUserController";
+
 import { verifyToken } from "../../middleware/verifyToken";
+import { userRepo } from "../../repo/userRepo/userRepo";
+import GetUserUseCase from "../../useCases/userUseCase/GetUserUseCase";
+import GetUserController from "../../controllers/users/GetUserController";
+
 
 
 const router = Router();
 
+const useRepo = new userRepo() ;
 
-const getUserRoute = new GetUserCOntroller()
+const getUserUseCase = new GetUserUseCase(useRepo)
+
+const getUserRoute = new GetUserController(getUserUseCase)
 
 
 

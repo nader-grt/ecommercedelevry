@@ -25,21 +25,21 @@ export default class DeleteEmployeeController extends BaseController
 
         const {id}  = req.params;
         const empId = Number(id) ;
-        let empFounded : any ;
-              
-        const userId = req.user?.id;
-        empFounded =      await EmployeeRepo.FindEmployeeById(empId) ;
+        const userId :number = Number(req.user?.id)
+  
         try {
             
-                  await this.usecase.execute(empId)
-            if(empFounded)
+            const result =      await this.usecase.execute({empId ,userId})
+            
+            if(result.success)
             {
-               await  this._employeeRepo.deleteEmployee(empId,userId) ;
+
+              return this.ok(res," employee deleted with success !")
             }
 
-            return this.ok(res," employee deleted with success ")
+            return this.fail(res," failed ")
         } catch (error) {
-            
+            console.log(error)
         }
       }
 

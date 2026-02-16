@@ -32,7 +32,7 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
        console.log("11111111111\t ",typeof decoded.role)
          req.user = {
           email:decoded.email ,
-          role:decoded.role,
+          role:decoded.role ,
           id: decoded.id
          }
 

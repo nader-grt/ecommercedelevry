@@ -5,8 +5,6 @@ module.exports = {
   async up (queryInterface, Sequelize) {
 
      await queryInterface.createTable('deliverers', { 
- 
-    
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -25,9 +23,6 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-
-   
-
       carType: {
         type: Sequelize.STRING,
         allowNull: false,

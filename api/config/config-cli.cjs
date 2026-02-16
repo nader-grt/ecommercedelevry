@@ -84,6 +84,11 @@ npx sequelize-cli migration:generate --name create-deliverer-work-days-view
 //  create indexes for remove duplicate and table middlke deliverer_dayWorks
 npx sequelize-cli migration:generate --name add-unique-to-deliverer-dayworks
 
+// add column orderitems 
+
+npx sequelize-cli migration:generate --name alter_orderitems_add_columns
+
+
 run  xampp  
 
 sudo /opt/lampp/lampp start

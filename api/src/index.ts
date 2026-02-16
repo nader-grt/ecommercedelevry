@@ -1,7 +1,7 @@
 import express from "express";
 import { sequelize } from "./models/main.js"; // make sure your path is correct
 import cors from "cors";
-import createUserRoutes from "./routes/userRoutes/createUserRoute.js";
+
 
 import getUserRoutes from "./routes/userRoutes/GetUserRoute.js"
 import getAllUserRoutes from "./routes/userRoutes/GetAllUserByRoleRoute.js"
@@ -14,7 +14,10 @@ import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 // product  
 import createProductRoute from "./routes/productRoutes/createProductRoute.js";
 import updateProductRoute from "./routes/productRoutes/updateProductRoute.js";
+import getProductRandomRoute from "./routes/productRoutes/GetProductRandomRoute.js";
+import getProductByCategoryRoute from "./routes/productRoutes/GetProductByCategoryRoute.js";
 
+import getProductRoute from "./routes/productRoutes/GetProductRoute.js";
 import createCategoryRoute from "./routes//categoryRoute/createCategoryRoute.js";
 import deleteCategoryRoute from "./routes//categoryRoute/DeleteCategoryRoute.js";
 import updateCategoryRoute from "./routes//categoryRoute/UpdateCategoryRoute.js";
@@ -57,12 +60,20 @@ import updateDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/Upd
 import deleteDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/DeleteDelivererDayWorkRoute.js"
 import getDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/GetDelivererDayWorkRoute.js"
 
+//order 
+
+import createOrderRoute from  "./routes/OrderRoute/CreateOrderRoute.js"
+import updateOrderRoute from  "./routes/OrderRoute/UpdateOrderRoute.js"
+import deleteOrderRoute from  "./routes/OrderRoute/DeleteOrderRoute.js"
+import getOrderRoute from  "./routes/OrderRoute/GetOrderRoute.js"
+
 
 import { corsOptions } from "./corsConfig/corsConfig.js";
 
 
 import createDayWorkRoute from "./routes/DayWorkRoute/CreateWorkDayRoute.js"
 import getDayWorkRoute from "./routes/DayWorkRoute/GetWorkDayRoute.js"
+import { folderPath } from "./filesystem/fileHandle.js";
 
 const app = express();
 
@@ -82,9 +93,19 @@ app.use("/api", deleteUserRoutes);
 
 app.use("/apimail", mailRoutes);
 
-// product 
+// product  + static images 
+app.use("/images", express.static(folderPath));
 app.use("/api",createProductRoute)  ;
 app.use("/api",updateProductRoute)  ;
+app.use("/api",getProductRandomRoute)  ;
+app.use("/api",getProductByCategoryRoute)  ;
+app.use("/api",getProductRoute)  ;
+
+
+//getProductRoute
+
+
+
 
 
 //employee 
@@ -137,8 +158,12 @@ app.use("/api",getDayWorkRoute)  ;
 //Secretary
 
 
+//order 
 
-
+app.use("/api",createOrderRoute)  ;
+app.use("/api",updateOrderRoute)  ;
+app.use("/api",deleteOrderRoute)  ;
+app.use("/api",getOrderRoute)  ;
 
 
 //auth routes can be added similarly
@@ -171,11 +196,10 @@ async function startServer() {
 
   } catch (err) {
     console.error("Error starting server:", err);
-    process.exit(1); // exit process if server fails
+    process.exit(1); 
   }
 }
 
-// Top-level async IIFE to safely use await
 (async () => {
   await startServer();
 })();

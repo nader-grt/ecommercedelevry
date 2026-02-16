@@ -52,7 +52,10 @@ export class userRepo extends IUserRepoInterface {
 
   public async FindUserById(id: number): Promise<IUserResponse | any > {
                 try {
+
                   const resultUser= await User.findByPk(id);
+
+            
                   if(!resultUser) return null ;
                                         
                   const user = resultUser.get({ plain: true }) as IUserResponse;

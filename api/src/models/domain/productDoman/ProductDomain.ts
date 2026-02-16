@@ -7,10 +7,26 @@ export default class ProductDomain
     private name: string = "";
 
     private price: number = 0 ;
-    private nameImage  : string = "";
+    private nameImage!: string ;
     private   categoryId!: number;
     private supplierId!:number;
 
+
+    constructor(props?: {
+        name: string;
+        price: number;
+        nameImage: string;
+      
+      }) {
+       // super();
+    
+        if (props) {
+          this.price = props.price;
+          this.name = props.name;
+          this.nameImage = props.nameImage;
+          
+        }
+      }
           
          public get getName():string
          {
@@ -19,6 +35,8 @@ export default class ProductDomain
 
          public set setName(value:string)
          {
+
+            
              this.name  = value ;
          }
 
@@ -29,7 +47,9 @@ export default class ProductDomain
 
          public set setPrice(value:number)
          {
-        
+            if (value <= 0) {
+                throw new Error("Price must be greater than zero");
+              }
              this.price  = value ;
          }
 
@@ -52,10 +72,10 @@ export default class ProductDomain
          }
     
     
-         public set setCategoryId(value:string)
-         {
-             this.nameImage  = value;
-         }
+        //  public set setCategoryId(value:number)
+        //  {
+        //      this.categoryId  = value;
+        //  }
 
          public get getSupplierId():number
          {
@@ -63,8 +83,8 @@ export default class ProductDomain
          }
     
     
-         public set setSupplierId(value:number)
-         {
-             this.supplierId   = value;
-         }
+        //  public set setSupplierId(value:number)
+        //  {
+        //      this.supplierId   = value;
+        //  }
 }
