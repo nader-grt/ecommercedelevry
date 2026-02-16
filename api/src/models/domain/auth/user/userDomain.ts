@@ -14,28 +14,7 @@ export default class userDomain {
     protected city?: string;
     protected address?: string;
 
-    // constructor(
-    //     firstName: string,
-    //     lastName: string,
-    //     phone: string,
-    //     email: string,
-    //     password?: string,
-    //     role?: string,
-    //     city?: string,
-    //     address?: string,
-    //     id?: number,
-    // ) {
-    //     this.id = id;
-    //     this.firstName = firstName;
-    //     this.lastName = lastName;
-    //     this.phone = phone;
-    //     this.email = email;
-    //     this.password = password;
-    //     this.role = role;
-    //     this.city = city;
-    //     this.address = address;
-    // }
-
+  
     constructor()
     {}
 
@@ -95,6 +74,14 @@ export default class userDomain {
         this.email = email;
     }
 
+
+    public async comparePassword(
+        plainPassword: string,
+        hashedPassword: string
+      ): Promise<boolean> {
+        if (!plainPassword || !hashedPassword) return false;
+        return await bcrypt.compare(plainPassword, hashedPassword);
+      }
     public  static async setPasswordHashed(password: string) {
 
      await   userDomain.hashPassword(password)

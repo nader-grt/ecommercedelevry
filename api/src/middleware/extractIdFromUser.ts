@@ -12,7 +12,5 @@ export  interface RequestAuthID extends Request {
 
 export default  function extractIdFromUser( id:number):any
 {
-
- 
     return id ;
 }

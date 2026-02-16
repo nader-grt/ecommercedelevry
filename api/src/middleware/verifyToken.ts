@@ -27,8 +27,8 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
     if(!token)
     {
         return res.status(401).json({message:"Access Denied. No token provided"}) ;
-    }
-       const decoded :any =       jwt.verify(token, process.env.JWT_SECRET!)
+    }// ACCESS_TOKEN_SECRET  befor use JWT_SECRET
+       const decoded :any =       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!)
        console.log("11111111111\t ",typeof decoded.role)
          req.user = {
           email:decoded.email ,
@@ -36,7 +36,7 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
           id: decoded.id
          }
 
-         console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
+       // console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
           extractIdFromUser(decoded.id) ;
             next() ;
 

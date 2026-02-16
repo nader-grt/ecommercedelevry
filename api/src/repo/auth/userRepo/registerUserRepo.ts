@@ -1,16 +1,33 @@
 import { User } from "../../../models/main";
+import { Role } from "../../../models/user";
+import IUserResponse from "../../userRepo/userRepo";
 import userRepoInterface from "./useRepoInterface";
 
+
+export interface IUserRegister
+{
+  id?: number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+password:string ;
+  role?: Role;
+  city?: string;
+  address?: string;
+
+}
 
 export default class UserRepo extends userRepoInterface {
 
 
-    public  async registerUser(user:any):Promise<void> 
+    public  async registerUser(user:IUserRegister):Promise<any> 
     { 
           
              try {
                 
-                await  User.create(user)
+              const createdUser = await User.create(user);  
+              return createdUser; 
              } catch (error) {
                 console.log(error) ;
                 
@@ -27,7 +44,7 @@ export default class UserRepo extends userRepoInterface {
        }
     }
 
-    public static async  IsExistUser(email:string):Promise<boolean>
+    public  async  IsExistUser(email:string):Promise<boolean>
     {
         
 

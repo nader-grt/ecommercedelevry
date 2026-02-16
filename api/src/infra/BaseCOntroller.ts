@@ -58,6 +58,11 @@ export abstract class BaseController {
     return res.status(200).json(data);
   }
 
+  protected unauthorized(res:Response,message?:string)
+  {
+    return res.status(401).json({ message: message });
+
+  }
 
   protected invalideCredentiel(res:Response,message?:string)
   {

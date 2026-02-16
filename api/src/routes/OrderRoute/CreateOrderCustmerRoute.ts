@@ -13,9 +13,9 @@ const router = Router() ;
 
   const createOrderRoute = new CreateOrderController(createOrderUseCase) ;
 
-// admin
+// custmer 
 
-  router.post("/customers/:customerId/orders",verifyToken,(req:Request,res:Response) => {
+  router.post("/me/orders",verifyToken,(req:Request,res:Response) => {
 
     createOrderRoute.execute(req,res) ;
   })

@@ -1,115 +1,104 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
+import Joi from "joi";
+import UserRepo, { IUserRegister } from "../../repo/auth/userRepo/registerUserRepo";
 import userDomain from "../../models/domain/auth/user/userDomain";
+import generateAccessToken from "../../middleware/generateAccessToken";
+import { generateRefreshToken } from "../../middleware/generateRefreshToken";
 
-import { Role } from "../../models/user";
-import { createToken } from "../../middleware/createToken";
-import UserRepo from "../../repo/auth/userRepo/registerUserRepo";
 
-export interface IRegisterUserRequestDTO {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  password: string;
-  city: string;
-  address: string;
-  role?: string | any;
-}
 
 export default class RegisterController extends BaseController {
-  private _userDomain: userDomain; // prepare from request body
-  private _UserRepo: UserRepo; // db repo to save user data
-
-  private async _ReadUser(
-    userDomainRequest: IRegisterUserRequestDTO
-  ): Promise<any> {
-    let userPasswordHashed: any = new userDomain();
-
-    userPasswordHashed.password = await userDomain.hashPassword(
-      userDomainRequest.password
-    );
-
-    return {
-      firstName: (this._userDomain.setFirstName = userDomainRequest.firstName),
-      lastName: (this._userDomain.setLastName = userDomainRequest.lastName),
-      phone: (this._userDomain.setPhone = userDomainRequest.phone),
-      email: (this._userDomain.setEmail = userDomainRequest.email),
-      password: userPasswordHashed.password, // ,
-      city: (this._userDomain.setCity = userDomainRequest.city),
-      role: (this._userDomain.setRole = userDomainRequest.role    ),//Role.USER
-      address: (this._userDomain.setAddress = userDomainRequest.address),
-    };
-
-    /*  return {
-                  firstName : userDomain.firstName,
-                  lastName : userDomain.lastName,
-                  phone : userDomain.phone,
-                  email : userDomain.email,
-                  password : userDomain.password,
-                  city : userDomain.city,
-                  role: Role.USER,
-                  address : userDomain.address
-            }*/
-  }
+  private _userDomain: userDomain;
+  private _userRepo: UserRepo;
 
   constructor() {
     super();
     this._userDomain = new userDomain();
-    this._UserRepo = new UserRepo();
+    this._userRepo = new UserRepo();
   }
 
   protected async executeImpl(req: Request, res: Response): Promise<any> {
-    const { firstName, lastName, phone, email, password, city, address,role } =
-      req.body;
-
-    // console.log("object \t ",{ firstName, lastName, phone, email, password, city, address })
-             console.log("reqqqqqqqqqqqqqq",req,"///////////////// \n \n")
-    const dtoUser: any = {
-      firstName,
-      lastName,
-      phone,
-      email,
-      password,
-      city,
-      address,
-      role
-    };
-
     try {
-      const user = await this._ReadUser(dtoUser);
-      const isExistUser: any = await UserRepo.IsExistUser(
-        dtoUser.email
+   
+      const schema = Joi.object({
+        firstName: Joi.string().min(2).max(50).required(),
+        lastName: Joi.string().min(2).max(50).required(),
+        phone: Joi.string().min(6).max(20).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(6).required(),
+        city: Joi.string().optional(),
+        address: Joi.string().optional(),
+        role: Joi.string()
+            .valid('user', 'admin', 'supplier', 'deliverer', 'secrtrie')
+            .optional()
+      });
+
+      const { error, value } = schema.validate(req.body);
+      if (error) return this.badRequest(res, error.details[0].message);
+      //let role = value.role ? value.role : Role.USER;
+
+      const { firstName, lastName, phone, email, password, city, address ,role} = value;
+
+    
+      const exists = await this._userRepo.IsExistUser(email);
+      if (exists) return this.conflict(res, "User already exists with this email");
+
+  
+      const hashedPassword = await userDomain.hashPassword(password);
+
+  
+      this._userDomain.setFirstName = firstName;
+      this._userDomain.setLastName = lastName;
+      this._userDomain.setPhone = phone;
+      this._userDomain.setEmail = email;
+      this._userDomain.setPassword = hashedPassword;
+      this._userDomain.setCity = city;
+      this._userDomain.setAddress = address;
+      this._userDomain.setRole = role; 
+
+      //  Save user
+ const savedUser =     await this._userRepo.registerUser({
+        firstName: this._userDomain.getFirstName,
+        lastName: this._userDomain.getLastName,
+        phone: this._userDomain.getPhone,
+        email: this._userDomain.getEmail,
+        password: hashedPassword,
+        city: this._userDomain.getCity,
+        address: this._userDomain.getAddress,
+        role: this._userDomain.getRole,
+      });
+
+    
+      const accessToken = await generateAccessToken(
+        savedUser.email,
+        savedUser.role,
+        savedUser.id
+      );
+      const refreshToken = await generateRefreshToken(
+        savedUser.email,
+        savedUser.role,
+         savedUser.id
       );
 
-      console.log("user readed \t ", user, "isExistUser   ", isExistUser);
-      if (isExistUser) {
-        this.conflict(res, "User already exists with this email");
-        return;
-      }
-
-   
-
-    const resultUser =  await this._UserRepo.registerUser(user);
-
-
-    const isExistUseremail: any = await this._UserRepo.FindUserByEmail(
-      dtoUser.email
-    );
-
-
-    //FindUserByEmail
-    let token: any
-    if(isExistUseremail.id)
-    {
-      token = createToken(user.email, user.role,isExistUseremail.id);
-    }
-
-       
-
-      this.ok(res, { message: "User registered successfully", token });
-    } catch (error) {
-      console.log(error);
+      
+      return this.ok(res, {
+        message: "User registered successfully",
+        user: {
+          id: savedUser.id,
+          firstName: savedUser.firstName,
+          lastName: savedUser.lastName,
+          email: savedUser.email,
+          role: savedUser.role,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+      });
+    } catch (err: any) {
+      console.error(err);
+     // return this.internalServerError(res, "Something went wrong");
     }
   }
 }

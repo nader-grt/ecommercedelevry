@@ -3,10 +3,12 @@ import { BaseController } from "../../infra/BaseCOntroller";
 import registerUserRepo from "../../repo/auth/userRepo/registerUserRepo";
 import userDomain from "../../models/domain/auth/user/userDomain";
 import Joi from "joi";
+import generateAccessToken from "../../middleware/generateAccessToken";
+import { generateRefreshToken } from "../../middleware/generateRefreshToken";
+import { RequestAuth } from "../../middleware/verifyToken";
 
 export default class LoginController extends BaseController {
-  //userDomain
-  //registerUserRepo
+
 
   private _userDomain: userDomain;
   private _registerUserRepo: registerUserRepo;
@@ -16,7 +18,7 @@ export default class LoginController extends BaseController {
     this._registerUserRepo = new registerUserRepo();
   }
 
-  protected async executeImpl(req: Request, res: Response): Promise<any> {
+  protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
     const { email, password } = req.body;
     // steps
     /**
@@ -28,7 +30,7 @@ export default class LoginController extends BaseController {
      * 5. send response
      */
 
-    console.log("LoginController executeImpl called with:", req.body);
+
     const userInputLogin: any = {
       email: email,
       password: password,
@@ -36,7 +38,7 @@ export default class LoginController extends BaseController {
 
     const userSchemaLogin = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().min(6).required(),
+      password: Joi.string().min(5).required(),
     });
 
     try {
@@ -51,8 +53,25 @@ export default class LoginController extends BaseController {
 
       const user = await this._registerUserRepo.FindUserByEmail(email);
 
+
+      if (!user) return this.unauthorized(res, "user not found  ");
+
+
+
+      const isMatch = await this._userDomain.comparePassword(password, user.password);
+    
+if (!isMatch) return this.unauthorized(res, "Invalid credentials");
+
       
-    } catch (error) {}
+
+
+ const accessToken = await generateAccessToken(user.email, user.role, user.id);
+ const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
+  const resultLogin = { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } }
+ return this.resultValue(res,"login with success ",resultLogin);
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

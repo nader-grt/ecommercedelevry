@@ -63,6 +63,7 @@ import getDelivererDayWorkRoute from  "./routes/DeleveryWithDaysWorkRoute/GetDel
 //order 
 
 import createOrderRoute from  "./routes/OrderRoute/CreateOrderRoute.js"
+import createOrderCustmorRoute from  "./routes/OrderRoute/CreateOrderCustmerRoute.js"
 import updateOrderRoute from  "./routes/OrderRoute/UpdateOrderRoute.js"
 import deleteOrderRoute from  "./routes/OrderRoute/DeleteOrderRoute.js"
 import getOrderRoute from  "./routes/OrderRoute/GetOrderRoute.js"
@@ -164,6 +165,9 @@ app.use("/api",createOrderRoute)  ;
 app.use("/api",updateOrderRoute)  ;
 app.use("/api",deleteOrderRoute)  ;
 app.use("/api",getOrderRoute)  ;
+app.use("/api",createOrderCustmorRoute)  ;
+
+//
 
 
 //auth routes can be added similarly
