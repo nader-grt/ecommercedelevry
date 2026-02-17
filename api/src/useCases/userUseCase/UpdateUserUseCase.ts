@@ -1,3 +1,4 @@
+import { ActorUserAdmin } from "../../dbConfig/configApp";
 import { Role } from "../../models/user";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
@@ -10,7 +11,7 @@ interface IUpdateUserDTO {
   phone: string;
   city: string;
   role?: string;
-  actor?: any;
+  actor?: ActorUserAdmin;
 }
 
 /**
@@ -40,7 +41,7 @@ export default class UpdateUserUseCase {
        }
 
 
-       return {success:false,message:"user not found"}
+       return {success:false,message:"user not found111"}
     } catch (error) {
       console.log(error);
       return {success:false,message:"internal server error"};

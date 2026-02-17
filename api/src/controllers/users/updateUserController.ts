@@ -4,6 +4,7 @@ import Joi from "joi";
 import { RequestAuth } from "../../middleware/verifyToken";
 import UpdateUserUseCase from "../../useCases/userUseCase/UpdateUserUseCase";
 import canModifyUser from "../../Policy/CanBeModifyByUser";
+import { ActorUserAdmin } from "../../dbConfig/configApp";
 
 
 
@@ -26,7 +27,7 @@ export default class UpdateUserController  extends BaseController
            //   const { firstName, lastName,email, address, phone ,city,role} = req.body;
               const {id}  = req.params ;
               const custmerId = Number(id)
-              const actor = {
+              const actor :ActorUserAdmin = {
                    actorId:Number(req.user?.id),
                    actorEmail:req.user?.email ,
                    actorRole:req.user?.role

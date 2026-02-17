@@ -1,4 +1,8 @@
-export default function canModifyUser(actor:any, targetUserId: number) {
-    return actor.role === "admin" || actor.role === "ADMIN" || actor.id === targetUserId;
+import { ActorUserAdmin } from "../dbConfig/configApp";
+
+export default function canModifyUser(actor:ActorUserAdmin, targetUserId: number) {
+
+  console.log("aaaaaaaaaaaccccccc ",actor )
+    return actor.actorRole === "admin" || actor.actorRole === "ADMIN" || actor.actorId === targetUserId;
   }
   
