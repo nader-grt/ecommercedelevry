@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Role } from '../models/user';
-import jwt from 'jsonwebtoken' ;
+import jwt   from "jsonwebtoken";
 import extractIdFromUser from './extractIdFromUser';
 
 export  interface RequestAuth extends Request {
@@ -16,57 +16,96 @@ export  interface RequestAuth extends Request {
 
 export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):any{
 
-    console.log("resquest headers:****\t nader",req.headers.authorization) ;
+  
 
     const authHeader = req.headers.authorization ;
 
     const token:any = authHeader?.split(' ')[1]
 
-    console.log("token*******",token )
+//console.log("tttttttttt", token )
 
     if(!token)
     {
         return res.status(401).json({message:"Access Denied. No token provided"}) ;
     }// ACCESS_TOKEN_SECRET  befor use JWT_SECRET
-       const decoded :any =       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!)
-       console.log("11111111111\t ",typeof decoded.role)
-         req.user = {
-          email:decoded.email ,
-          role:decoded.role ,
-          id: decoded.id
-         }
-
-       // console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
-          extractIdFromUser(decoded.id) ;
-            next() ;
 
 
-    //return "not implemented" ;
+            try {
+                const decoded :any =       jwt.verify(token,  process.env.ACCESS_TOKEN_SECRET!)
+  
+                req.user = {
+                 email:decoded.email ,
+                 role:decoded.role ,
+                 id: decoded.id
+                }
+       
+              // console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
+                 extractIdFromUser(decoded.id) ;
+                   next() ;
+            
+              } catch (err:any) {
+                if (err?.name ===  "TokenExpiredError") {
+                  return res.status(401).json({
+                    message: "Access token expired"
+                  });
+                }
+            
+                return res.status(401).json({
+                  message: "Invalid access token"
+                });
+              }
+
+
 }
 
 //  token user eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlkIjoyLCJpYXQiOjE3NjkyODE2Nzd9.eqrYjvB0Goh3tGhFXDZkAKgzB0ImD0-TxfhKuNxcQng
 
 
+
+
+
 /**
  * 
+
+
+
+//  node
+const jwt = require("jsonwebtoken");
+
+//> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+
+
+ node
+const jwt = require("jsonwebtoken");
+
+Welcome to Node.js v22.17.0.
+Type ".help" for more information.
+> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxMzQ3OTI5fQ.81cNKQMcGddoVYlVqDi8sh71LnkIRK3LkHO3Vuey7DQ'
+
+node
+const jwt = require("jsonwebtoken");
+
+require("jsonwebtoken").sign(
+  { id: 5, email: "user4@test.com", role: "USER" },
+  "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",
+  { expiresIn: "7h" }
+);
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxMzQ5NDM5LCJleHAiOjE3NzEzNzQ2Mzl9.
+rDuYbllT9C4Tjv1P-PJVSsW_dwABAj6waRijg77FQ4s
+
+
+
+require("jsonwebtoken").sign(
+  { id: 1, email: "user4@test.com", role: "admin" },
+  "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",
+  { expiresIn: "7h" }
+);
+
+
+
  * 
  * 
-
-
-{
-  
-  "firstName": "user",
-  "lastName": "Martin5",
-  "phone": "21655008007",
-  "email": "user@test.com",
-  "password": "123456",
-  "city": "gassrine",
-  "address": "address 123 address",
-  "role":"user"
-}
-
-
-
-
-
  */

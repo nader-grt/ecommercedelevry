@@ -74,7 +74,7 @@ export function UserModel(sequelize: Sequelize) {
       role: {
         type: DataTypes.ENUM(...Object.values(Role)),
         allowNull: false,
-        defaultValue: Role.USER,
+       // defaultValue: Role.USER,
       },
       city: { type: DataTypes.STRING, allowNull: false },
       address: { type: DataTypes.STRING, allowNull: false },

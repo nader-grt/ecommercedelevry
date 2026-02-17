@@ -3,22 +3,20 @@ import OrderRepo from "../../repo/OrderRepo/OrderRepo";
 import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderUseCase";
 import CreateOrderController from "../../controllers/Orders/CreateOrderController";
 import { verifyToken } from "../../middleware/verifyToken";
+import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
+const router = Router();
 
+const userepo = new userRepo();
+const orderepo = new OrderRepo();
+const createOrderUseCase = new CreateOrderUseCase(orderepo, userepo);
 
-const router = Router() ;
+const createOrderRoute = new CreateOrderController(createOrderUseCase);
 
-  const orderepo = new OrderRepo() ;
-  const createOrderUseCase = new CreateOrderUseCase(orderepo) ;
+// custmer
 
-  const createOrderRoute = new CreateOrderController(createOrderUseCase) ;
+router.post("/me/orders", verifyToken, (req: Request, res: Response) => {
+  createOrderRoute.execute(req, res);
+});
 
-// custmer 
-
-  router.post("/me/orders",verifyToken,(req:Request,res:Response) => {
-
-    createOrderRoute.execute(req,res) ;
-  })
-
-
-export default router ;
+export default router;

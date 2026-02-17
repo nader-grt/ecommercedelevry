@@ -9,8 +9,8 @@ export default async function generateAccessToken(
 ): Promise<string> {
   const payload = { email, role, id };
 
- 
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET as string, {
+ //ACCESS_TOKEN_SECRET!
+  return jwt.sign(payload,process.env.ACCESS_TOKEN_SECRET! as string, {
     expiresIn: "7h",  // 20m
   });
 }

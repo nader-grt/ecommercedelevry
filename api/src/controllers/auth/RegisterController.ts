@@ -1,21 +1,22 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 import Joi from "joi";
-import UserRepo, { IUserRegister } from "../../repo/auth/userRepo/registerUserRepo";
+
 import userDomain from "../../models/domain/auth/user/userDomain";
 import generateAccessToken from "../../middleware/generateAccessToken";
 import { generateRefreshToken } from "../../middleware/generateRefreshToken";
+import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
 
 
 export default class RegisterController extends BaseController {
   private _userDomain: userDomain;
-  private _userRepo: UserRepo;
+  private _userRepo: userRepo;
 
   constructor() {
     super();
     this._userDomain = new userDomain();
-    this._userRepo = new UserRepo();
+    this._userRepo = new userRepo();
   }
 
   protected async executeImpl(req: Request, res: Response): Promise<any> {
@@ -58,6 +59,8 @@ export default class RegisterController extends BaseController {
       this._userDomain.setRole = role; 
 
       //  Save user
+
+      console.log("beforrrrrrrrrrrrr  ",   this._userDomain)
  const savedUser =     await this._userRepo.registerUser({
         firstName: this._userDomain.getFirstName,
         lastName: this._userDomain.getLastName,

@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import registerUserRepo from "../../repo/auth/userRepo/registerUserRepo";
 import userDomain from "../../models/domain/auth/user/userDomain";
 import Joi from "joi";
 import generateAccessToken from "../../middleware/generateAccessToken";
 import { generateRefreshToken } from "../../middleware/generateRefreshToken";
 import { RequestAuth } from "../../middleware/verifyToken";
+import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
 export default class LoginController extends BaseController {
 
 
   private _userDomain: userDomain;
-  private _registerUserRepo: registerUserRepo;
+  private _registerUserRepo: userRepo;
   constructor() {
     super();
     this._userDomain = new userDomain();
-    this._registerUserRepo = new registerUserRepo();
+    this._registerUserRepo = new userRepo();
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
@@ -69,6 +69,7 @@ if (!isMatch) return this.unauthorized(res, "Invalid credentials");
  const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
   const resultLogin = { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } }
  return this.resultValue(res,"login with success ",resultLogin);
+ //user 11 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxMUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOjEwLCJpYXQiOjE3NzEyNzkyMTUsImV4cCI6MTc3MTMwNDQxNX0.CfG6GbFKxYLis1B2fvsoUIgA75ldL4v_tS4ac-3gut4
     } catch (error) {
       console.log(error)
     }
