@@ -9,6 +9,7 @@ const router = Router();
 
 
 router.get("/users/:id", verifyToken, (req: Request, res: Response) => {
+  console.log("step 1 factory ")
   UserControllerFactory.createGetUserByAdminController().execute(req, res);
 });
 

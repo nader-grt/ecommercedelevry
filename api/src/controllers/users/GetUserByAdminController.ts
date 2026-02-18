@@ -40,6 +40,8 @@ export default class GetUserByAdminController extends BaseController {
                      try {
       const targetUserId = Number(req.params.id);
 
+
+                       console.log("step 2 factory  targetUserId ",targetUserId)
       const actor: ActorUserAdmin = {
         actorId: Number(req.user!.id),
         actorEmail: req.user!.email,
@@ -51,17 +53,19 @@ export default class GetUserByAdminController extends BaseController {
         actor,
       });
 
+
+      console.log("result factor final  ",result.user  , result )
       if (!result.success) {
         return this.fail(res, result.message);
       }
 
       return this.resultValue(res, "user fetched", {
-        firstName: result.user.firstName,
-        lastName: result.user.lastName,
-        email: result.user.email,
-        phone: result.user.phone,
-        city: result.user.city,
-        address: result.user.address,
+        firstName: result.user[0].firstName,
+        lastName: result.user[0].lastName,
+        email: result.user[0].email,
+        phone: result.user[0].phone,
+        city: result.user[0].city,
+        address: result.user[0].address,
       });
     } catch (err) {
       return this.fail(res, "unexpected error");

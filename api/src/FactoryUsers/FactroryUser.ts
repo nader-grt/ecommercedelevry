@@ -1,9 +1,12 @@
+import GetAllUserCOntroller from "../controllers/users/getAllUserController";
 import GetProfileUserController from "../controllers/users/GetProfileUserController";
 import GetUserByAdminController from "../controllers/users/GetUserByAdminController";
-
+import updateUserByAdminController from "../controllers/users/updateUserByAdminController";
 import { userRepo } from "../repo/auth/userRepo/userRepo";
+import GetAllUserUseCase from "../useCases/userUseCase/GetAllUserUseCase";
 import GetProfileUserUseCase from "../useCases/userUseCase/GetProfileUserUseCase";
 import GetUserByAdminUseCase from "../useCases/userUseCase/GetUserByAdminUseCase";
+import UpdateUserUseCase from "../useCases/userUseCase/UpdateUserUseCase";
 
 export class UserControllerFactory {
   static createGetProfileController() {
@@ -14,8 +17,21 @@ export class UserControllerFactory {
 
   static createGetUserByAdminController() {
     const repo = new userRepo();
- 
+
     const useCase = new GetUserByAdminUseCase(repo);
     return new GetUserByAdminController(useCase);
+  }
+
+  static GetAllUserController() {
+    const repo = new userRepo();
+
+    const useCase = new GetAllUserUseCase(repo);
+    return new GetAllUserCOntroller(useCase);
+  }
+  static UpdateUseByAdminrController() {
+    const repo = new userRepo();
+
+    const useCase = new UpdateUserUseCase(repo);
+    return new updateUserByAdminController(useCase);
   }
 }

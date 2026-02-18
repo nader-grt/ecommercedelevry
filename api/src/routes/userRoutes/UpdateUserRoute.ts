@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import UpdateUserController from "../../controllers/users/updateUserController";
+import UpdateUserController from "../../controllers/users/updateUserByAdminController";
 import { verifyToken } from "../../middleware/verifyToken";
 import UpdateUserUseCase from "../../useCases/userUseCase/UpdateUserUseCase";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";

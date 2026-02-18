@@ -16,6 +16,8 @@ export default class GetUserByAdminUseCase {
 
   async execute(dto: IGetUser): Promise<any> {
     try {
+
+                  console.log("usecase factory  step 3 ",dto)
       if (dto.actor?.actorRole?.toLowerCase() !== Role.ADMIN.toLowerCase()) {
         return {
           success: false,
@@ -24,6 +26,8 @@ export default class GetUserByAdminUseCase {
       }
       const user = await this._usecaseUseRepo.FindUserById(dto.userId);
 
+
+      console.log("step 4  ",user)
       if (!user) {
         return { success: false, message: "user not found " };
       }

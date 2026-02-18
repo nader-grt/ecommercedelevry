@@ -10,7 +10,7 @@ import { ActorUserAdmin } from "../../dbConfig/configApp";
 
 
 
-export default class UpdateUserController  extends BaseController
+export default class updateUserByAdminController  extends BaseController
 {
       
 
