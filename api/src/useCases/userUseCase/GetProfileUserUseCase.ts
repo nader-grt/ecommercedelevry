@@ -15,6 +15,17 @@ export default class GetProfileUserUseCase
     {
       
          try {
+
+
+            const user = await this._usecaseUseRepo.FindUserById(userId);
+
+
+            console.log("step profile  ",user)
+            if (!user) {
+              return { success: false, message: "user not found " };
+            }
+      
+            return { success: true, user: user };
             
          } catch (error) {
             console.log(error)

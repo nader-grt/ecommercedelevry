@@ -1,5 +1,4 @@
 import { ActorUserAdmin } from "../../dbConfig/configApp";
-import { Role } from "../../models/user";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
 interface IUpdateUserDTO {
@@ -14,15 +13,9 @@ interface IUpdateUserDTO {
   actor?: ActorUserAdmin;
 }
 
-/**
- {
-        actorId:number,
-        actorEmail:string,
-        actorRole:string
-    }
- */
 
-export default class UpdateUserUseCase {
+
+export default class UpdateUserProfileUseCase {
   private _usecaseUserRepo!: userRepo;
   constructor(usecaseUserRepo: userRepo) {
     this._usecaseUserRepo = usecaseUserRepo;
@@ -30,11 +23,11 @@ export default class UpdateUserUseCase {
 
   async execute(dto: IUpdateUserDTO):Promise<{success:boolean,message:string}> {
     try {
-      console.log("dddddddddddd update user *** ", dto);
+  
 
        const user =     await this._usecaseUserRepo.FindUserByEmail(dto.email)  ;
 
-       console.log(!user,"uuuuuuuuuuuuuu  ",user)
+  
        if(!user)
        {
         return {success:false,message:"user not found"}

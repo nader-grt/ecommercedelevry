@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import UpdateUserController from "../../controllers/users/updateUserByAdminController";
 import { verifyToken } from "../../middleware/verifyToken";
-import UpdateUserUseCase from "../../useCases/userUseCase/UpdateUserUseCase";
+import UpdateUserUseCase from "../../useCases/userUseCase/UpdateUserProfileUseCase";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
 const router = Router();

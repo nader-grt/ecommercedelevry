@@ -6,7 +6,8 @@ import { userRepo } from "../repo/auth/userRepo/userRepo";
 import GetAllUserUseCase from "../useCases/userUseCase/GetAllUserUseCase";
 import GetProfileUserUseCase from "../useCases/userUseCase/GetProfileUserUseCase";
 import GetUserByAdminUseCase from "../useCases/userUseCase/GetUserByAdminUseCase";
-import UpdateUserUseCase from "../useCases/userUseCase/UpdateUserUseCase";
+import updateUserByAdminUseCase from "../useCases/userUseCase/updateUserByAdminUseCase";
+
 
 export class UserControllerFactory {
   static createGetProfileController() {
@@ -31,7 +32,7 @@ export class UserControllerFactory {
   static UpdateUseByAdminrController() {
     const repo = new userRepo();
 
-    const useCase = new UpdateUserUseCase(repo);
+    const useCase = new updateUserByAdminUseCase(repo);
     return new updateUserByAdminController(useCase);
   }
 }

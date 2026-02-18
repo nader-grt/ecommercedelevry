@@ -66,15 +66,27 @@ export class userRepo extends IUserRepoInterface {
     }
   }
 
-  public static async FindAllUsersByRoleIsUser(role: string): Promise<any> {
+  public  async FindAllUsersByRoleIsUser(role: string): Promise<any> {
     const listUsers = await User.findAll({ where: { role: role } });
 
     try {
       if (!listUsers.length) return [];
 
-      const users = listUsers.map((user) => user.get({ plain: true }));
-      console.log("userssss  ", users as IUserResponse[]);
-      return users as IUserResponse[];
+      const users = listUsers.map((user) => user.get({ plain: true })).map(user => {
+                return {
+
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  phone: user.phone,
+                  email: user.email,
+                  role: user.role,
+                  city: user.city,
+                  address: user.address,
+                }
+      });
+ 
+    //  return users as IUserResponse[];
+    return users
     } catch (error) {
       console.log(error);
     }

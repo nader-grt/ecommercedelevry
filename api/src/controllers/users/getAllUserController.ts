@@ -20,9 +20,10 @@ export default class GetAllUserCOntroller extends BaseController
                    try {
                
 
-                          
+                      const resultListUsers =     await this._getAllUserUseCase.execute() ;
 
-                         //  return this.resultValue(res,"list users  ",resultListUsers)
+                    //  console.log("rr ",resultListUsers)
+                          return this.resultValue(res,"list users  ",resultListUsers.user)
                    } catch (error) {
                      console.log(error)
                    }

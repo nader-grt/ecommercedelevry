@@ -41,7 +41,7 @@ export default class GetUserByAdminController extends BaseController {
       const targetUserId = Number(req.params.id);
 
 
-                       console.log("step 2 factory  targetUserId ",targetUserId)
+          
       const actor: ActorUserAdmin = {
         actorId: Number(req.user!.id),
         actorEmail: req.user!.email,
