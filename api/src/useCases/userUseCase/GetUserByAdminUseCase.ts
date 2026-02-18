@@ -1,13 +1,14 @@
 import express, { Request, Response } from "express";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 import { Role } from "../../models/user";
+import { ActorUserAdmin } from "../../dbConfig/configApp";
 
 interface IGetUser {
   userId: number;
-  currentUserRole?: Role;
+  actor?: ActorUserAdmin;
 }
 
-export default class GetUserUseCase {
+export default class GetUserByAdminUseCase {
   private _usecaseUseRepo!: userRepo;
   constructor(useusecaseuser: userRepo) {
     this._usecaseUseRepo = useusecaseuser;
@@ -15,7 +16,7 @@ export default class GetUserUseCase {
 
   async execute(dto: IGetUser): Promise<any> {
     try {
-      if (dto.currentUserRole?.toLowerCase() !== Role.ADMIN.toLowerCase()) {
+      if (dto.actor?.actorRole?.toLowerCase() !== Role.ADMIN.toLowerCase()) {
         return {
           success: false,
           message: "Only admin can get user",

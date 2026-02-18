@@ -80,7 +80,10 @@ const jwt = require("jsonwebtoken");
 
 Welcome to Node.js v22.17.0.
 Type ".help" for more information.
-> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"admin"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+
+
+
 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxMzQ3OTI5fQ.81cNKQMcGddoVYlVqDi8sh71LnkIRK3LkHO3Vuey7DQ'
 
 node

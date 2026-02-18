@@ -16,7 +16,7 @@ const router = Router();
  
 
    router.post("/login", verifyToken,(req:Request,res:Response) => {
-    console.log("Login req55555555555555555555555555555555555555" , req.body)
+    
     loginRoute.execute(req,res)    
 });
 

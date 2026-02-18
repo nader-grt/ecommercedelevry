@@ -3,16 +3,28 @@ import { Request, Response, Router } from "express";
 
 import CreateDelevryController from "../../controllers/Delevry/CreateDelevryController";
 import { verifyToken } from "../../middleware/verifyToken";
+import DeleveryRepo from "../../repo/delevryRepo/DeleveryRepo";
+import { userRepo } from "../../repo/auth/userRepo/userRepo";
+import CreateDelevryUseCase from "../../useCases/DelevryUseCase/CreateDelevryUseCase";
 
 const router = Router();
+/**
+ * 
+ * 
+
+ */
+const  deleveryusecaseRepo =  new DeleveryRepo()
 
 
-const createDelevryRoute  =  new CreateDelevryController()
+const userUsecaseRepo = new  userRepo();
+
+ const createDelevryUseCase = new    CreateDelevryUseCase(deleveryusecaseRepo,userUsecaseRepo) ;
+const createDelevryRoute  =  new CreateDelevryController(createDelevryUseCase)
 
 
 
 
-// ca  we give a name  to function uploadMiddleware  using on postman 
+
 router.post("/create/delevry",verifyToken,(req:Request,res:Response) => {
    
     createDelevryRoute.execute(req,res)

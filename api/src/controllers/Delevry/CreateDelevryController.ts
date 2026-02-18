@@ -7,6 +7,7 @@ import userDomain from "../../models/domain/auth/user/userDomain";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 import { RequestAuth } from "../../middleware/verifyToken";
 import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
+import CreateDelevryUseCase from "../../useCases/DelevryUseCase/CreateDelevryUseCase";
 
 export default interface IDelevry {
   carType: string;
@@ -38,13 +39,15 @@ export default class CreateDelevryController extends BaseController {
 
     return delevry;
   }
-
-  constructor() {
+      private _createDelevryUseCase!:CreateDelevryUseCase
+  constructor(CreateDelevryUseCase:CreateDelevryUseCase) {
     super();
     this._DeleveryRepo = new DeleveryRepo();
     this._DelevryDomain = new DelevryDomain();
     this._userDomain = new userDomain();
     this._delevryUserRepo = new userRepo();
+
+    this._createDelevryUseCase = CreateDelevryUseCase
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {

@@ -3,7 +3,8 @@ import { sequelize } from "./models/main.js"; // make sure your path is correct
 import cors from "cors";
 
 
-import getUserRoutes from "./routes/userRoutes/GetUserRoute.js"
+import getUserByAdminRoutes from "./routes/userRoutes/GetUserByAdminRoute.js"
+import getProfileUserRoutes from "./routes/userRoutes/GetProfileUserRoute.js"
 import getAllUserRoutes from "./routes/userRoutes/GetAllUserByRoleRoute.js"
 import deleteUserRoutes from "./routes/userRoutes/DeleteUserRoute.js"
 import updateUserRoutes from "./routes/userRoutes/UpdateUserRoute.js"
@@ -83,11 +84,12 @@ app.use(express.json());
 
 
 
-// 2️ CORS before roue
 app.use(cors(corsOptions));
-// Routes
-//app.use("/api", createUserRoutes);
-app.use("/api", getUserRoutes);
+
+
+// user + profile
+app.use("/api", getUserByAdminRoutes);
+app.use("/api", getProfileUserRoutes);
 app.use("/api", getAllUserRoutes);
 app.use("/api", updateUserRoutes);
 app.use("/api", deleteUserRoutes);
