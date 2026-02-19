@@ -1,18 +1,16 @@
 import { ActorUserAdmin } from "../../dbConfig/configApp";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 
-interface IUpdateUserDTO {
-  custmerId?: number;
+export interface IUpdateUserProfileDTO {
+
   firstName: string;
   lastName: string;
   email: string;
   address: string;
   phone: string;
   city: string;
-  role?: string;
-  actor?: ActorUserAdmin;
-}
 
+}
 
 
 export default class UpdateUserProfileUseCase {
@@ -21,7 +19,7 @@ export default class UpdateUserProfileUseCase {
     this._usecaseUserRepo = usecaseUserRepo;
   }
 
-  async execute(dto: IUpdateUserDTO):Promise<{success:boolean,message:string}> {
+  async execute(dto: IUpdateUserProfileDTO):Promise<{success:boolean,message:string}> {
     try {
   
 

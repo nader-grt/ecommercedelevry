@@ -7,7 +7,8 @@ import getUserByAdminRoutes from "./routes/userRoutes/GetUserByAdminRoute.js"
 import getProfileUserRoutes from "./routes/userRoutes/GetProfileUserRoute.js"
 import getAllUserRoutes from "./routes/userRoutes/GetAllUserByRoleRoute.js"
 import deleteUserRoutes from "./routes/userRoutes/DeleteUserRoute.js"
-import updateUserRoutes from "./routes/userRoutes/UpdateUserRoute.js"
+import updateUserByAdminRoutes from "./routes/userRoutes/UpdateUserByAdminRoute.js"
+import updateProfileUserRoutes from "./routes/userRoutes/UpdateProfileUserRoute.js"
 import mailRoutes from "./routes/userRoutes/sendUserMailRoute.js";
 
 
@@ -91,7 +92,8 @@ app.use(cors(corsOptions));
 app.use("/api", getUserByAdminRoutes);
 app.use("/api", getProfileUserRoutes);
 app.use("/api", getAllUserRoutes);
-app.use("/api", updateUserRoutes);
+app.use("/api", updateUserByAdminRoutes);
+app.use("/api",updateProfileUserRoutes)
 app.use("/api", deleteUserRoutes);
 
 app.use("/apimail", mailRoutes);

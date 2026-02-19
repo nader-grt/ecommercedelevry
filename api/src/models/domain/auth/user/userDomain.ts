@@ -2,20 +2,35 @@ import bcrypt from "bcrypt";
 import IUser, { Role } from "../../../user";
 import IUserResponse from "../../../../repo/auth/userRepo/userRepo";
 
+import { IUpdateUserProfileDTO } from "../../../../useCases/userUseCase/UpdateUserProfileUseCase";
+import { UpdateByAdminData } from "../../../../useCases/userUseCase/updateUserByAdminUseCase";
+import { ActorUserAdmin } from "../../../../dbConfig/configApp";
+
+
+// type actorRole {
+
+// }
+
+
+type actorRole =
+  | Role
+  | ActorUserAdmin;
+
+
 export default class userDomain {
   protected id?: number;
   protected firstName: string = "";
   protected lastName: string = "";
   protected phone: string = "";
-  protected email: string = "";
+  protected email: string = "" ;
   protected password?: string = "";
-  protected role?: string = "";
+  protected role?: any = "" ;
   protected city?: string;
   protected address?: string;
 
   constructor() {}
 
-  // ======== GETTERS =========
+
   public get getId(): number | undefined {
     return this.id;
   }
@@ -110,7 +125,7 @@ export default class userDomain {
   }
 
   public toGetAllUsers(data?: any): IUserResponse[] {
-    console.log("DDDDDDDDDDDDDDD  ", typeof data, data);
+ 
     const users: IUserResponse[] = data.map((user: IUserResponse) => {
       return {
         id: user.id,
@@ -124,4 +139,27 @@ export default class userDomain {
     });
     return users;
   }
+
+
+
+
+        public updateProfileUser(data: IUpdateUserProfileDTO): void {
+          //  extends  {
+          this.firstName = data.firstName;
+          this.lastName = data.lastName;
+          this.email = data.email;
+          this.phone = data.phone;
+          this.city = data.city;
+          this.address = data.address;
+        }
+  
+              public updateByAdmin(data: UpdateByAdminData): void {
+
+              // console.log("data  adminnnnnnn  ",data)
+                this.updateProfileUser(data);
+              
+                if (data.role) {
+                  this.role = data.role;
+                }
+              }
 }

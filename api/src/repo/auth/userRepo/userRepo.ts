@@ -47,7 +47,16 @@ export class userRepo extends IUserRepoInterface {
       });
       if (!user) return null;
 
-      return user;
+      return {
+
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        email: user.email,
+        role: user.role,
+        city: user.city,
+        address: user.address,
+      }
     } catch (error) {
       console.log(error);
     }
@@ -122,6 +131,35 @@ export class userRepo extends IUserRepoInterface {
 
       if (!u) return null;
       return u;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async updateUserByAdmin(user: any, userid?: number): Promise<any> {
+    try {
+      const u: any = await User.update(
+        {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phone: user.phone,
+          address: user.address,
+          city : user.city,
+          role:user.role
+        
+        },
+        {
+          where: { id: userid },
+        }
+      );
+
+      if (!u) return null;
+      console.log("uuuuuuuuuuu  repo ad  ",u)
+
+      const updatedUser = await User.findByPk(userid);
+
+      return updatedUser;
+      
     } catch (error) {
       console.log(error);
     }

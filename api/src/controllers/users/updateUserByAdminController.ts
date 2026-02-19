@@ -25,7 +25,7 @@ export default class updateUserByAdminController extends BaseController {
       actorRole: req.user?.role,
     };
 
-    console.log("actorrrrrrrrrrrrr  ", actor);
+  
 
     try {
       const schema = Joi.object({
@@ -65,12 +65,23 @@ export default class updateUserByAdminController extends BaseController {
           .json({ message: "Forbidden: you cannot update this user" });
       }
 
+
+
+    
       const result = await this._usecaseUpdayeUser.execute(dto);
 
       if (!result.success) {
         return this.fail(res, result.message);
       }
-      return this.ok(res, "user updated with success ");
+      return this.resultValue(res, "user updated with success ",{      
+                      firstName:result.user.firstName,
+                      lastName: result.user.lastName,
+                      phone: result.user.phone,
+                      role: result.user.role,
+                      city:result.user.city,
+                      address: result.user.address
+                  }       
+        );
     } catch (error) {
       console.log(error);
     }

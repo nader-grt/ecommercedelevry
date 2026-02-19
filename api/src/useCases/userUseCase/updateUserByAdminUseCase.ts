@@ -1,17 +1,15 @@
 import { ActorUserAdmin } from "../../dbConfig/configApp";
+import userDomain from "../../models/domain/auth/user/userDomain";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
+import { IUpdateUserProfileDTO } from "./UpdateUserProfileUseCase";
 
 
 
-interface IUpdateUserByAdminDTO {
+
+
+  export interface UpdateByAdminData extends IUpdateUserProfileDTO {
     custmerId?: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    address: string;
-    phone: string;
-    city: string;
-    role?: string;
+    role?: ActorUserAdmin;
     actor?: ActorUserAdmin;
   }
 
@@ -26,23 +24,35 @@ export default class updateUserByAdminUseCase
     }
 
 
-                 async execute(dto:IUpdateUserByAdminDTO):Promise<any>
+                 async execute(dto:UpdateByAdminData):Promise<any>
                  {
 
                               try {
                                 
 
 
+                                console.log("dtttttttttttttttttttooooooooooooooo  ************ ",dto)
+
                                 const user =     await this._updateuserByAdmincaseUserRepo.FindUserByEmail(dto.email)  ;
 
   
+
+                                console.log("uuuuuuuuuuuu  ",user )//custmerId
                                 if(!user)
                                 {
                                  return {success:false,message:"user not found"}
                                 }
                          
+                                const updateUserByAdmin = new userDomain()  ;
+
+                                updateUserByAdmin.updateByAdmin(dto)
+
+                                console.log("updateUserByAdmin   ",updateUserByAdmin  ,"endddddddddddddd  ")
+                                     const userUpdated =      await this._updateuserByAdmincaseUserRepo.updateUserByAdmin(updateUserByAdmin ,Number(dto.custmerId))
                          
-                                return {success:false,message:"user not found111"}
+
+
+                                return {success:true,user:userUpdated}
 
 
                               } catch (error) {
