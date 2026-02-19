@@ -1,4 +1,4 @@
-import DeleteUserController from "../controllers/users/deleteUserController";
+import DeleteUserController from "../controllers/users/DeleteUserController";
 import GetAllUserCOntroller from "../controllers/users/getAllUserController";
 import GetProfileUserController from "../controllers/users/GetProfileUserController";
 import GetUserByAdminController from "../controllers/users/GetUserByAdminController";

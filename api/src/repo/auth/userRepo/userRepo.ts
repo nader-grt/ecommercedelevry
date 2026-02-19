@@ -34,10 +34,37 @@ export class userRepo extends IUserRepoInterface {
       });
 
       if (user === null) return null;
+      return user
     } catch (error) {
       console.log(error);
     }
   }
+
+  public async FindUserByEmailLogin(email: string): Promise<any> {
+    try {
+      const user = await User.findOne({
+        where: { email: email },
+        raw: true,
+      });
+      if (!user) return null;
+
+      // return {
+
+      //   firstName: user.firstName,
+      //   lastName: user.lastName,
+      //   phone: user.phone,
+      //   email: user.email,
+      //   role: user.role,
+      //   city: user.city,
+      //   address: user.address,
+      // }
+
+      return user
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   public async FindUserByEmail(email: string): Promise<any> {
     try {

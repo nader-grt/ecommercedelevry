@@ -51,12 +51,12 @@ export default class LoginController extends BaseController {
             return this.badRequest(res, error.details[0].message);
           }
 
-      const user = await this._registerUserRepo.FindUserByEmail(email);
+      const user = await this._registerUserRepo.FindUserByEmailLogin(email);
 
 
       if (!user) return this.unauthorized(res, "user not found  ");
 
-
+//console.log("uuuuuuu  llllll  ",user)
 
       const isMatch = await this._userDomain.comparePassword(password, user.password);
     

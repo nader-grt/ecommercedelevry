@@ -80,7 +80,9 @@ const jwt = require("jsonwebtoken");
 
 Welcome to Node.js v22.17.0.
 Type ".help" for more information.
-> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"admin"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+> 
+require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"admin"}, 
+"467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",  { expiresIn: "7h" })
 
 
 
@@ -102,10 +104,12 @@ rDuYbllT9C4Tjv1P-PJVSsW_dwABAj6waRijg77FQ4s
 
 
 require("jsonwebtoken").sign(
-  { id: 1, email: "user4@test.com", role: "admin" },
+  { id: 1, email: "user4@test.com", role: "ADMIN" },
   "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",
   { expiresIn: "7h" }
 );
+
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxNTM4MjYzLCJleHAiOjE3NzE1NjM0NjN9.6C34tQhzZgzx3O3MrPpTfL9fWv7kkKucCAMelY__hHM
 
 
 
@@ -114,4 +118,18 @@ require("jsonwebtoken").sign(
 
  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxNDM1MDAwLCJleHAiOjE3NzE0NjAyMDB9._PEIUxcFoFTcQXbMIA1qh95hdWuDMXxxjjOLXrWraAo
  * 
+
+
+
+
+
+
+
+ token admin 
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTUxNjA4OCwiZXhwIjoxNzcxNTQxMjg4fQ.
+mSrwhc8CWeeMI-YewcPP4Y2DRLIARFodpslCe68gHIk
+
+
  */
