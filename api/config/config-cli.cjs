@@ -90,6 +90,9 @@ npx sequelize-cli migration:generate --name alter_orderitems_add_columns
 
 remove column
 npx sequelize-cli migration:generate --name remove-totalPrice-from-orderitems
+
+// add constrain unique_order_product
+npx sequelize-cli migration:generate --name add-constrain_unique_order_product-from-orderitems
 run  xampp  
 
 sudo /opt/lampp/lampp start

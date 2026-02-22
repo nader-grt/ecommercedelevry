@@ -50,10 +50,12 @@ export default class CreateOrderByAdminUseCase
 
                      console.log("oooooooo  ",order  )
 
-                      await  this._orderRepo.CreateOrderByAdmin
+                     // await  this._orderRepo.CreateOrderByAdmin
                 
+
+                     return {success:true,message:"okkkkkkkk"}
                } catch (error) {
-                
+                console.log(error)
                }
        }
 }

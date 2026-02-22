@@ -42,8 +42,10 @@ export  default class CreateOrderByAdminController  extends BaseController
                     {
                        return this.fail(res,result.message)
                     }
+
+                    return this.ok(res,result.message)
                  } catch (error) {
-                    console.log("error")
+                    console.log(error)
                  }
      }
 }
