@@ -8,7 +8,7 @@ import IOrderRepo from "./IOrderRepo";
 export default class OrderRepo extends IOrderRepo
 {
 
-   public async CreateOrder(order:OrderDomain):Promise<any> 
+   public async CreateOrderByAdmin(order:OrderDomain):Promise<any> 
    {
 
 

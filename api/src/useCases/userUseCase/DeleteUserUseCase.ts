@@ -21,7 +21,6 @@ export default class DeleteUserUseCase {
 
 
 
-      console.log("object" ,dto)
 
       if (dto.actor?.actorRole?.toLowerCase() !== Role.ADMIN.toLowerCase()) {
         return {
@@ -45,11 +44,11 @@ export default class DeleteUserUseCase {
        
           if(resultUserDeleted === 1 )
           {
-            //console.log("rrrrrrrrrrr hhhhhhhhh ",resultUserDeleted)
+         
             return {success:true,message:"user deleted with success "}
           }
           
-         // return {success:false,message:"user not found"}
+      
 
     } catch (error) {
       console.log(error);

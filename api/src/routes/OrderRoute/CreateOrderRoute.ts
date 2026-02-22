@@ -4,22 +4,26 @@ import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderUseCase";
 import CreateOrderController from "../../controllers/Orders/CreateOrderController";
 import { verifyToken } from "../../middleware/verifyToken";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
+import CreateOrderByAdminController from "../../controllers/Orders/CreateOrderByAdminController";
+import CreateOrderByAdminUseCase from "../../useCases/OrderUsecase/CreateOrderByAdminUseCase";
+import ProductRepo from "../../repo/productRepo/productRepo";
 
 const router = Router();
 
 const userepo = new userRepo();
 const orderepo = new OrderRepo();
-const createOrderUseCase = new CreateOrderUseCase(orderepo, userepo);
+const productrepo = new ProductRepo()
+const createOrderUseCase = new CreateOrderByAdminUseCase( userepo,orderepo,productrepo);
 
-const createOrderRoute = new CreateOrderController(createOrderUseCase);
+const createOrderByAdminRoute = new CreateOrderByAdminController(createOrderUseCase);
 
 // admin
 
 router.post(
-  "/customers/:customerId/orders",
+  "/customers/:id/orders",
   verifyToken,
   (req: Request, res: Response) => {
-    createOrderRoute.execute(req, res);
+    createOrderByAdminRoute.execute(req, res);
   }
 );
 

@@ -103,6 +103,7 @@ rDuYbllT9C4Tjv1P-PJVSsW_dwABAj6waRijg77FQ4s
 
 
 
+
 require("jsonwebtoken").sign(
   { id: 1, email: "user4@test.com", role: "ADMIN" },
   "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",
@@ -127,9 +128,7 @@ require("jsonwebtoken").sign(
 
  token admin 
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTUxNjA4OCwiZXhwIjoxNzcxNTQxMjg4fQ.
-mSrwhc8CWeeMI-YewcPP4Y2DRLIARFodpslCe68gHIk
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTcwODE5NiwiZXhwIjoxNzcxNzMzMzk2fQ.Gs8-IyJXZGRDnHylQIS5cAHQoIasRuWL31jQYzPlag0
 
 
  */

@@ -24,28 +24,28 @@ private status!: STATUS;
 
 
                                                 
-                    addItem( productId: number, name: string, qty: number, price: number ) 
+                    addItem( productId: number, name: string, quantity: number, price: number ) 
                     {
 
                         if (this.status !== STATUS.PENDING) {
                         throw new Error("cannot add items after payment");
                         }
 
-                        if (qty <= 0) {
+                        if (quantity <= 0) {
                         throw new Error("quantity must be greater than zero");
                         }
 
-                        this.items.push( new OrderItemDomain(productId, name, qty, price) );
+                        this.items.push( new OrderItemDomain(productId, name, quantity, price) );
                     }
 
-                    placeOrder() {
+                    validateBeforeSave() {
                         if (this.items.length === 0) {
                         throw new Error("cannot create order without items");
                         }
                         // 
                     }
 
-                        pay() {
+                        payWithCard() {
                             if (this.status !== STATUS.PENDING) {
                             throw new Error("order already paid or closed");
                             }

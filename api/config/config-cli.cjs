@@ -88,7 +88,8 @@ npx sequelize-cli migration:generate --name add-unique-to-deliverer-dayworks
 
 npx sequelize-cli migration:generate --name alter_orderitems_add_columns
 
-
+remove column
+npx sequelize-cli migration:generate --name remove-totalPrice-from-orderitems
 run  xampp  
 
 sudo /opt/lampp/lampp start
