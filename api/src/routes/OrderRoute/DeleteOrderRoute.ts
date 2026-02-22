@@ -1,24 +1,18 @@
 import { Request, Response, Router } from "express";
 import OrderRepo from "../../repo/OrderRepo/OrderRepo";
-import DeleteOrderUseCase from "../../useCases/OrderUsecase/DeleteOrderUseCase";
-import DeleteOrderController from "../../controllers/Orders/DeleteOrderController";
+import DeleteOrderUseCase from "../../useCases/OrderUsecase/DeleteOrderByAdminUseCase";
+import DeleteOrderController from "../../controllers/Orders/CancelOrderByUserController";
 import { verifyToken } from "../../middleware/verifyToken";
 
+const router = Router();
 
+const orderepo = new OrderRepo();
 
-const router = Router()
+const deleteOrderUsecase = new DeleteOrderUseCase(orderepo);
+const deleteOrderRoute = new DeleteOrderController(deleteOrderUsecase);
 
-const orderepo = new OrderRepo()  ;
+router.delete("/delete/order", verifyToken, (req: Request, res: Response) => {
+  deleteOrderRoute.execute(req, res);
+});
 
-const deleteOrderUsecase = new DeleteOrderUseCase(orderepo)  ;
-const deleteOrderRoute = new DeleteOrderController(deleteOrderUsecase) ;
-
-
-router.delete("/delete/order",verifyToken,(req:Request,res:Response) => {
-
-    deleteOrderRoute.execute(req,res)
-})
-
-
-
-export default router ;
+export default router;

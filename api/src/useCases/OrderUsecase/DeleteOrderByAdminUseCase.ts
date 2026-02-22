@@ -1,15 +1,15 @@
 import OrderRepo from "../../repo/OrderRepo/OrderRepo";
 
-export default class DeleteOrderUseCase
+export default class DeleteOrderByAdminUseCase
 {
 
 
 
-                private _deleteorderusecase!:OrderRepo
+                private _deleteorderByAdminusecase!:OrderRepo
 
                 constructor(deleteOrderUseCase:OrderRepo)
                 {
-                    this._deleteorderusecase = deleteOrderUseCase ;
+                    this._deleteorderByAdminusecase = deleteOrderUseCase ;
                 }
 
                async execute():Promise<any>

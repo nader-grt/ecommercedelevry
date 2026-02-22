@@ -1,10 +1,12 @@
 
 
 
-import { Op } from "sequelize";
+import { InferAttributes, Op } from "sequelize";
 import ProductDomain from "../../models/domain/productDoman/ProductDomain";
 import { Product, sequelize } from "../../models/main";
 import productRepoInterface from "./productRepoInterface";
+
+// type ProductType = InferAttributes<typeof Product>;
 
 export default class ProductRepo extends productRepoInterface {
 
@@ -13,7 +15,19 @@ export default class ProductRepo extends productRepoInterface {
 private cacheTime = 0;
   public async FindAllProducts() {}
 
+  static async getProductsMapByIds(productIds: number[]):Promise<Map<number, any>>{
+    const products = await Product.findAll({
+      where: { id: productIds },
+      raw:true
+    });
 
+    const productMap = new Map<number, any>();
+    for (const p of products) {
+      productMap.set(p.id,  p);
+    }
+
+    return productMap;
+  }
   async findById(id: number) {
     return Product.findByPk(id);
   }

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import OrderRepo from "../../repo/OrderRepo/OrderRepo";
-import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderUseCase";
-import CreateOrderController from "../../controllers/Orders/CreateOrderController";
+import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderByUserUseCase";
+import CreateOrderController from "../../controllers/Orders/CreateOrderByUserController";
 import { verifyToken } from "../../middleware/verifyToken";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 import CreateOrderByAdminController from "../../controllers/Orders/CreateOrderByAdminController";
@@ -12,10 +12,16 @@ const router = Router();
 
 const userepo = new userRepo();
 const orderepo = new OrderRepo();
-const productrepo = new ProductRepo()
-const createOrderUseCase = new CreateOrderByAdminUseCase( userepo,orderepo,productrepo);
+const productrepo = new ProductRepo();
+const createOrderUseCase = new CreateOrderByAdminUseCase(
+  userepo,
+  orderepo,
+  productrepo
+);
 
-const createOrderByAdminRoute = new CreateOrderByAdminController(createOrderUseCase);
+const createOrderByAdminRoute = new CreateOrderByAdminController(
+  createOrderUseCase
+);
 
 // admin
 

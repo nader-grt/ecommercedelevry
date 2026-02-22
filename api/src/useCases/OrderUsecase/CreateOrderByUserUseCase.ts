@@ -11,7 +11,7 @@ interface CreateOrderDTO {
   };
 }
 
-export default class CreateOrderUseCase {
+export default class CreateOrderByUserUseCase {
   private _createorderusecase!: OrderRepo;
   private _useRepo!: userRepo;
   constructor(createOrderUseCase: OrderRepo, user: userRepo) {
