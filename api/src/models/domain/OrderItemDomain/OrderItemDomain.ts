@@ -10,7 +10,7 @@ export default class OrderItemDomain
     private productId: number,
     private productName: string,
     private quantity: number,
-    private unitPrice: number
+    private unitPrice: number = 1 
   ) {}
 
   getTotalPrice(): number {

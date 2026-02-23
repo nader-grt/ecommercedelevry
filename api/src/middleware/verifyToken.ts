@@ -117,8 +117,14 @@ require("jsonwebtoken").sign(
  *token user 4
 
 
+
  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxNDM1MDAwLCJleHAiOjE3NzE0NjAyMDB9._PEIUxcFoFTcQXbMIA1qh95hdWuDMXxxjjOLXrWraAo
  * 
+
+
+
+
+ admin eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTgxNjA4NCwiZXhwIjoxNzcxODQxMjg0fQ.mTvybNnF0rE-2P7MeLc8tWCHOs7RSLo6awfMMgdMz8k'
 
 
 

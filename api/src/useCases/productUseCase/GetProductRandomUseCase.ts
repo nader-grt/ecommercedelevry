@@ -23,7 +23,7 @@ export default class GetProductRandomUseCase
               async execute(dto:ProductRandomDTO):Promise<any>
               {
             
-                  console.log("dto  ",dto)
+                  console.log("dto *** ",dto)
                     
 
                             try {

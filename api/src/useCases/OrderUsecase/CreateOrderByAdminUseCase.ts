@@ -34,7 +34,7 @@ export default class CreateOrderByAdminUseCase
                try {
 
 
-               // console.log("dddddddd usecase Admin ",dto)
+             //  console.log("dddddddd usecase Admin ",dto)
 
                     const user =  await this._userRepo.FindUserById(dto.custmerId)  
                     if(!user)
@@ -43,32 +43,35 @@ export default class CreateOrderByAdminUseCase
                     }
 
        
+                    const productIds = dto.items.map(i => i["productId"]);
 
-
-         await this._productRepo.GetProductById      //  promiseall 
+        // for (let index = 0; index < 3; index++) {
+        //   await this._productRepo.GetProductById  
+          
+        // }    //  promiseall 
 
 
                       
-                const productIds = dto.items.map(i => i["productId"]);
+            
 
-                console.log("prrrrrro  ",productIds)
+              //  console.log("prrrrrro  ",productIds)
 
                   const productMap = await ProductRepo.getProductsMapByIds(productIds);
 
 
 
-                  console.log(" productMap  ",productMap)
+                // console.log(" productMap  ",productMap)
 
                   const  order  =  new OrderDomain(dto.custmerId)  ;
 
                 // console.log("oooooooo  ",order  )
-                console.log("dto.items  ",dto.items  ,typeof dto.items)
+              //  console.log("dto.items  ",dto.items  ,typeof dto.items)
 
                       for (const item of dto.items) {
 
                         console.log("object",item  ,"***********  end ")
                         const product = productMap.get(item["productId"]);
-                        console.log("prrrrrrrrrrrrrrrr  *****  hhhhhhhhhhhhhhe" ,product)
+                        console.log("prrrrrrrrrrrrrrrr  *****" ,product)
                         if (!product) throw new Error(`Product ${item["productId"]} not found`);
                     //   addItem( productId: number, name: string, quantity: number, price: number )
                         order.addItem(product.id, product.name, item["quantity"], product?.price);
@@ -76,10 +79,10 @@ export default class CreateOrderByAdminUseCase
 
                                     
                         const totalAmount = order.getTotalAmount();
-                        console.log(totalAmount);
+                     //   console.log(totalAmount);
 
-  
-                    await  this._orderRepo.CreateOrderByAdmin(order)
+  console.log("orderrrrrrrrrrrr  ",order)
+                   await  this._orderRepo.CreateOrderByAdmin(order)
                      return {success:true,message:"okkkkkkkk"}
                } catch (error) {
                 console.log(error)

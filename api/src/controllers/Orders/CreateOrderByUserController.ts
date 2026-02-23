@@ -2,9 +2,7 @@ import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderByUserUseCase";
 import { RequestAuth } from "../../middleware/verifyToken";
-import generateAccessToken from "../../middleware/generateAccessToken";
-import { refreshTokenSecret } from "../../dbConfig/configApp";
-import { Role } from "../../models/user";
+
 
 export default class CreateOrderByUserController extends BaseController {
   private _createOrderUseCase!: CreateOrderUseCase;
@@ -22,19 +20,25 @@ export default class CreateOrderByUserController extends BaseController {
       ownerRole: req.user!.role,
     };
 
-    const customerId = req.params.customerId
-      ? Number(req.params.customerId)
-      : actor.ownerId;
+    // const customerId = req.params.customerId
+    //   ? Number(req.params.customerId)
+    //   : actor.ownerId;
 
     try {
       const dto = {
-        custmerId: Number(customerId),
+      //  custmerId: Number(customerId),
         items,
         actor,
       };
-      await this._createOrderUseCase.execute(dto);
+   const result =    await this._createOrderUseCase.execute(dto);
 
-      return this.ok(res, "any order  ");
+
+                    if(!result.success)
+                    {
+                       return this.fail(res,result.message)
+                    }
+
+                    return this.ok(res,result.message)
     } catch (error) {
       console.log(error);
     }

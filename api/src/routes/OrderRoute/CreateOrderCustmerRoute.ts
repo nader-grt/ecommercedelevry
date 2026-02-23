@@ -1,17 +1,20 @@
 import { Request, Response, Router } from "express";
 import OrderRepo from "../../repo/OrderRepo/OrderRepo";
-import CreateOrderUseCase from "../../useCases/OrderUsecase/CreateOrderByUserUseCase";
-import CreateOrderController from "../../controllers/Orders/CreateOrderByUserController";
+
 import { verifyToken } from "../../middleware/verifyToken";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
+import CreateOrderByUserUseCase from "../../useCases/OrderUsecase/CreateOrderByUserUseCase";
+import CreateOrderByUserController from "../../controllers/Orders/CreateOrderByUserController";
+import ProductRepo from "../../repo/productRepo/productRepo";
 
 const router = Router();
 
 const userepo = new userRepo();
 const orderepo = new OrderRepo();
-const createOrderUseCase = new CreateOrderUseCase(orderepo, userepo);
+const productrepo = new ProductRepo();
+const createOrderUseCase = new CreateOrderByUserUseCase(orderepo, userepo,productrepo);
 
-const createOrderRoute = new CreateOrderController(createOrderUseCase);
+const createOrderRoute = new CreateOrderByUserController(createOrderUseCase);
 
 // custmer
 

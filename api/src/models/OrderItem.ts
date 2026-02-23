@@ -7,9 +7,9 @@ id?:number ;
   orderId:number ;
   productId:number;
   quantity:number;
-  unitPrice:number;
+  price:number;
   productName:string ;
-  totalPrice:number;
+ // totalPrice:number;
 
 
 }
@@ -76,9 +76,9 @@ export class OrderItem extends Model<IOrderItem> implements IOrderItem {
   public  orderId!:number ;
   public  productId!:number;
   public  quantity!:number;
-  public  unitPrice!:number;
+  public  price!:number;
   public  productName!:string ;
-  public  totalPrice!:number;
+ // public  totalPrice!:number;
     
   }
 
@@ -91,10 +91,10 @@ export class OrderItem extends Model<IOrderItem> implements IOrderItem {
         orderId: { type: DataTypes.INTEGER, allowNull: false },
         productId: { type: DataTypes.INTEGER, allowNull: false },
         quantity: { type: DataTypes.INTEGER, allowNull: false },
-        unitPrice: { type: DataTypes.INTEGER, allowNull: false, unique: true },
+        price: { type: DataTypes.INTEGER, allowNull: false, unique: true },
         productName: { type: DataTypes.STRING, allowNull: false },
      
-        totalPrice: { type: DataTypes.DOUBLE, allowNull: false },
+      //  totalPrice: { type: DataTypes.DOUBLE, allowNull: false },
       },
       {
         sequelize,

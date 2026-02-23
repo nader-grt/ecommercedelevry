@@ -21,6 +21,8 @@ private cacheTime = 0;
       raw:true
     });
 
+
+    console.log("dbbbbbbbbbbbbbb  ",products)
     const productMap = new Map<number, any>();
     for (const p of products) {
       productMap.set(p.id,  p);

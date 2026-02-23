@@ -1,3 +1,4 @@
+import { stringToDate } from "../../../util/conversionDateString";
 import { STATUS } from "../../Order";
 import OrderItemDomain from "../OrderItemDomain/OrderItemDomain";
 
@@ -10,6 +11,7 @@ export default class OrderDomain
 private  orderDate!:Date;
  private customerId!:number;
 private status!: STATUS;  
+private totalAmountOrder!:number ;
 
  
   private items: OrderItemDomain[] = [];
@@ -84,4 +86,35 @@ private status!: STATUS;
                             }
                             return total;
                         }
+
+                        /**
+                         private  orderDate!:Date;
+ private customerId!:number;
+private status!: STATUS;  
+                         */
+
+               public get GetCustmerId():number
+               {
+
+                return this.customerId ;
+               }
+               public get GetOrderDate():Date
+               {
+                 return (this.orderDate)
+               }
+               public get GetStatusOrder():any
+               {
+                 return (this.status)
+               }
+
+               //totalAmountOrder
+
+               public get GettotalAmountOrder():any
+               {
+                 return (this.getTotalAmount())
+               }
+               public get GetItems():any
+               {
+                return this.items ;
+               }
 }

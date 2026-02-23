@@ -41,7 +41,7 @@ export default class GetProductRandomController  extends BaseController
 
                                 const result = await this._getProductRandomUseCase.execute({
                                   random: random === "true",
-                                  limit: limit ? Number(limit) : 4,  // nbr 10 
+                                  limit: Number(limit) > 0 ? Number(limit) : 8,  // nbr 10 
                                 });
 
 
