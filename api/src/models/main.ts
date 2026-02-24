@@ -33,8 +33,8 @@ Product.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
 /* =========================
    User - Order (1 : N)
 ========================= */
-User.hasMany(Order, { foreignKey: "userId", as: "orders" });
-Order.belongsTo(User, { foreignKey: "userId", as: "user" });
+User.hasMany(Order, { foreignKey: "customerId", as: "orders" });
+Order.belongsTo(User, { foreignKey: "customerId", as: "user" });
 
 /* =========================
    Order - OrderItem (1 : N)

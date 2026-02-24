@@ -58,11 +58,13 @@ export default class OrderRepo extends IOrderRepo
    }
 
 
-   protected async FindOrderById(orderId:number,) :Promise<any> 
+   public async FindOrderById(id:number,) :Promise<any> 
    {  const t = await sequelize.transaction() ;
                     try {
-                      const order = await Order.findByPk(orderId, { raw: true ,transaction: t });
-                      return order;  
+
+                      console.log("id  repo  ",id)
+                       const order = await Order.findByPk(id, { raw: true ,transaction: t });
+                       return order;  
                   } catch (error) {
                       console.log(error);
                       return null; 
@@ -74,7 +76,7 @@ export default class OrderRepo extends IOrderRepo
    {
 
     const t = await sequelize.transaction() ;
-    const order = await this.FindOrderById(orderId);
+   // const order = await this.FindOrderById(orderId);
               try {
                 
 
@@ -97,12 +99,23 @@ export default class OrderRepo extends IOrderRepo
                 await Order.destroy({ where: { id: orderId }, transaction: t });
         
                 await t.commit();
-                return "Order deleted successfully";
+                return true;
               } catch (error) {
                 await t.rollback();
                 console.log(error);
-                return "Error deleting order";
+                return false;
               }
+   }
+
+
+   public async UpdateOrderByAdminId(order:OrderDomain,orderId:number) :Promise<any> 
+   {
+                       const t = await sequelize.transaction() ;
+            try {
+              
+            } catch (error) {
+              
+            }
    }
     
 }
