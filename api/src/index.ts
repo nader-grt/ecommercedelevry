@@ -1,5 +1,5 @@
 import express from "express";
-import { sequelize } from "./models/main.js"; // make sure your path is correct
+import { sequelize } from "./models/main.js";
 import cors from "cors";
 
 
@@ -70,6 +70,14 @@ import updateOrderRoute from  "./routes/OrderRoute/UpdateOrderRoute.js"
 import deleteOrderRoute from  "./routes/OrderRoute/DeleteOrderRoute.js"
 import getOrderRoute from  "./routes/OrderRoute/GetOrderRoute.js"
 
+// OrderWithDeliveries
+
+import assignDeliveryRoute from  "./routes/OrderWithDeliveriesRoute/AssignDeliveryRoute.js"
+import cancelDeliveryOrder from  "./routes/OrderWithDeliveriesRoute/CancelDeliveryOrderRoute.js"
+import startDeliveryOrderRoute from  "./routes/OrderWithDeliveriesRoute/StartDeliveryOrderRoute.js"
+import completeDeliveryOrderRoute from  "./routes/OrderWithDeliveriesRoute/completeDeliveryOrderRoute.js"
+
+
 
 import { corsOptions } from "./corsConfig/corsConfig.js";
 
@@ -107,7 +115,7 @@ app.use("/api",getProductByCategoryRoute)  ;
 app.use("/api",getProductRoute)  ;
 
 
-//getProductRoute
+
 
 
 
@@ -171,8 +179,13 @@ app.use("/api",deleteOrderRoute)  ;
 app.use("/api",getOrderRoute)  ;
 app.use("/api",createOrderCustmorRoute)  ;
 
-//
+// DeliveryOrder
 
+
+app.use("/api",assignDeliveryRoute)  ;
+app.use("/api",cancelDeliveryOrder)  ;
+app.use("/api",startDeliveryOrderRoute)  ;
+app.use("/api",completeDeliveryOrderRoute)  ;
 
 //auth routes can be added similarly
 

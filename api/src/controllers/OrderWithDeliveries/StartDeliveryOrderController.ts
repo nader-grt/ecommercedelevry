@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 import { RequestAuth } from "../../middleware/verifyToken";
+import StartDeliveryOrderUseCase from "../../useCases/OrderWithDeliveriesUseCase/StartDeliveryOrderUseCase";
 
 
 
@@ -8,6 +9,12 @@ import { RequestAuth } from "../../middleware/verifyToken";
 export default class StartDeliveryOrderController extends BaseController
 {
 
+                  private _startDeliveryOrderUseCase!:StartDeliveryOrderUseCase
+                   constructor(startDeliveryOrderUseCase:StartDeliveryOrderUseCase)
+                   {
+                    super() ;
+                    this._startDeliveryOrderUseCase = startDeliveryOrderUseCase
+                   }
       protected  async executeImpl(req: RequestAuth, res: Response): Promise<any> {
           
 
