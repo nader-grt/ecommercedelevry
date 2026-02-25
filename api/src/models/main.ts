@@ -10,6 +10,7 @@ import { OrderModel } from "./Order";
 import { OrderItemModel } from "./OrderItem";
 import { DayWorkModel } from "./DayWork";
 import { DelivererDayWorkModel } from "./DelivererDayWork";
+import { OrderWithDeliverie, OrderWithDeliverieModel } from "./OrderWithDeliverie";
 
 // Initialize models
 export const User = UserModel(sequelize);
@@ -23,6 +24,7 @@ export const Order = OrderModel(sequelize);
 export const OrderItem = OrderItemModel(sequelize);
 export const DayWork = DayWorkModel(sequelize);
 export const DelivererDayWork= DelivererDayWorkModel(sequelize)
+export const orderwithdeliverie = OrderWithDeliverieModel(sequelize)
 
 /* =========================
    Category - Product (1 : N)
@@ -41,6 +43,24 @@ Order.belongsTo(User, { foreignKey: "customerId", as: "user" });
 ========================= */
 Order.hasMany(OrderItem, { foreignKey: "orderId", as: "items" });
 OrderItem.belongsTo(Order, { foreignKey: "orderId", as: "order" });
+
+
+/* =========================
+   Order - OrderWithDeliverie (1 : 1)
+========================= */
+Order.hasOne(OrderWithDeliverie, {foreignKey: 'orderId', as: 'orderwithdeliverie'});
+ OrderWithDeliverie.belongsTo(Order, {foreignKey: 'orderId',as: 'order',});
+
+
+ /* =========================
+   Deliverer - OrderWithDeliverie (1 : N)
+========================= */
+
+Deliverer.hasMany(OrderWithDeliverie, { foreignKey: 'deliveryPersonId',as: 'orderWithdeliveries', });
+OrderWithDeliverie.belongsTo(Deliverer, { foreignKey: 'deliveryPersonId', as: 'delivererPerson', });
+
+
+
 
 /* =========================
    Product - OrderItem (1 : N)
