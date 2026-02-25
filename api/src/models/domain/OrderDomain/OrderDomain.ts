@@ -2,7 +2,11 @@ import { stringToDate } from "../../../util/conversionDateString";
 import { STATUS } from "../../Order";
 import OrderItemDomain from "../OrderItemDomain/OrderItemDomain";
 
-
+export enum PAYMENT_STATUS {
+    UNPAID = 'unpaid',
+    PARTIAL = 'partial',
+    PAID = 'paid',
+  }
 
 export default class OrderDomain
 {
@@ -12,6 +16,8 @@ private  orderDate!:Date;
  private customerId!:number;
 private status!: STATUS;  
 private totalAmountOrder!:number ;
+private paymentStatus!: PAYMENT_STATUS;
+private paidAmount!: number;
 
  
   private items: OrderItemDomain[] = [];
@@ -22,6 +28,8 @@ private totalAmountOrder!:number ;
                                 this.customerId = customerId;
                                 this.orderDate = new Date();
                                 this.status = STATUS.PENDING;
+                                this.paymentStatus = PAYMENT_STATUS.UNPAID;
+                                this.paidAmount = 0;
                             }
 
 
@@ -47,15 +55,32 @@ private totalAmountOrder!:number ;
                         // 
                     }
 
-                        payWithCard() {
+                     
+
+                        payMoeny(amount: number) {
                             if (this.status !== STATUS.PENDING) {
-                            throw new Error("order already paid or closed");
+                              throw new Error("order is not payable");
                             }
+                          
+                            if (amount <= 0) {
+                              throw new Error("payment amount must be greater than zero");
+                            }
+                          
+                            this.paidAmount += amount;
+                          
+                            const total = this.getTotalAmount();
+                          
+                            if (this.paidAmount < total) {
+                              this.paymentStatus = PAYMENT_STATUS.PARTIAL;
+                            } else if (this.paidAmount === total) {
+                              this.paymentStatus = PAYMENT_STATUS.PAID;
+                              this.status = STATUS.PAID;
+                            } else {
+                              throw new Error("paid amount exceeds total order amount");
+                            }
+                          }
 
-                            this.status = STATUS.PAID;
-                        }
-
-                        ship() {
+                          markAsShipped() {
                             if (this.status !== STATUS.PAID) {
                             throw new Error("order must be paid before shipping");
                             }
@@ -63,7 +88,7 @@ private totalAmountOrder!:number ;
                             this.status = STATUS.SHIPPED;
                         }
 
-                        deliver() {
+                        markAsDelivered() {
                             if (this.status !== STATUS.SHIPPED) {
                             throw new Error("order must be shipped before delivery");
                             }
@@ -71,7 +96,7 @@ private totalAmountOrder!:number ;
                             this.status = STATUS.DELIVERED;
                         }
 
-                        cancel() {
+                        cancelOrder() {
                             if (this.status === STATUS.DELIVERED) {
                             throw new Error("cannot cancel delivered order");
                             }
@@ -117,4 +142,12 @@ private status!: STATUS;
                {
                 return this.items ;
                }
+
+               public get GetPaymentStatus() {
+                return this.paymentStatus;
+              }
+              
+              public get GetPaidAmount() {
+                return this.paidAmount;
+              }
 }

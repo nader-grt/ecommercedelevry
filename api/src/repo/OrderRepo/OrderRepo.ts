@@ -25,7 +25,9 @@ export default class OrderRepo extends IOrderRepo
                          customerId:order.GetCustmerId,
                          orderDate:order.GetOrderDate,
                          totalAmount:order.GettotalAmountOrder,
-                         status:order.GetStatusOrder
+                         status:order.GetStatusOrder,
+                         paymentStatus: order.GetPaymentStatus,
+                         paidAmount: order.GetPaidAmount,
                     }
 
                     console.log("dbbbbbbbbbbbb  ",orderMapper)

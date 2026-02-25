@@ -23,6 +23,13 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
+
+      /**
+       isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+       */
       carType: {
         type: Sequelize.STRING,
         allowNull: false,
