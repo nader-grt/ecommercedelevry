@@ -19,5 +19,12 @@ export default class CompleteDeliveryOrderController extends BaseController
       protected  async executeImpl(req: RequestAuth, res: Response): Promise<any> {
         const { deliveryId } = req.params;
         const delivererId = req.user?.id; 
+
+
+                         try {
+                          
+                         } catch (error) {
+                          console.log(error)
+                         }
       }
 }

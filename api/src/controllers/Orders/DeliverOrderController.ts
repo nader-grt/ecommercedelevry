@@ -3,7 +3,7 @@ import { BaseController } from "../../infra/BaseCOntroller";
 
 
 
-
+//deliveries  with update status order
 export default class DeliverOrderController extends BaseController {
   constructor() {
     super();

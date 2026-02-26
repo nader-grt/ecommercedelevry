@@ -20,9 +20,7 @@ export default class CreateOrderByUserController extends BaseController {
       ownerRole: req.user!.role,
     };
 
-    // const customerId = req.params.customerId
-    //   ? Number(req.params.customerId)
-    //   : actor.ownerId;
+
 
     try {
       const dto = {

@@ -12,9 +12,26 @@ export default class CancelOrderByUserController extends BaseController {
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
+              //orderId
+
+                        const {orderId} = req.params
+                          const actor = {
+                            ownerId: req.user!.id,
+                            ownerRole: req.user!.role
+                      };
+
+                     
     try {
 
 
+                    const dto = {
+                      orderId: Number(orderId),
+                      actor
+
+                    }
+
+
+                    await this._cancelOrderByUserUseCase.execute(dto)
                
     } catch (error) {
       console.log(error);

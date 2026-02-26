@@ -9,4 +9,5 @@ export default abstract class IOrderRepo {
     protected abstract FindOrderById(orderId:number) :Promise<any> ;
 
     protected abstract UpdateOrderByAdminId(order:OrderDomain,orderId:number) :Promise<any> ;
+    protected abstract CancelOrderByOrderIdWithUser(orderId:number,status:string):Promise<any> ;
 }

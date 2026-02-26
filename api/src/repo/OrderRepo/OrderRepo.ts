@@ -74,6 +74,43 @@ export default class OrderRepo extends IOrderRepo
 
    }
 
+   public async CancelOrderByOrderIdWithUser(orderId:number,status:string):Promise<any> 
+   {
+
+    const t = await sequelize.transaction() ;
+  
+              try {
+                
+
+
+        
+                 if (status === "pending") {
+        
+
+               //   console.log("sssssssssssssssssssssssssssssssss  ")
+                          await OrderItem.destroy({ where: { orderId }, transaction: t });
+        
+                                    
+                            await Order.destroy({ where: { id: orderId }, transaction: t });
+                                
+                     await t.commit();
+                 }else
+                 {
+                  await t.rollback();
+                  return false;
+                 }
+        
+              
+       
+                return true;
+              } catch (error) {
+                await t.rollback();
+                console.log(error);
+                return false;
+              }
+   }
+
+
    public async DeleteOrderByIdAdmin(orderId:number):Promise<any> 
    {
 
@@ -108,7 +145,6 @@ export default class OrderRepo extends IOrderRepo
                 return false;
               }
    }
-
 
    public async UpdateOrderByAdminId(order:OrderDomain,orderId:number) :Promise<any> 
    {

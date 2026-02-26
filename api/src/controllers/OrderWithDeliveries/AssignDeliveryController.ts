@@ -17,5 +17,11 @@ export default class AssignDeliveryController extends BaseController
                        
                         const { deliveryId } = req.params;
                         const { deliveryPersonId } = req.body;
+
+                        try {
+                              
+                        } catch (error) {
+                              console.log(error)
+                        }
       }
 }

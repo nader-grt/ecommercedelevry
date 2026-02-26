@@ -17,5 +17,11 @@ export default class CancelDeliveryOrderController extends BaseController
       protected  async executeImpl(req: Request, res: Response): Promise<any> {
           
         const { deliveryId } = req.params;
+
+                   try {
+                    
+                   } catch (error) {
+                    console.log(error)
+                   }
       }
 }
