@@ -70,6 +70,8 @@ import updateOrderRoute from  "./routes/OrderRoute/UpdateOrderRoute.js"
 import deleteOrderRoute from  "./routes/OrderRoute/DeleteOrderRoute.js"
 import getOrderRoute from  "./routes/OrderRoute/GetOrderRoute.js"
 import cancelOrderByUserRoute from  "./routes/OrderRoute/CancelOrderByUserRoute.js"
+import payOrderByUserRoute from  "./routes/OrderRoute/PayOrderRoute.js"
+import shipOrderRoute from  "./routes/OrderRoute/ShipOrderRoute.js"
 
 // OrderWithDeliveries
 
@@ -179,7 +181,9 @@ app.use("/api",updateOrderRoute)  ;
 app.use("/api",deleteOrderRoute)  ;
 app.use("/api",getOrderRoute)  ;
 app.use("/api",createOrderCustmorRoute)  ;
-app.use("/api",cancelOrderByUserRoute)
+app.use("/api",cancelOrderByUserRoute);
+app.use("/api",payOrderByUserRoute)
+app.use("/api",shipOrderRoute)
 
 // DeliveryOrder
 

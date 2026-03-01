@@ -5,7 +5,7 @@ import OrderRepo from "../../repo/OrderRepo/OrderRepo";
 
 interface IShipOrderDTO
 {
-    ordeId:number;
+    orderId:number;
     actor: {
         ownerId: number;
         ownerRole: string;
@@ -24,7 +24,28 @@ export default class ShipOrderUseCase
 
            async execute(dto:IShipOrderDTO):Promise<any>
             {
+                          
+                          try {
 
+                            console.log("dddddddddd ship ",dto)
+                            const order = await this._orderRepo.FindOrderById(dto.orderId) ;
+                            console.log("oooooooo  ",order)
+                              
+//// customerId orderId 
+                 const result =           await this._orderRepo.ShipOrderByOrderByAdmin({
+                                orderId:order.id,
+                            customerId:order.customerId
+                            })
+                            if(!result.success)
+                                {
+                                  return {success:false,}
+  
+                                }
+                                return {success:true,}
+
+                          } catch (error) {
+                            console.log(error)
+                          }
                 
             }
 }

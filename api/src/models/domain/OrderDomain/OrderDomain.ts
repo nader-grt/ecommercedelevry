@@ -31,7 +31,23 @@ private paidAmount!: number;
                                 this.paymentStatus = PAYMENT_STATUS.UNPAID;
                                 this.paidAmount = 0;
                             }
-
+                            static rehydrateFromDb(props: {
+                              id: number;
+                              customerId: number;
+                              status: STATUS;
+                              paymentStatus: PAYMENT_STATUS;
+                              paidAmount: number;
+                              orderDate: Date;
+                            }) {
+                              const order = new OrderDomain(props.customerId);
+                            
+                              order.status = props.status;
+                              order.paymentStatus = props.paymentStatus;
+                              order.paidAmount = props.paidAmount;
+                              order.orderDate = props.orderDate;
+                            
+                              return order;
+                            }
 
                                                 
                     addItem( productId: number, name: string, quantity: number, price: number ) 
@@ -57,10 +73,9 @@ private paidAmount!: number;
 
                      
 
-                        payMoeny(amount: number) {
-                            if (this.status !== STATUS.PENDING) {
-                              throw new Error("order is not payable");
-                            }
+                        payMoeny(amount: number ,totalDB:number) {
+                          console.log("amounttttt   ",amount)
+                       
                           
                             if (amount <= 0) {
                               throw new Error("payment amount must be greater than zero");
@@ -68,8 +83,10 @@ private paidAmount!: number;
                           
                             this.paidAmount += amount;
                           
-                            const total = this.getTotalAmount();
+                            const total = totalDB;
                           
+
+                            console.log("total paidAmount  ",total ,this.paidAmount)
                             if (this.paidAmount < total) {
                               this.paymentStatus = PAYMENT_STATUS.PARTIAL;
                             } else if (this.paidAmount === total) {
@@ -81,10 +98,15 @@ private paidAmount!: number;
                           }
 
                           markAsShipped() {
-                            if (this.status !== STATUS.PAID) {
-                            throw new Error("order must be paid before shipping");
+                            // if (this.paymentStatus !== PAYMENT_STATUS.PAID) {
+                            //   throw new Error("order must be paid before shipping");
+                            // }
+                          
+                            if (this.status !== STATUS.PENDING && this.status !== STATUS.PAID) {
+                              throw new Error("order cannot be shipped in current state");
                             }
-
+                          
+                            console.log("22222222222222 ssssssssshippedddddddddddd  ")
                             this.status = STATUS.SHIPPED;
                         }
 
@@ -92,7 +114,7 @@ private paidAmount!: number;
                             if (this.status !== STATUS.SHIPPED) {
                             throw new Error("order must be shipped before delivery");
                             }
-
+            
                             this.status = STATUS.DELIVERED;
                         }
 
@@ -109,7 +131,8 @@ private paidAmount!: number;
                             for (const item of this.items) {
                             total += item.getTotalPrice();
                             }
-                            return total;
+                            this.totalAmountOrder = total
+                            return  this.totalAmountOrder;
                         }
 
                         /**

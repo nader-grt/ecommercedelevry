@@ -66,6 +66,7 @@ export default class OrderRepo extends IOrderRepo
 
                       console.log("id  repo  ",id)
                        const order = await Order.findByPk(id, { raw: true ,transaction: t });
+                       console.log("ffffindddd  ",order)
                        return order;  
                   } catch (error) {
                       console.log(error);
@@ -156,4 +157,135 @@ export default class OrderRepo extends IOrderRepo
             }
    }
     
+   public async PayOrderByOrderByUser(data: {
+    orderId: number;
+    paidAmount: number;
+  }): Promise<any> {
+  
+    const t = await sequelize.transaction();
+  
+    try {
+      const { orderId, paidAmount } = data;
+  
+      const orderDB: any = await Order.findByPk(orderId, {
+        include: [
+          {
+            model: OrderItem,
+            as: "items", 
+          },
+        ],
+        transaction: t,
+        lock: t.LOCK.UPDATE, // 
+      });
+  
+      if (!orderDB) {
+        await t.rollback();
+        return { success: false, message: "Order not found" };
+      }
+  
+    
+      const orderDomain = new OrderDomain(orderDB.customerId);
+  
+      orderDomain["status"] = orderDB.status;
+      orderDomain["totalAmountOrder"] = orderDB.totalAmount
+    orderDomain["paymentStatus"] = orderDB.paymentStatus;
+    orderDomain["paidAmount"] = Number(orderDB.paidAmount);
+                        
+   console.log("dddom 1111 ",orderDomain )
+
+
+  orderDomain.payMoeny(paidAmount,orderDB.totalAmount);
+  
+      
+ 
+    
+
+      console.log("orderdomain  2 22222222222 ",orderDomain)
+  
+      
+      await Order.update(
+        {
+          status: orderDomain.GetStatusOrder,
+          paymentStatus: orderDomain.GetPaymentStatus,
+          paidAmount: orderDomain.GetPaidAmount,
+        },
+        { where: { id: orderId }, transaction: t }
+      );
+  
+      await t.commit();
+      return { success: true };
+  
+    } catch (error: any) {
+      await t.rollback();
+     // console.log("orderdomain  2  ",orderDomain)
+      return { success: false, message: error.message };
+    }
+  }
+
+  protected async GetOrderById(orderId:number) :Promise<OrderDomain | any> 
+  {
+                  const t = await sequelize.transaction() ;
+                  try {
+
+                  
+
+               
+
+                    console.log("id  repo  ",orderId)
+                    const order:any = await Order.findByPk(orderId, { raw: true ,transaction: t });
+                    if (!order) return null;
+                  
+
+                       
+
+                            await t.commit()
+                            return OrderDomain.rehydrateFromDb({
+                              id: order.id,
+                              customerId: order.customerId,
+                              status: order.status.toUpperCase(),        
+                              paymentStatus: order.paymentStatus.toUpperCase(),
+                              paidAmount: Number(order.paidAmount),
+                              orderDate: order.orderDate,
+                            });
+                } catch (error) {
+                    console.log(error);
+                    await t.rollback()
+                    return null; 
+                }
+  }
+
+  public async ShipOrderByOrderByAdmin(data:any):Promise<any> 
+  {
+                  const t = await sequelize.transaction();
+
+                  console.log("dddddddddddddd data       ",data)
+                  const  {customerId ,orderId }=data
+                 
+               
+                    try {
+
+                      const orderDomain = await this.GetOrderById(Number(orderId))
+                      orderDomain.markAsShipped();
+                      console.log("or22222222222  0",orderDomain)
+                      await Order.update(
+                        {
+                          status: orderDomain.GetStatusOrder,
+                    
+                        },
+                        { where: { id: orderId }, transaction: t }
+                      );
+                 
+
+                      console.log("repoooooo  ship  ," ,orderDomain.GetStatusOrder  , {customerId ,orderId },orderDomain)
+
+                      await t.commit();
+                      return { success: true };
+
+                        
+                    } catch (error:any) {
+                      await t.rollback();
+                       return { success: false, message: error.message };
+                    }
+      
+  }
 }

@@ -69,10 +69,11 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
 
 
 
-//  node
+  node
 const jwt = require("jsonwebtoken");
 
-//> require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f")
+//> require("jsonwebtoken").sign({ id: 1 ,
+email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",  { expiresIn: "7h" })
 
 
  node
@@ -81,8 +82,8 @@ const jwt = require("jsonwebtoken");
 Welcome to Node.js v22.17.0.
 Type ".help" for more information.
 > 
-require("jsonwebtoken").sign({ id: 1 ,email:"admin@test.com",role:"admin"}, 
-"467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",  { expiresIn: "7h" })
+
+
 
 
 
@@ -118,8 +119,8 @@ require("jsonwebtoken").sign(
 
 
 
- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcxNDM1MDAwLCJleHAiOjE3NzE0NjAyMDB9._PEIUxcFoFTcQXbMIA1qh95hdWuDMXxxjjOLXrWraAo
- * 
+
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzcyMzIwOTMzLCJleHAiOjE3NzIzNDYxMzN9.rmYHfGp_PgwwGemCAbI6aUPzK9Hzu8cHTtpMjYWwOoI 
 
 
 
