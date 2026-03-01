@@ -2,7 +2,7 @@
 
 
 
-export default class GetDelevryUseCase
+export default class GetDelevryPersonUseCase
 {
 
           constructor()

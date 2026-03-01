@@ -2,7 +2,7 @@
 
 
 
-export default class UpdateDelevryUseCase
+export default class UpdateDelevryPersonUseCase
 {
 
 

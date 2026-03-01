@@ -1,7 +1,7 @@
 
 
 
-export default abstract class IDelevryRepo {
+export default abstract class IDelevryPersonRepo {
 
   public  abstract      createDelevry(delevry:any):Promise<any>;
 

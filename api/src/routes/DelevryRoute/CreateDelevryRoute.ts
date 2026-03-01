@@ -1,11 +1,10 @@
 import { Request, Response, Router } from "express";
 
-
-import CreateDelevryController from "../../controllers/Delevry/CreateDelevryController";
+import CreateDelevryController from "../../controllers/DelevryPerson/CreateDelevryPersonController";
 import { verifyToken } from "../../middleware/verifyToken";
-import DeleveryRepo from "../../repo/delevryRepo/DeleveryRepo";
+import DeleveryRepo from "../../repo/delevryPersonRepo/DeleveryPersonRepo";
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
-import CreateDelevryUseCase from "../../useCases/DelevryUseCase/CreateDelevryUseCase";
+import CreateDelevryUseCase from "../../useCases/DelevryUseCase/CreateDelevryPersonUseCase";
 
 const router = Router();
 /**
@@ -13,23 +12,18 @@ const router = Router();
  * 
 
  */
-const  deleveryusecaseRepo =  new DeleveryRepo()
+const deleveryusecaseRepo = new DeleveryRepo();
 
+const userUsecaseRepo = new userRepo();
 
-const userUsecaseRepo = new  userRepo();
+const createDelevryUseCase = new CreateDelevryUseCase(
+  deleveryusecaseRepo,
+  userUsecaseRepo
+);
+const createDelevryRoute = new CreateDelevryController(createDelevryUseCase);
 
- const createDelevryUseCase = new    CreateDelevryUseCase(deleveryusecaseRepo,userUsecaseRepo) ;
-const createDelevryRoute  =  new CreateDelevryController(createDelevryUseCase)
+router.post("/create/delevry", verifyToken, (req: Request, res: Response) => {
+  createDelevryRoute.execute(req, res);
+});
 
-
-
-
-
-router.post("/create/delevry",verifyToken,(req:Request,res:Response) => {
-   
-    createDelevryRoute.execute(req,res)
-})
-
-
-
-export default router
+export default router;

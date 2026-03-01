@@ -1,23 +1,25 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import DeleveryRepo from "../../repo/delevryRepo/DeleveryRepo";
-import DelevryDomain from "../../models/domain/deleveryDomain/DelevryDomain";
+import DeleveryPersonRepo from "../../repo/delevryPersonRepo/DeleveryPersonRepo";
+
 import userDomain from "../../models/domain/auth/user/userDomain";
 
 import { userRepo } from "../../repo/auth/userRepo/userRepo";
 import { RequestAuth } from "../../middleware/verifyToken";
 import EmployeeRepo from "../../repo/employeeRepo/EmployeeRepo";
-import CreateDelevryUseCase from "../../useCases/DelevryUseCase/CreateDelevryUseCase";
+
+import CreateDelevryPersonUseCase from "../../useCases/DelevryUseCase/CreateDelevryPersonUseCase";
+import DeleveryPersonDomain from "../../models/domain/DeleveryPersonDomain/DelevryPersonDomain";
 
 export default interface IDelevry {
   carType: string;
   employeeId?: number;
 }
 
-export default class CreateDelevryController extends BaseController {
-  protected _DeleveryRepo: DeleveryRepo;
+export default class CreateDelevryPersonController extends BaseController {
+  protected _DeleveryPersonRepo: DeleveryPersonRepo;
 
-  protected _DelevryDomain: DelevryDomain;
+  protected _DelevryDomain: DeleveryPersonDomain;
   protected _userDomain: userDomain;
   protected _delevryUserRepo: userRepo;
 
@@ -31,23 +33,23 @@ export default class CreateDelevryController extends BaseController {
   private createDelevryDomain(
     delevryRequest: IDelevry,
     employeeId: number
-  ): DelevryDomain {
-    const delevry = new DelevryDomain();
+  ): DeleveryPersonDomain {
+    const delevry = new DeleveryPersonDomain();
 
     delevry.setCarType = delevryRequest.carType;
     delevry.setDelevryId = employeeId;
 
     return delevry;
   }
-      private _createDelevryUseCase!:CreateDelevryUseCase
-  constructor(CreateDelevryUseCase:CreateDelevryUseCase) {
+  private _createDelevryPersonUseCase!: CreateDelevryPersonUseCase;
+  constructor(CreateDelevryPersonUseCase: CreateDelevryPersonUseCase) {
     super();
-    this._DeleveryRepo = new DeleveryRepo();
-    this._DelevryDomain = new DelevryDomain();
+    this._DeleveryPersonRepo = new DeleveryPersonRepo();
+    this._DelevryDomain = new DeleveryPersonDomain();
     this._userDomain = new userDomain();
     this._delevryUserRepo = new userRepo();
 
-    this._createDelevryUseCase = CreateDelevryUseCase
+    this._createDelevryPersonUseCase = CreateDelevryPersonUseCase;
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
@@ -66,7 +68,7 @@ export default class CreateDelevryController extends BaseController {
     //  let empDelevry:any ;
 
     try {
-      userIsDelevry = await this._DeleveryRepo.getUserDelevredById(
+      userIsDelevry = await this._DeleveryPersonRepo.getUserDelevredById(
         delevryIdEmp
       );
 
@@ -113,7 +115,7 @@ export default class CreateDelevryController extends BaseController {
         );
       }
 
-      //   await this._DeleveryRepo.createDelevry(delevryDomain)
+      //   await this._DeleveryPersonRepo.createDelevry(delevryDomain)
 
       //  this.ok(res, { message: "delevry  created  successfully" });
     } catch (error) {

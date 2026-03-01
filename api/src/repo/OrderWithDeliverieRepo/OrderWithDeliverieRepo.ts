@@ -14,7 +14,7 @@ export default class OrderWithDeliverieRepo extends IOrderWithDeliverieRepo {
         localTransaction = true;
       }
 
-      console.log("Creating OrderWithDeliver:", orderWithDeliver);
+
 
       const mapperOrderWith:any = {
         orderId: orderWithDeliver.orderId,
@@ -34,14 +34,12 @@ export default class OrderWithDeliverieRepo extends IOrderWithDeliverieRepo {
    
       if (localTransaction) await transaction.commit();
 
-      console.log("OrderWithDeliver created:", orderWithDel);
+      console.log("OrderWithDeliver created", orderWithDel);
       return orderWithDel;
 
     } catch (error) {
-      
       if (localTransaction && transaction) await transaction.rollback();
-      console.error("Error creating OrderWithDeliver:", error);
-      throw error; //
+      throw error; 
     }
   }
 

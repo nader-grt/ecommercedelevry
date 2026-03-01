@@ -15,7 +15,7 @@ export enum Role {
 
 
 
-export default interface IDeliverery {
+export default interface IDelivereryPerson {
   id?: number;
  // workingTime:string ;
   carType?:string;
@@ -23,7 +23,7 @@ export default interface IDeliverery {
 
 }
 
-export class Deliverery extends Model<IDeliverery> implements IDeliverery {
+export class DelivererPerson extends Model<IDelivereryPerson> implements IDelivereryPerson {
   public id!: number;
  // public daysOfWork!: number;
   public workingTime!:string;
@@ -34,8 +34,8 @@ export class Deliverery extends Model<IDeliverery> implements IDeliverery {
 
 
 
-export function DelivererModel(sequelize: Sequelize) {
-    Deliverery.init(
+export function DelivererPersonModel(sequelize: Sequelize) {
+  DelivererPerson.init(
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     //  workingTime: { type: DataTypes.INTEGER, allowNull: false },
@@ -50,5 +50,5 @@ export function DelivererModel(sequelize: Sequelize) {
     }
   );
 
-  return Deliverery;
+  return DelivererPerson;
 }

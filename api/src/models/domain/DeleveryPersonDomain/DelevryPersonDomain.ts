@@ -1,13 +1,13 @@
 import EmployeesDomain from "../EmployeeDomain/EmployeeDomain";
 
-export default class DelevryDomain extends EmployeesDomain
+export default class DeleveryPersonDomain extends EmployeesDomain
 {
 
 
 
   
     private carType: string = "";
-   private employeeId! :number ;
+   protected employeeId! :number ;
 
   
 
@@ -15,26 +15,7 @@ export default class DelevryDomain extends EmployeesDomain
         super();
       }
           
-        //  public get getDaysOfWork():string
-        //  {
-        //     return this.daysOfWork ;
-        //  }
 
-        //  public set setDaysOfWork(value:string)
-        //  {
-        //      this.daysOfWork  = value ;
-        //  }
-
-        //  public get getWorkingTime():string
-        //  {
-        //     return  this.workingTime ;
-        //  }
-
-        //  public set setWorkingTime(value:string)
-        //  {
-        
-        //      this.workingTime  = value ;
-        //  }
 
 
          //work with image 

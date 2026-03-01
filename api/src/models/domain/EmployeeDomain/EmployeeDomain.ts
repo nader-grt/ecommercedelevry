@@ -3,7 +3,7 @@ import userDomain from "../auth/user/userDomain";
 export default class EmployeesDomain extends userDomain
 {
 
-  private employeeId!: number;
+  protected employeeId!: number;
   private salary!: number;
   private hiredAt!: Date;
   protected userId!: number;

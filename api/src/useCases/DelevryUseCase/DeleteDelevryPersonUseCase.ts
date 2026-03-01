@@ -1,6 +1,6 @@
 
 
-export default class DeleteDelevryUseCase
+export default class DeleteDelevryPersonUseCase
 {
 
 

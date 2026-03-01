@@ -4,7 +4,7 @@ import { BaseController } from "../../infra/BaseCOntroller";
 
 
 
-export default class GetAllDelevryController extends BaseController
+export default class GetAllDelevryPersonController extends BaseController
 {
 
 

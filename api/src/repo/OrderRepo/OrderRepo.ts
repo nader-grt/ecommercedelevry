@@ -286,7 +286,7 @@ export default class OrderRepo extends IOrderRepo
             console.log("orderWithDeliverieDomain  ",orderWithDeliverieDomain)
                    const orderwithdel =          await orderWithDeliverie.CreateOrderWithDeliver(orderWithDeliverieDomain,t)
 
-                   //  await Orderwithdeliverie.create(orderWithDeliver,{transaction: t })
+          
                    console.log("555555555  orderwithdel  ",orderwithdel)
                       await t.commit();
                       return { success: true };
