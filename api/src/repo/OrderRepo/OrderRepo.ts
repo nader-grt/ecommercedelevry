@@ -2,6 +2,8 @@ import OrderDomain from "../../models/domain/OrderDomain/OrderDomain";
 import IOrderRepo from "./IOrderRepo";
 import sequelize from "../../dbConfig/config";
 import { Order, OrderItem } from "../../models/main";
+import OrderWithDeliverieRepo from "../OrderWithDeliverieRepo/OrderWithDeliverieRepo";
+import OrderWithDeliverieDomain from "../../models/domain/OrderWithDeliverieDomain/OrderWithDeliverieDomain";
 
 
 
@@ -266,7 +268,7 @@ export default class OrderRepo extends IOrderRepo
 
                       const orderDomain = await this.GetOrderById(Number(orderId))
                       orderDomain.markAsShipped();
-                      console.log("or22222222222  0",orderDomain)
+                  //    console.log("or22222222222  0",orderDomain)
                       await Order.update(
                         {
                           status: orderDomain.GetStatusOrder,
@@ -276,8 +278,16 @@ export default class OrderRepo extends IOrderRepo
                       );
                  
 
-                      console.log("repoooooo  ship  ," ,orderDomain.GetStatusOrder  , {customerId ,orderId },orderDomain)
+                      console.log("repoooooo  ship  ,orderDomain.id  ",orderDomain.id ,orderDomain.GetStatusOrder  , {customerId ,orderId },orderDomain)
 
+                      const orderWithDeliverieDomain = new OrderWithDeliverieDomain(orderId)
+            const orderWithDeliverie = new OrderWithDeliverieRepo()
+
+            console.log("orderWithDeliverieDomain  ",orderWithDeliverieDomain)
+                   const orderwithdel =          await orderWithDeliverie.CreateOrderWithDeliver(orderWithDeliverieDomain,t)
+
+                   //  await Orderwithdeliverie.create(orderWithDeliver,{transaction: t })
+                   console.log("555555555  orderwithdel  ",orderwithdel)
                       await t.commit();
                       return { success: true };
 

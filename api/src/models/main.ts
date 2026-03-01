@@ -24,7 +24,7 @@ export const Order = OrderModel(sequelize);
 export const OrderItem = OrderItemModel(sequelize);
 export const DayWork = DayWorkModel(sequelize);
 export const DelivererDayWork= DelivererDayWorkModel(sequelize)
-export const orderwithdeliverie = OrderWithDeliverieModel(sequelize)
+export const Orderwithdeliverie = OrderWithDeliverieModel(sequelize)
 
 /* =========================
    Category - Product (1 : N)

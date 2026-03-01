@@ -5,7 +5,7 @@ enum DELIVERY_STATUS {
     CANCELLED = 'CANCELLED'
   }
   
-  class OrderWithDeliverieDomain {
+ export default class OrderWithDeliverieDomain {
     private orderId: number;
     private deliveryPersonId?: number;
     private status: DELIVERY_STATUS;

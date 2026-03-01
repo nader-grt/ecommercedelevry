@@ -94,6 +94,9 @@ npx sequelize-cli migration:generate --name remove-totalPrice-from-orderitems
 // add constrain unique_order_product
 npx sequelize-cli migration:generate --name add-constrain_unique_order_product-from-orderitems
 //deliveryorder
+//add champ for DeliverieOrders
+npx sequelize-cli migration:generate --name add-champ_DeliverieOrders-timesstamp
+
 npx sequelize-cli migration:generate --name create-deliverieswithorder-table
 run  xampp  
 
