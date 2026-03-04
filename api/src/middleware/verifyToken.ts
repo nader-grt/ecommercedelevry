@@ -73,7 +73,7 @@ export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):
 const jwt = require("jsonwebtoken");
 
 //> require("jsonwebtoken").sign({ id: 1 ,
-email:"admin@test.com",role:"USER"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",  { expiresIn: "7h" })
+email:"admin@test.com",role:"ADMIN"}, "467b6483be6518a7132630d80b43f54c002c312bdd2da068242540282079439f",  { expiresIn: "7h" }) ;
 
 
  node

@@ -20,5 +20,11 @@ export default class StartDeliveryOrderController extends BaseController
 
         const { deliveryId } = req.params;
         const delivererId = req.user?.id;
+
+                         try {
+                          
+                         } catch (error) {
+                             console.log(error)
+                         }
       }
 }

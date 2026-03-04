@@ -14,7 +14,7 @@ module.exports = {
       orderId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true, //  Order 1 ─── 0..1 Delivery
+        unique: true, 
         references: {
           model: 'Orders',
           key: 'id',
@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'deliverers',// teble delivrer person
+          model: 'deliverers',// tzble delivrer person
           key: 'id',
         },
         onDelete: 'SET NULL',

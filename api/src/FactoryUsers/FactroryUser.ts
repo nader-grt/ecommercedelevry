@@ -14,43 +14,45 @@ import UpdateUserProfileUseCase from "../useCases/userUseCase/UpdateUserProfileU
 
 
 export class UserControllerFactory {
+
+  private static  repo= new userRepo() ;
   static createGetProfileController() {
-    const repo = new userRepo();
-    const useCase = new GetProfileUserUseCase(repo);
+   // const repo = new userRepo();
+    const useCase = new GetProfileUserUseCase(this.repo);
     return new GetProfileUserController(useCase);
   }
 
   static createGetUserByAdminController() {
-    const repo = new userRepo();
+//    const repo = new userRepo();
 
-    const useCase = new GetUserByAdminUseCase(repo);
+    const useCase = new GetUserByAdminUseCase(this.repo);
     return new GetUserByAdminController(useCase);
   }
 
   static GetAllUserController() {
-    const repo = new userRepo();
+   // const repo = new userRepo();
 
-    const useCase = new GetAllUserUseCase(repo);
+    const useCase = new GetAllUserUseCase(this.repo);
     return new GetAllUserCOntroller(useCase);
   }
   static UpdateUserByAdminrController() {
-    const repo = new userRepo();
+  //  const repo = new userRepo();
 
-    const useCase = new updateUserByAdminUseCase(repo);
+    const useCase = new updateUserByAdminUseCase(this.repo);
     return new updateUserByAdminController(useCase);
   }
 
   static UpdateProfileUserrController() {
-    const repo = new userRepo();
+   
 
-    const useCase = new UpdateUserProfileUseCase(repo);
+    const useCase = new UpdateUserProfileUseCase(this.repo);
     return new  updateProfileUserController(useCase);
   }
 
   static DeleteUserrController() {
-    const repo = new userRepo();
+  //  const repo = new userRepo();
 
-    const useCase = new DeleteUserUseCase(repo);
+    const useCase = new DeleteUserUseCase(this.repo);
     return new  DeleteUserController(useCase);
   }
 }

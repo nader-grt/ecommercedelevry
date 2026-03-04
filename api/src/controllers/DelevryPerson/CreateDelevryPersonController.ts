@@ -19,13 +19,13 @@ export default interface IDelevry {
 export default class CreateDelevryPersonController extends BaseController {
   protected _DeleveryPersonRepo: DeleveryPersonRepo;
 
-  protected _DelevryDomain: DeleveryPersonDomain;
+  protected _delevryPersonDomain: DeleveryPersonDomain;
   protected _userDomain: userDomain;
   protected _delevryUserRepo: userRepo;
 
   private async _ReadDelevry(delevryRequest: IDelevry): Promise<any> {
     return {
-      carType: (this._DelevryDomain.setCarType = delevryRequest.carType),
+      carType: (this._delevryPersonDomain.setCarType = delevryRequest.carType),
       employeeId: delevryRequest.employeeId,
     };
   }
@@ -45,7 +45,7 @@ export default class CreateDelevryPersonController extends BaseController {
   constructor(CreateDelevryPersonUseCase: CreateDelevryPersonUseCase) {
     super();
     this._DeleveryPersonRepo = new DeleveryPersonRepo();
-    this._DelevryDomain = new DeleveryPersonDomain();
+    this._delevryPersonDomain = new DeleveryPersonDomain();
     this._userDomain = new userDomain();
     this._delevryUserRepo = new userRepo();
 
