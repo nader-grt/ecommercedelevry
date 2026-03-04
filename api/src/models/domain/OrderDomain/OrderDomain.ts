@@ -31,7 +31,7 @@ private paidAmount!: number;
                                 this.paymentStatus = PAYMENT_STATUS.UNPAID;
                                 this.paidAmount = 0;
                             }
-                            static rehydrateFromDb(props: {
+                            static reBuildOrderInit(props: {
                               id: number;
                               customerId: number;
                               status: STATUS;

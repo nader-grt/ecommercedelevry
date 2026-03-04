@@ -80,7 +80,7 @@ export default class OrderWithDeliverieRepo extends IOrderWithDeliverieRepo {
                                 );
                            if(!orderWithDel) return null
 
-                           return OrderWithDeliverieDomain.reconstructorFromDb( {
+                           return OrderWithDeliverieDomain.reStoreOrBuildOrder( {
    
                             orderId: Number(orderWithDel.orderId),
                             status: orderWithDel.status,

@@ -26,7 +26,7 @@ enum DELIVERY_STATUS {
       this.deliveryPersonId = personId;
     }
 
-    static reconstructorFromDb(data: {
+    static reStoreOrBuildOrder(data: {
    
       orderId: number;
       status: DELIVERY_STATUS;

@@ -241,7 +241,7 @@ export default class OrderRepo extends IOrderRepo
                        
 
                             await t.commit()
-                            return OrderDomain.rehydrateFromDb({
+                            return OrderDomain.reBuildOrderInit({
                               id: order.id,
                               customerId: order.customerId,
                               status: order.status.toUpperCase(),        
