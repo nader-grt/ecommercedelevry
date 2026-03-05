@@ -28,8 +28,8 @@ export default class RegisterController extends BaseController {
         phone: Joi.string().min(6).max(20).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        city: Joi.string().optional(),
-        address: Joi.string().optional(),
+        // city: Joi.string().optional(),
+        // address: Joi.string().optional(),
         role: Joi.string()
             .valid('user', 'admin', 'supplier', 'deliverer', 'secrtrie')
             .optional()
@@ -39,7 +39,7 @@ export default class RegisterController extends BaseController {
       if (error) return this.badRequest(res, error.details[0].message);
       //let role = value.role ? value.role : Role.USER;
 
-      const { firstName, lastName, phone, email, password, city, address ,role} = value;
+      const { firstName, lastName, phone, email, password ,role} = value;
 
     
       const exists = await this._userRepo.IsExistUser(email);
@@ -54,8 +54,8 @@ export default class RegisterController extends BaseController {
       this._userDomain.setPhone = phone;
       this._userDomain.setEmail = email;
       this._userDomain.setPassword = hashedPassword;
-      this._userDomain.setCity = city;
-      this._userDomain.setAddress = address;
+      // this._userDomain.setCity = city;
+      // this._userDomain.setAddress = address;
       this._userDomain.setRole = role; 
 
       //  Save user
@@ -67,8 +67,6 @@ export default class RegisterController extends BaseController {
         phone: this._userDomain.getPhone,
         email: this._userDomain.getEmail,
         password: hashedPassword,
-        city: this._userDomain.getCity,
-        address: this._userDomain.getAddress,
         role: this._userDomain.getRole,
       });
 

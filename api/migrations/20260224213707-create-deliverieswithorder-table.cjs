@@ -37,7 +37,7 @@ module.exports = {
           'PENDING_PICKUP',
           'IN_TRANSIT',
           'DELIVERED',
-          'CANCELLED'
+          'CANCELLED'//NOTDELIVERD (choice : delivery refused from customer, customer not reached, others)
         ),
         allowNull: false,
         defaultValue: 'PENDING_PICKUP',
@@ -47,6 +47,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      // comment: { // the time when the dilivery person picked up the order
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
 
       deliveredAt: {// the actual time when the order was delivered to the customer
         type: Sequelize.DATE,

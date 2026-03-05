@@ -10,8 +10,8 @@ export default interface IUserResponse {
   email: string;
 
   role?: Role;
-  city?: string;
-  address?: string;
+  //city?: string;
+  //address?: string;
 }
 
 export interface IUserRegister {
@@ -22,8 +22,8 @@ export interface IUserRegister {
   email: string;
   password: string;
   role?: Role;
-  city?: string;
-  address?: string;
+  //city?: string;
+//  address?: string;
 }
 
 export class userRepo extends IUserRepoInterface {
@@ -81,8 +81,8 @@ export class userRepo extends IUserRepoInterface {
         phone: user.phone,
         email: user.email,
         role: user.role,
-        city: user.city,
-        address: user.address,
+      //  city: user.city,
+       // address: user.address,
       }
     } catch (error) {
       console.log(error);
@@ -116,8 +116,8 @@ export class userRepo extends IUserRepoInterface {
                   phone: user.phone,
                   email: user.email,
                   role: user.role,
-                  city: user.city,
-                  address: user.address,
+                //  city: user.city,
+                 // address: user.address,
                 }
       });
  
@@ -149,7 +149,7 @@ export class userRepo extends IUserRepoInterface {
           firstName: user.firstName,
           lastName: user.lastName,
           phone: user.phone,
-          address: user.address,
+        //  address: user.address,
         },
         {
           where: { id: userid },
@@ -170,8 +170,8 @@ export class userRepo extends IUserRepoInterface {
           firstName: user.firstName,
           lastName: user.lastName,
           phone: user.phone,
-          address: user.address,
-          city : user.city,
+        //  address: user.address,
+         // city : user.city,
           role:user.role
         
         },

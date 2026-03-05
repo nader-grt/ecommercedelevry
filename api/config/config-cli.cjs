@@ -77,6 +77,16 @@ secrtries
 npx sequelize-cli migration:generate --name create-secrtriesdayWorks
 
 
+//phone 
+npx sequelize-cli migration:generate --name create-phones
+Addressusers
+npx sequelize-cli migration:generate --name create-addresses 
+OrderAddresses
+npx sequelize-cli migration:generate --name create-OrderAddresses 
+remove address remove city 
+npx sequelize-cli migration:generate --name remove-city-address-from-users
+
+
 view 
 npx sequelize-cli migration:generate --name create-deliverer-work-days-view
 

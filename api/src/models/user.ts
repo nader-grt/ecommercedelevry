@@ -46,8 +46,8 @@ export default interface IUser {
   email: string;
   password?: string;
   role?: Role;
-  city?: string;
-  address?: string;
+  //city?: string;
+  //address?: string;
 }
 
 export class User extends Model<IUser> implements IUser {
@@ -58,8 +58,8 @@ export class User extends Model<IUser> implements IUser {
   public email!: string;
   public password!: string;
   public role!: Role;
-  public city!: string;
-  public address!: string;
+  //public city!: string;
+ // public address!: string;
 }
 
 export function UserModel(sequelize: Sequelize) {
@@ -76,8 +76,8 @@ export function UserModel(sequelize: Sequelize) {
         allowNull: false,
        // defaultValue: Role.USER,
       },
-      city: { type: DataTypes.STRING, allowNull: false },
-      address: { type: DataTypes.STRING, allowNull: false },
+     // city: { type: DataTypes.STRING, allowNull: false },
+     // address: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,

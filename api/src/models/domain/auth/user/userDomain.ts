@@ -133,8 +133,8 @@ export default class userDomain {
         lastName: user.lastName,
         phone: user.phone,
         email: user.email,
-        city: user.city,
-        address: user.address,
+     //   city: user.city,
+       // address: user.address,
       };
     });
     return users;
@@ -149,8 +149,8 @@ export default class userDomain {
           this.lastName = data.lastName;
           this.email = data.email;
           this.phone = data.phone;
-          this.city = data.city;
-          this.address = data.address;
+        //  this.city = data.city;
+          //this.address = data.address;
         }
   
               public updateByAdmin(data: UpdateByAdminData): void {

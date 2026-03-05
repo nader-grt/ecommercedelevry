@@ -52,7 +52,7 @@ export default class LoginController extends BaseController {
           }
 
       const user = await this._registerUserRepo.FindUserByEmailLogin(email);
-
+           console.log("uuuuuuuuuuuu  ",user)
 
       if (!user) return this.unauthorized(res, "user not found  ");
 
