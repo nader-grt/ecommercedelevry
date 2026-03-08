@@ -1,4 +1,4 @@
-// src/auth/pages/RegisterPage.tsx
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
@@ -10,7 +10,7 @@ export const LoginPage = () => {
   
     email: "",
     password: "",
-    role: "ADMIN",
+   // role: "ADMIN",
   });
   const [error, setError] = useState("");
 
@@ -24,11 +24,10 @@ export const LoginPage = () => {
 
     try {
       const data = await loginUser(form); // 
-
-     console.log("register data  ",data)
-      await authProvider.login({ email: form.email, password: form.password });
-
-   
+     
+     
+    await  authProvider.updateAccessToken(data.accessToken);
+  
       navigate("/");
 
     } catch (err: any) {

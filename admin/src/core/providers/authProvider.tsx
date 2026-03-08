@@ -1,25 +1,42 @@
+
+
+let accessToken: string | null = null;
 const authProvider = {
-  login: async ({ email, password }: any) => {
+  login: async ({ email, password }: { email: string; password: string }) => {
+    
     const res = await fetch("http://localhost:4000/api/login", {
       method: "POST",
-      credentials: "include",
+      credentials: "include", //   
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await res.json();
-
     if (!res.ok) {
-      throw new Error(data.message || "Login failed");
+      const error = await res.json();
+      throw new Error(error.message || "Login failed");
     }
 
-    return Promise.resolve();
+    const data = await res.json();
+    authProvider.updateAccessToken(data.accessToken); // 
+    return data;
+  },
+ 
+  updateAccessToken: (token: string) => {
+    accessToken = token;
   },
 
-  logout: () => {
-    localStorage.removeItem("token");
-    return Promise.resolve();
+ 
+  getAccessToken: (): string | null => {
+    return accessToken;
   },
+
+
+  // logout:async () => {
+  //   const res = await fetch("http://localhost:4000/api/logout", {
+  //     credentials: "include",
+  //   });
+  //   return Promise.resolve();
+  // },
 
   checkAuth: async () => {
     const res = await fetch("http://localhost:4000/api/me", {
@@ -40,16 +57,7 @@ const authProvider = {
     return Promise.resolve();
   },
 
-  getIdentity: () => {
-    const token = localStorage.getItem("token");
 
-    return token
-      ? Promise.resolve({
-          id: 1,
-          fullName: "User Name",
-        })
-      : Promise.reject();
-  },
 
   getPermissions: () => Promise.resolve(),
 };

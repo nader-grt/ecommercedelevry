@@ -1,9 +1,19 @@
-import React from 'react'
+import {  Title } from "react-admin";
+import { CardContent, Typography ,Card, Grid } from "@mui/material";
 
-function Dashboard() {
+const Dashboard = () => {
   return (
-    <div>Dashboard</div>
-  )
-}
+    <div>
+    
+ 
+    
+          
+         
 
-export default Dashboard
+     
+   
+    </div>
+  );
+};
+
+export default Dashboard;

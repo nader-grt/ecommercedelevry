@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Admin, Resource } from "react-admin";
 
 import authProvider from "./core/providers/authProvider";
-import dataProvider from "./core/providers/dataProvider";
 
-import MyLayout from "./core/layout/MyLayout";
 import Dashboard from "./dashboard/Dashboard";
 
 import { RegisterPage } from "./auth/pages/RegisterPage";
 import { LoginPage } from "./auth/pages/LoginPage";
+import MyLayout from "./core/layout/MyLayout";
+import themes from "./modules/themes";
+import dataProvider from "./core/providers/dataProvider";
+import { CreateUser, EditUser, ListUsers, ShowUser } from "./modules/users";
 
 const App = () => {
   return (
@@ -20,14 +22,22 @@ const App = () => {
           path="/*"
           element={
             <Admin
-             // dataProvider={dataProvider}
+            dataProvider={dataProvider}
               authProvider={authProvider}
-              dashboard={Dashboard}
-            //  layout={MyLayout}
+             dashboard={Dashboard}
+             layout={MyLayout}
+             {...themes}
             >
-              {/* <Resource name="users" /> */}
+          
 
-              <Resource name="dashboard" list={Dashboard} />
+          <Resource
+    name="users"
+    list={ListUsers}
+    create={CreateUser}
+    edit={EditUser}
+    show={ShowUser}
+  />
+              <Resource name="dashboard"  />
             </Admin>
           }
         />
