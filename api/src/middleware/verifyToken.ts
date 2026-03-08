@@ -1,68 +1,78 @@
-import { Request, Response, NextFunction } from 'express';
-import { Role } from '../models/user';
-import jwt   from "jsonwebtoken";
-import extractIdFromUser from './extractIdFromUser';
+import { Request, Response, NextFunction } from "express";
+import { Role } from "../models/user";
+import jwt from "jsonwebtoken";
+import extractIdFromUser from "./extractIdFromUser";
 
-export  interface RequestAuth extends Request {
-    user?:{
-    
-        email:string ;
-        role:Role ;
-        id:number ;
-    }
+export interface RequestAuth extends Request {
+  user?: {
+    email: string;
+    role: Role;
+    id: number;
+  };
 }
 
+export function verifyToken(
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+): any {
+  const authHeader = req.headers.authorization;
+  //  const token = req.cookies.accessToken;
 
+  // const token:any = authHeader?.split(' ')[1]
 
-export  function  verifyToken(req:RequestAuth, res:Response, next:NextFunction):any{
+  //console.log("tttttttttt", token )
 
-  
+  const headerToken = req.headers.authorization?.split(" ")[1];
+  const cookieToken = req.cookies?.accessToken;
 
-    const authHeader = req.headers.authorization ;
+  const token = headerToken || cookieToken;
 
-    const token:any = authHeader?.split(' ')[1]
+  // if (authHeader && authHeader.startsWith("Bearer ")) {
+  //   token = authHeader.split(" ")[1];
+  // }
 
-//console.log("tttttttttt", token )
+  // if (authHeader &&  authHeader?.split(' ')[1]) {
+  //   token = authHeader.split(" ")[1];
+  // }
 
-    if(!token)
-    {
-        return res.status(401).json({message:"Access Denied. No token provided"}) ;
-    }// ACCESS_TOKEN_SECRET  befor use JWT_SECRET
+  // console.log("tttttttttttttttt  ",token)
+  // if (token && req.cookies?.accessToken) {
+  //   token = req.cookies.accessToken;
+  // }
 
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Access Denied. No token provided" });
+  } // ACCESS_TOKEN_SECRET  befor use JWT_SECRET
 
-            try {
-                const decoded :any =       jwt.verify(token,  process.env.ACCESS_TOKEN_SECRET!)
-  
-                req.user = {
-                 email:decoded.email ,
-                 role:decoded.role ,
-                 id: decoded.id
-                }
-       
-              // console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
-                 extractIdFromUser(decoded.id) ;
-                   next() ;
-            
-              } catch (err:any) {
-                if (err?.name ===  "TokenExpiredError") {
-                  return res.status(401).json({
-                    message: "Access token expired"
-                  });
-                }
-            
-                return res.status(401).json({
-                  message: "Invalid access token"
-                });
-              }
+  try {
+    const decoded: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
 
+    req.user = {
+      email: decoded.email,
+      role: decoded.role,
+      id: decoded.id,
+    };
 
+    // console.log("222222222222222222222222",   req.user  ,"333333333333333333333   ",decoded.id )
+    extractIdFromUser(decoded.id);
+    next();
+  } catch (err: any) {
+    if (err?.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Access token expired",
+      });
+    }
+
+    return res.status(401).json({
+      message: "Invalid access token",
+    });
+  }
 }
 
 //  token user eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlkIjoyLCJpYXQiOjE3NjkyODE2Nzd9.eqrYjvB0Goh3tGhFXDZkAKgzB0ImD0-TxfhKuNxcQng
-
-
-
-
 
 /**
  * 

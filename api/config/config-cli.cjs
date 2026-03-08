@@ -6,7 +6,7 @@ module.exports = {
       database: "ecommercedelevry",
       host: "127.0.0.1",
       port: 3307,
-      dialect: "mysql"   
+      dialect: "mysql"    
     }
   };
   
@@ -26,6 +26,9 @@ module.exports = {
 
 
 npx sequelize-cli migration:generate --name create-Products
+
+//RefreshTokens
+npx sequelize-cli migration:generate --name create-RefreshTokens
 
 npx sequelize-cli migration:generate --name create-Categories
 //categories  npx sequelize-cli db:migrate:undo:all

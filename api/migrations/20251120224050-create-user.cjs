@@ -31,16 +31,16 @@ module.exports = {
         allowNull: false,
     
       },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: false,
-      },
-      address: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: false,
-      },
+      // city: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      //   unique: false,
+      // },
+      // address: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      //   unique: false,
+      // },
       role: {
         type: Sequelize.ENUM('user', 'admin','supplier','deliverer','secrtrie'),
         allowNull: false,

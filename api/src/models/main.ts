@@ -14,6 +14,7 @@ import {
   OrderWithDeliverie,
   OrderWithDeliverieModel,
 } from "./OrderWithDeliverie";
+import { RefreshTokenModel } from "./RefreshTokenModel";
 
 // Initialize models
 export const User = UserModel(sequelize);
@@ -28,6 +29,17 @@ export const OrderItem = OrderItemModel(sequelize);
 export const DayWork = DayWorkModel(sequelize);
 export const DelivererDayWork = DelivererDayWorkModel(sequelize);
 export const Orderwithdeliverie = OrderWithDeliverieModel(sequelize);
+export const RefreshToken = RefreshTokenModel(sequelize)
+
+
+
+/* =========================
+   User - RefreshToken (1 : N)
+========================= */
+User.hasMany(RefreshToken, { foreignKey: "userId", as: "users" });
+RefreshToken.belongsTo(User, { foreignKey: "userId", as: "tokens" });
+
+
 
 /* =========================
    Category - Product (1 : N)

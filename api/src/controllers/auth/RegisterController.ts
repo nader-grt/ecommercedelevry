@@ -82,6 +82,21 @@ export default class RegisterController extends BaseController {
          savedUser.id
       );
 
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: false, //
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 7, // 
+      });
+      
+      // Refresh Token cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 
+      });
       
       return this.ok(res, {
         message: "User registered successfully",

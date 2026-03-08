@@ -16,13 +16,13 @@ import UpdateUserProfileUseCase from "../useCases/userUseCase/UpdateUserProfileU
 export class UserControllerFactory {
 
   private static  repo= new userRepo() ;
-  static createGetProfileController() {
+  static GetProfileController() {
    // const repo = new userRepo();
     const useCase = new GetProfileUserUseCase(this.repo);
     return new GetProfileUserController(useCase);
   }
 
-  static createGetUserByAdminController() {
+  static GetUserByAdminController() {
 //    const repo = new userRepo();
 
     const useCase = new GetUserByAdminUseCase(this.repo);

@@ -9,7 +9,7 @@ import { UserControllerFactory } from "../../FactoryUsers/FactroryUser";
 const router = Router();
 
 router.get("/me", verifyToken, (req: Request, res: Response) => {
-    UserControllerFactory.createGetProfileController().execute(req, res);
+    UserControllerFactory.GetProfileController().execute(req, res);
   });
 
 

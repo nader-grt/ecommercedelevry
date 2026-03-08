@@ -1,6 +1,7 @@
 import express from "express";
 import { sequelize } from "./models/main.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 
 import getUserByAdminRoutes from "./routes/userRoutes/GetUserByAdminRoute.js"
@@ -97,7 +98,7 @@ app.use(express.json());
 
 
 app.use(cors(corsOptions));
-
+app.use(cookieParser());
 
 // user + profile
 app.use("/api", getUserByAdminRoutes);

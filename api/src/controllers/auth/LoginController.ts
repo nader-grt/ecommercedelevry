@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
-import userDomain from "../../models/domain/auth/user/userDomain";
 import Joi from "joi";
-import generateAccessToken from "../../middleware/generateAccessToken";
-import { generateRefreshToken } from "../../middleware/generateRefreshToken";
+
 import { RequestAuth } from "../../middleware/verifyToken";
-import { userRepo } from "../../repo/auth/userRepo/userRepo";
+
+import LoginUseCase from "../../useCases/Auth/LoginUseCase";
 
 export default class LoginController extends BaseController {
 
 
-  private _userDomain: userDomain;
-  private _registerUserRepo: userRepo;
-  constructor() {
+
+  private _loginUserUseCase!:LoginUseCase
+
+  constructor(loginUserUseCase:LoginUseCase) {
     super();
-    this._userDomain = new userDomain();
-    this._registerUserRepo = new userRepo();
+    this._loginUserUseCase =loginUserUseCase;
+ 
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
@@ -42,7 +42,7 @@ export default class LoginController extends BaseController {
     });
 
     try {
-      //const { error, value } = userSchema.validate(userInput);
+     
 
       const { error, value } = userSchemaLogin.validate(userInputLogin);
 
@@ -51,25 +51,27 @@ export default class LoginController extends BaseController {
             return this.badRequest(res, error.details[0].message);
           }
 
-      const user = await this._registerUserRepo.FindUserByEmailLogin(email);
-           console.log("uuuuuuuuuuuu  ",user)
-
-      if (!user) return this.unauthorized(res, "user not found  ");
-
-//console.log("uuuuuuu  llllll  ",user)
-
-      const isMatch = await this._userDomain.comparePassword(password, user.password);
-    
-if (!isMatch) return this.unauthorized(res, "Invalid credentials");
-
-      
 
 
- const accessToken = await generateAccessToken(user.email, user.role, user.id);
- const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
-  const resultLogin = { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } }
- return this.resultValue(res,"login with success ",resultLogin);
- //user 11 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxMUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOjEwLCJpYXQiOjE3NzEyNzkyMTUsImV4cCI6MTc3MTMwNDQxNX0.CfG6GbFKxYLis1B2fvsoUIgA75ldL4v_tS4ac-3gut4
+
+
+
+  const result =   await this._loginUserUseCase.execute(value)
+  
+   // console.log("rrrrrrrrrrrrrrrrr  ",result)
+        if(!result.success)
+        {
+          return this.fail(res,result.message)
+        }
+
+
+
+
+
+
+      res.cookie("accessToken", result.data.accessToken, { httpOnly: true, maxAge: 1000* 60*  60 * 7 });// replace 7 to 15m
+      res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true, maxAge: 1000*60*60*24*7 });
+ return this.resultValue(res,"login with success ",result.data);
     } catch (error) {
       console.log(error)
     }
