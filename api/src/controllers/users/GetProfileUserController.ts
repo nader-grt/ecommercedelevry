@@ -30,7 +30,7 @@ export default class GetProfileUserController extends BaseController
                 return this.fail(res, result.message);
               }
           
-              return this.resultValue(res, "profile fetched with success ", {
+              return this.resultValue(res, "profile  with success ", {
                 firstName: result.user[0].firstName,
                 lastName: result.user[0].lastName,
                 email: result.user[0].email,

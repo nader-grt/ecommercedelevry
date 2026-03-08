@@ -17,29 +17,15 @@ export function verifyToken(
   next: NextFunction
 ): any {
   const authHeader = req.headers.authorization;
-  //  const token = req.cookies.accessToken;
 
-  // const token:any = authHeader?.split(' ')[1]
-
-  //console.log("tttttttttt", token )
 
   const headerToken = req.headers.authorization?.split(" ")[1];
-  const cookieToken = req.cookies?.accessToken;
+  const cookieToken = req.cookies?.refreshToken;
 
+  console.log(req.cookies,"cccccccccccccccccco  ",cookieToken  ,"headerToken  " ,headerToken)
   const token = headerToken || cookieToken;
 
-  // if (authHeader && authHeader.startsWith("Bearer ")) {
-  //   token = authHeader.split(" ")[1];
-  // }
 
-  // if (authHeader &&  authHeader?.split(' ')[1]) {
-  //   token = authHeader.split(" ")[1];
-  // }
-
-  // console.log("tttttttttttttttt  ",token)
-  // if (token && req.cookies?.accessToken) {
-  //   token = req.cookies.accessToken;
-  // }
 
   if (!token) {
     return res

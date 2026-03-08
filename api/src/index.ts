@@ -27,10 +27,11 @@ import updateCategoryRoute from "./routes//categoryRoute/UpdateCategoryRoute.js"
 import getCategoryRoute from "./routes//categoryRoute/GetCategoryRoute.js";
 import getAllCategoryRoute from "./routes//categoryRoute/GetAllCategoryRoute.js";
 
-
+//user
 import registerRoute from "./routes/authRoute/registerUserRoute.js";
 import loginRoute from "./routes/authRoute/loginUserRoute.js";
 import logoutRoute from "./routes/authRoute/logoutUserRoute.js";
+import RefreshTokenRoute from "./routes/authRoute/RefreshTokenRoute.js";
 
 
 import createEmployeeRoute from  "./routes/EmployeeRoute/CreateEmployeeRoute.js"
@@ -194,19 +195,19 @@ app.use("/api",cancelDeliveryOrder)  ;
 app.use("/api",startDeliveryOrderRoute)  ;
 app.use("/api",completeDeliveryOrderRoute)  ;
 
-//auth routes can be added similarly
+//auth  with user 
 
 app.use("/api", registerRoute)  ;
 app.use("/api",loginRoute)  ;
 app.use("/api",logoutRoute)  ;
-
+app.use("/api",RefreshTokenRoute)
 
 
 
 // Port
 const PORT = 4000;
 
-// Start server function
+
 async function startServer() {
   try {
   

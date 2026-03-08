@@ -110,7 +110,7 @@ export class userRepo extends IUserRepoInterface {
 
       const users = listUsers.map((user) => user.get({ plain: true })).map(user => {
                 return {
-
+                    id:user.id,
                   firstName: user.firstName,
                   lastName: user.lastName,
                   phone: user.phone,

@@ -10,7 +10,7 @@ const getAllUserIsRoleUserRoute = new GetAllUserCOntroller(getAllUserUsecase);
 
 const router = Router();
 
-router.get("/all/users/", verifyToken, (req: Request, res: Response) => {
+router.get("/users/", verifyToken, (req: Request, res: Response) => {
   getAllUserIsRoleUserRoute.execute(req, res);
 });
 
