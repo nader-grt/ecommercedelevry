@@ -108,7 +108,7 @@ export function RefreshTokenModel(sequelize: Sequelize) {
     },
     {
       sequelize,
-      tableName: "Users",
+      tableName: "RefreshTokens",
       timestamps: true,
     }
   );

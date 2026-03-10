@@ -19,7 +19,7 @@ const getAllCategoriesRoute = new GetAllCategoriesController(getAllCategoriesUse
 
 
 
-router.get("/all/categories",verifyToken,(req:Request,res:Response)=> {
+router.get("/categories",verifyToken,(req:Request,res:Response)=> {
 
     getAllCategoriesRoute.execute(req,res)  ;
 

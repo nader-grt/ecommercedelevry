@@ -79,6 +79,23 @@ secrtries
 
 npx sequelize-cli migration:generate --name create-secrtriesdayWorks
 
+variants
+
+npx sequelize-cli migration:generate --name create-Variants
+
+
+
+Warehouses
+
+npx sequelize-cli migration:generate --name create-Warehouses
+
+Inventory
+
+npx sequelize-cli migration:generate --name create-Inventories
+
+InventoryMovements
+
+npx sequelize-cli migration:generate --name create-InventoryMovements
 
 //phone 
 npx sequelize-cli migration:generate --name create-phones

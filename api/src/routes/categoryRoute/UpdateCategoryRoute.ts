@@ -18,7 +18,7 @@ const updateCategoryRoute  =  new UpdateCategoryController(updateCategoryUseCase
 
 
 
-router.put("/update/category",verifyToken, (req:Request,res:Response) => {
+router.put("/categories/:id",verifyToken, (req:Request,res:Response) => {
         console.log("req *******  updddddddddddddd " , req.body)
         updateCategoryRoute.execute(req,res)
 })

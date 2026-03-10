@@ -1,10 +1,11 @@
-// src/repo/auth/refreshTokenRepo.ts
+
 
 import { RefreshToken } from "../../../models/main";
 
 
 export  default class RefreshTokenRepo {
   async createToken(userId: number, token: string, expiresAt: Date) {
+   
     return RefreshToken.create({ userId, token, revoked: false, expiresAt });
   }
 

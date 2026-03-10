@@ -18,7 +18,7 @@ const getCategoryRoute  =  new GetCategoryController(getCategoryUseCase)
 
 
 
-router.get("/get/category/:id",verifyToken, (req:Request,res:Response) => {
+router.get("/categories/:id",verifyToken, (req:Request,res:Response) => {
         console.log("req" , req.body)
         getCategoryRoute.execute(req,res)
 })

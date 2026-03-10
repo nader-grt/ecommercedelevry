@@ -20,7 +20,7 @@ export default class GetAllCategoriesUseCase
 
               try {
                 const categoriesName =      await this.usecaseRepo.GetAllCategories()  ;
-
+              console.log("categoriesName categoriesName ",categoriesName)
                 return categoriesName ;
               } catch (error) {
                 

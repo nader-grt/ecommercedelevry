@@ -13,9 +13,32 @@ export default class RefreshTokenController extends BaseController {
 
   protected async executeImpl(req: Request, res: Response) {
     try {
-      const { refreshToken } = req.body;
+      const refreshToken = req.cookies.refreshToken;
+
+    if(!refreshToken){
+      return res.status(401).json({
+        message:"refresh token missing"
+      });
+    }
+
+
+
       const result = await this.refreshUseCase.execute(refreshToken);
-      return res.status(200).json(result);
+
+
+      if(!result.success){
+        return res.status(403).json(result);
+      }
+  
+      res.cookie("refreshToken", result.data?.refreshToken, {
+        httpOnly:true,
+        maxAge:1000*60*60*24*7
+      });
+  
+      return res.json({
+        accessToken:result.data?.accessToken
+      });
+     // return res.status(200).json(result);
     } catch (err: any) {
       return this.unauthorized(res, err.message);
     }

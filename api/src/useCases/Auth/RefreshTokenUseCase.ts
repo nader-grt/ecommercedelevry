@@ -1,5 +1,6 @@
 
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import generateAccessToken from "../../middleware/generateAccessToken";
 import { generateRefreshToken } from "../../middleware/generateRefreshToken";
 import RefreshTokenRepo from "../../repo/auth/userRepo/RefreshTokenRepo";
@@ -10,28 +11,57 @@ export default class RefreshTokenUseCase {
   async execute(refreshToken: string) {
     try {
 
-      const tokenRecord = await this._refreshTokenRepo.findToken(refreshToken);
-      if (!tokenRecord) throw new Error("Invalid refresh token");
-  
-      if (tokenRecord.revoked || tokenRecord.expiresAt < new Date()) {
-        throw new Error("Refresh token expired or revoked");
+      const hash = crypto
+      .createHash("sha256")
+      .update(refreshToken)
+      .digest("hex");
+
+      const tokenRecord = await this._refreshTokenRepo.findToken(hash);
+
+      if (!tokenRecord) {
+        return { success:false, message:"token not found" };
       }
   
-      // Decode old token payload
+      if (tokenRecord.revoked) {
+        return { success:false, message:"token revoked" };
+      }
+
+
+      const payload: any = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET! as string
+      );
+  
+      const { email, role, id } = payload;
      
-      const payload: any = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
 
-      const newAccessToken = await generateAccessToken(payload.email, payload.role, payload.id);
-      const newRefreshToken = await generateRefreshToken(payload.email, payload.role, payload.id);
+      const newAccessToken = await generateAccessToken(email, role, id);
+      const newRefreshToken = await generateRefreshToken(email, role, id);
 
 
-      await this._refreshTokenRepo.revokeToken(refreshToken);
+     
+  
+      const newHash = crypto
+      .createHash("sha256")
+      .update(newRefreshToken)
+      .digest("hex");
+
+ 
+
+      await this._refreshTokenRepo.revokeToken(hash);
       await this._refreshTokenRepo.createToken(
         payload.id,
-        refreshToken,
+        newHash,
         new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
       );
-      return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+
+    return {
+      success: true,
+      data: {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken
+      }
+    };
     } catch (err) {
       throw new Error("Invalid or expired refresh token");
     }

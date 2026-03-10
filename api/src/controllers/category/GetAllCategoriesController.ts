@@ -28,7 +28,17 @@ export default class GetAllCategoriesController extends BaseController
                         return this.notFound(res,"empty catygories ") ;
                        }
 
-                       return this.resultValue(res,"all categories ",categoriesName) ;
+                       const formattedCategories = categoriesName.map((cat: any) => ({
+                            id: cat.categoryId,
+                            name: cat.name,
+                          }));
+                    
+                     //      return res.json({
+                     //        data: formattedCategories,
+                     //        total: formattedCategories.length
+                     //      });
+
+                       return this.resultValue(res,"all categories ",formattedCategories) ;
                 } catch (error) {
                     console.log(error)
                 }

@@ -71,6 +71,8 @@ export default class LoginController extends BaseController {
 
       res.cookie("accessToken", result.data.accessToken, { httpOnly: true, maxAge: 1000* 60*  60 * 7 });// replace 7 to 15m
       res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true, maxAge: 1000*60*60*24*7 });
+
+      console.log("rrrrrrrrrrrrrr  ",result , result.data)
  return this.resultValue(res,"login with success ",result.data);
     } catch (error) {
       console.log(error)

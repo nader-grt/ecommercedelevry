@@ -24,10 +24,12 @@ export default class UpdateCategoryController extends BaseController
 
      
       protected async executeImpl(req: Request, res: Response): Promise<any> {
-          const {name ,categoryId} = req.body ;
+          const {id} = req.params
+          const categoryId  = Number(id)
+          const {name } = req.body ;
 
 
-
+console.log(" {name ,categoryId}  ", {name ,categoryId})
 
                       
                         if (!name || !categoryId) {
@@ -51,8 +53,10 @@ export default class UpdateCategoryController extends BaseController
                                                     if (!result) {
                                                       return this.notFound(res, "Category not found");
                                                     }
+
+                                                    console.log("uupppp  ",result)
                                               
-                                                    this.ok(res, "Category updated successfully");
+                                                    this.resultValue(res, "Category updated successfully",result);
                
                       
           } catch (error) {

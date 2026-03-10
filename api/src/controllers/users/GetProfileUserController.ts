@@ -31,6 +31,7 @@ export default class GetProfileUserController extends BaseController
               }
           
               return this.resultValue(res, "profile  with success ", {
+                id : result.user[0].id,
                 firstName: result.user[0].firstName,
                 lastName: result.user[0].lastName,
                 email: result.user[0].email,
