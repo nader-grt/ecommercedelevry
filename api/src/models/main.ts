@@ -15,6 +15,9 @@ import {
   OrderWithDeliverieModel,
 } from "./OrderWithDeliverie";
 import { RefreshTokenModel } from "./RefreshTokenModel";
+import { VariantModel } from "./Variant";
+import { InventorieModel } from "./Inventorie";
+import { WarehouseModel } from "./Warehouse";
 
 // Initialize models
 export const User = UserModel(sequelize);
@@ -31,8 +34,9 @@ export const DelivererDayWork = DelivererDayWorkModel(sequelize);
 export const Orderwithdeliverie = OrderWithDeliverieModel(sequelize);
 export const RefreshToken = RefreshTokenModel(sequelize)
 
-
-
+export const Variant = VariantModel(sequelize)
+export const Inventorie  = InventorieModel(sequelize)
+export const Warehouse  = WarehouseModel(sequelize)
 /* =========================
    User - RefreshToken (1 : N)
 ========================= */
@@ -86,6 +90,34 @@ OrderWithDeliverie.belongsTo(DelivererPerson, {
 ========================= */
 Product.hasMany(OrderItem, { foreignKey: "productId", as: "orderItems" });
 OrderItem.belongsTo(Product, { foreignKey: "productId", as: "product" });
+
+
+/* =========================
+   Variant - Product (1 : N)
+========================= */
+
+
+Product.hasMany(Variant ,{ foreignKey: "productId", as: "variants" })
+Variant.belongsTo(Product ,{ foreignKey: "productId", as: "products" })
+
+
+
+/* =========================
+   Variant - Inventorie (1 : N)
+========================= */
+
+Variant.hasMany(Inventorie)
+Inventorie.belongsTo(Variant)
+
+
+
+/* =========================
+   Warehouse - Inventorie (1 : N)
+========================= */
+
+Warehouse.hasMany(Inventorie)
+Inventorie.belongsTo(Warehouse)
+
 
 /* =========================
    User - Employee (1 : 1)
