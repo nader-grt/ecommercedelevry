@@ -1,5 +1,7 @@
-import express from "express";
+
 import { sequelize } from "./models/main.js";
+import express from "express";
+import { corsOptions } from "./corsConfig/corsConfig.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -31,7 +33,7 @@ import getAllCategoryRoute from "./routes//categoryRoute/GetAllCategoryRoute.js"
 import registerRoute from "./routes/authRoute/registerUserRoute.js";
 import loginRoute from "./routes/authRoute/loginUserRoute.js";
 import logoutRoute from "./routes/authRoute/logoutUserRoute.js";
-import RefreshTokenRoute from "./routes/authRoute/RefreshTokenRoute.js";
+import refreshTokenRoute from "./routes/authRoute/RefreshTokenRoute.js";
 
 
 import createEmployeeRoute from  "./routes/EmployeeRoute/CreateEmployeeRoute.js"
@@ -84,7 +86,7 @@ import completeDeliveryOrderRoute from  "./routes/OrderWithDeliveriesRoute/compl
 
 
 
-import { corsOptions } from "./corsConfig/corsConfig.js";
+
 
 
 import createDayWorkRoute from "./routes/DayWorkRoute/CreateWorkDayRoute.js"
@@ -200,7 +202,7 @@ app.use("/api",completeDeliveryOrderRoute)  ;
 app.use("/api", registerRoute)  ;
 app.use("/api",loginRoute)  ;
 app.use("/api",logoutRoute)  ;
-app.use("/api",RefreshTokenRoute)
+app.use("/api",refreshTokenRoute)
 
 
 

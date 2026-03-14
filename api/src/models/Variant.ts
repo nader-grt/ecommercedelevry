@@ -1,33 +1,104 @@
-import { Model, Sequelize } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 
 
 
 export default interface IIVariant
 {
+    id?:number;
+    productId:number;
+    sku:string;
+    color:string;
+    size:string;
+    price:number
 
 }
+/**
+    productId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Products',
+          key: 'id'
+        }
+      },
 
+      sku: {
+        type: Sequelize.STRING,
+        unique: true
+      },
+
+      color: {
+        type: Sequelize.STRING
+      },
+
+      size: {
+        type: Sequelize.STRING
+      },
+
+      price: {
+        type: Sequelize.DECIMAL(10,2)
+      },
+
+ */
 
 export class Variant extends Model<IIVariant> implements IIVariant
 {
-
+    public id!:number ;
+       public      productId!:number;
+   public sku!:string;
+    public color!:string;
+    public  size!:string;
+    public price!:number
 }
 
 
 
 export function VariantModel(sequelize:Sequelize)
 {
-    Variant.init({
-
-
-    },{
-        
-        sequelize,
-        tableName:"",
-        timestamps:true
-
-
-    })
+  Variant.init({
+    id: { 
+      type: DataTypes.INTEGER, 
+      autoIncrement: true, 
+      primaryKey: true 
+    },
+  
+    productId:{
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      references:{
+        model:"Products",
+        key:"id"
+      },
+      onDelete:"CASCADE",
+      onUpdate:"CASCADE"
+    },
+  
+    sku: { 
+      type: DataTypes.STRING, 
+      allowNull: false,
+      unique:true
+    },
+  
+    color: { 
+      type: DataTypes.STRING, 
+      allowNull: false 
+    },
+  
+    size: { 
+      type: DataTypes.STRING, 
+      allowNull: false 
+    },
+  
+    price: { 
+      type: DataTypes.DECIMAL(10,2), 
+      allowNull: false 
+    }
+  
+  },{
+    sequelize,
+    tableName:"Variants",
+    timestamps:true
+  })
 
     return Variant ;
 }

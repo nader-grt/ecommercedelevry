@@ -93,11 +93,12 @@ OrderItem.belongsTo(Product, { foreignKey: "productId", as: "product" });
 
 
 /* =========================
-   Variant - Product (1 : N)
+   Variant - Product (N : 1)
 ========================= */
 
 
-Product.hasMany(Variant ,{ foreignKey: "productId", as: "variants" })
+Product.hasMany(Variant ,{ foreignKey: "productId", as: "variants",  onDelete: "CASCADE",
+   onUpdate: "CASCADE" })
 Variant.belongsTo(Product ,{ foreignKey: "productId", as: "products" })
 
 

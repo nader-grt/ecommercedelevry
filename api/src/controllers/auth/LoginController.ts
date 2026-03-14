@@ -54,11 +54,10 @@ export default class LoginController extends BaseController {
 
 
 
-             console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvv  ",value)
 
   const result =   await this._loginUserUseCase.execute(value)
   
-   // console.log("rrrrrrrrrrrrrrrrr  ",result)
+   console.log("result one   ",result)
         if(!result.success)
         {
           return this.fail(res,result.message)
@@ -69,10 +68,23 @@ export default class LoginController extends BaseController {
 
 
 
-      res.cookie("accessToken", result.data.accessToken, { httpOnly: true, maxAge: 1000* 60*  60 * 7 });// replace 7 to 15m
-      res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true, maxAge: 1000*60*60*24*7 });
 
-      console.log("rrrrrrrrrrrrrr  ",result , result.data)
+      res.cookie("accessToken", result.data.accessToken, {
+        httpOnly: true,
+        secure: false, // localhost
+        sameSite: "lax",
+       // path: "/",
+        maxAge: 1000 * 60 * 60 * 7
+      });
+      
+      res.cookie("refreshToken", result.data.refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+       // path: "/",
+        maxAge: 1000 * 60 * 60 * 24 * 7
+      });
+      console.log("rrrrrrrrrrrrrr aaaaaaaaaaaa ",result , result.data)
  return this.resultValue(res,"login with success ",result.data);
     } catch (error) {
       console.log(error)

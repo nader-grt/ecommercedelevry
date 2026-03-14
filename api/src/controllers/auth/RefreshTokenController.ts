@@ -14,13 +14,12 @@ export default class RefreshTokenController extends BaseController {
   protected async executeImpl(req: Request, res: Response) {
     try {
       const refreshToken = req.cookies.refreshToken;
-
+       console.log("step 2  controller  ",refreshToken)
     if(!refreshToken){
       return res.status(401).json({
         message:"refresh token missing"
       });
     }
-
 
 
       const result = await this.refreshUseCase.execute(refreshToken);
@@ -32,7 +31,9 @@ export default class RefreshTokenController extends BaseController {
   
       res.cookie("refreshToken", result.data?.refreshToken, {
         httpOnly:true,
-        maxAge:1000*60*60*24*7
+        secure: false, // 
+        sameSite: "lax", // 
+        maxAge: 1000*60*60*24*7, // 7 
       });
   
       return res.json({

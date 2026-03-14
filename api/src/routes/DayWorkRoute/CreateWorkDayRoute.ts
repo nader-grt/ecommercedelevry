@@ -14,7 +14,7 @@ const createWorkDayRoute = new CreateDayWorkController(createDayWorkUseCase);
 const route = Router()
 
 
-route.post("/create/nameday",verifyToken,(req:Request,res:Response) => {
+route.post("/days",verifyToken,(req:Request,res:Response) => {
 
     createWorkDayRoute.execute(req,res)  ;
 })

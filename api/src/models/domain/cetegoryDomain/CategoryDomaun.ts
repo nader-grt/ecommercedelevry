@@ -1,75 +1,95 @@
+import ProductDomain from "../productDoman/ProductDomain";
 
 export interface ICategoryResponseDomain {
-categoryId:number;
-name:string ;
+  categoryId: number;
+  name: string;
 }
 
+// interface CategoryProps {
+//   name?: string ;
+//   products?: ProductDomain[]
+// }
 
-export default class CategoryDomain
-{
+export default class CategoryDomain {
+  private name: string = "";
 
-  //  private _id :number = 0;
+  private categoryId!: number | any;
+  private products: ProductDomain[] = [];
 
-    private name: string = "";
+  constructor(props?: {
+    name?: string;
+    products?: ProductDomain[];
+    categoryId?: number | undefined;
+  }) {
+    this.name = props?.name ?? "";
+    // this.products = props?.products ?? [] ;
+    this.categoryId = Number(props?.categoryId) > 0 ? props?.categoryId : 0;
+  }
 
-   private categoryId!:number ;
+  addProduct(productName: string,categoryId:number) {
+    if (this.products.some((p) => p.getName === productName)) {
+      throw new Error("Product already exists in category");
+    }
 
-          
-         public get getName():string
-         {
-            return this.name ;
-         }
+    const product = new ProductDomain({
+      name: productName,
+      price: 0,
+      nameImage: "",
+      categoryId:categoryId
+    });
 
-         public set setName(value:string)
-         {
-             this.name  = value ;
-         }
+    this.products.push(product);
 
-         public get getCategoryId():number
-         {
-            return this.categoryId ;
-         }
+    return product;
+  }
 
+  static reCreateCategory(props?: { name: string; id: number }) {
+    if (!props) return null;
 
-         public set setCategoryId(value:number)
-         {
-             this.categoryId = value;
-         }
-       
+    const categoryResult = new CategoryDomain({
+      name: props.name,
+      categoryId: props.id,
+    });
 
-        public getToResponseCategory(data?:any)
-        {
-          return {
-              id:data.id ,
-              name :data.name
-          }
-        }
+    return {
+      id: categoryResult.categoryId,
+      name: categoryResult.name,
+    };
+  }
 
+  canBeDeleted() {
+    if (this.products.length > 0) {
+      throw new Error("Category has products");
+    }
+  }
 
-        public createCategoryToPersistance()
-        {
-          return {
-              id:this.categoryId ,
-              name :this.name
-          }
-        }
+  public get getName(): string {
+    return this.name;
+  }
 
+  public set setName(value: string) {
+    this.name = value;
+  }
 
-        public async GetAllCategoriesByName(data?:any):Promise<ICategoryResponseDomain[]>
-        {  
+  public get getCategoryId(): number {
+    return this.categoryId;
+  }
 
-                const  categoriesNames : any = await  data.map((e:any)=> {
-                         
-                  return {
-                    categoryId:e.id,
-                    name : e?.name
-                    
-                  }
-                   
-               })
+  public set setCategoryId(value: number) {
+    this.categoryId = value;
+  }
 
+  public getToResponseCategory(): ICategoryResponseDomain {
+    return {
+      categoryId: this.categoryId,
+      name: this.name,
+    };
+  }
 
-          return categoriesNames
-        }
-       
+  public GetAllCategoriesByName(data: any[]): ICategoryResponseDomain[] {
+    return data?.map((e: any) => ({
+      categoryId: e.id,
+      name: e.name,
+    }));
+  }
 }

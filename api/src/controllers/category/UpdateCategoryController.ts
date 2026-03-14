@@ -54,7 +54,7 @@ console.log(" {name ,categoryId}  ", {name ,categoryId})
                                                       return this.notFound(res, "Category not found");
                                                     }
 
-                                                    console.log("uupppp  ",result)
+                                                    console.log("uupppp ffffinallll  ",result)
                                               
                                                     this.resultValue(res, "Category updated successfully",result);
                

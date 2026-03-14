@@ -1,90 +1,82 @@
+import VariantDomain from "../VariantDomain/VariantDomain";
 
-export default class ProductDomain
-{
+export default class ProductDomain {
 
+  private id!: number
+  private name: string = ""
+  private price: number = 0
+  private nameImage!: string
+  private categoryId!: number
+  private supplierId!: number
+  private variants: VariantDomain[] = []
 
+  constructor(props?: {
+    name: string
+    price: number
+    nameImage: string
+    categoryId: number
+  }) {
 
-    private name: string = "";
+    this.id = Date.now()
 
-    private price: number = 0 ;
-    private nameImage!: string ;
-    private   categoryId!: number;
-    private supplierId!:number;
+    if (props) {
+      this.price = props.price
+      this.name = props.name
+      this.nameImage = props.nameImage
+      this.categoryId = props.categoryId
+    }
 
+  }
 
-    constructor(props?: {
-        name: string;
-        price: number;
-        nameImage: string;
-      
-      }) {
-       // super();
-    
-        if (props) {
-          this.price = props.price;
-          this.name = props.name;
-          this.nameImage = props.nameImage;
-          
-        }
-      }
-          
-         public get getName():string
-         {
-            return this.name ;
-         }
+  public addVariant(color: string, size: string, price: number) {
 
-         public set setName(value:string)
-         {
+    const variant = new VariantDomain(this.id, color, size, price)
 
-            
-             this.name  = value ;
-         }
+    this.variants.push(variant)
 
-         public get getPrice():number
-         {
-            return  this.price ;
-         }
+    return variant
 
-         public set setPrice(value:number)
-         {
-            if (value <= 0) {
-                throw new Error("Price must be greater than zero");
-              }
-             this.price  = value ;
-         }
+  }
 
+  public get getName(): string {
+    return this.name
+  }
 
-         //work with image 
-         public get getImageProduct():string
-         {
-            return this.nameImage ;
-         }
-    
-    
-         public set setImageProduct(value:string)
-         {
-             this.nameImage  = value;
-         }
+  public set setName(value: string) {
+    this.name = value
+  }
 
-         public get getCategoryId():number
-         {
-            return this.categoryId ;
-         }
-    
-    
-        //  public set setCategoryId(value:number)
-        //  {
-        //      this.categoryId  = value;
-        //  }
+  public get getPrice(): number {
+    return this.price
+  }
 
-         public get getSupplierId():number
-         {
-            return this.supplierId ;
-         }
-    
-    
-        //  public set setSupplierId(value:number)
-        //  {
-        //      this.supplierId   = value;
-        //  }
+  public set setPrice(value: number) {
+
+    if (value <= 0) {
+      throw new Error("Price must be greater than zero")
+    }
+
+    this.price = value
+  }
+
+  public get getImageProduct(): string {
+    return this.nameImage
+  }
+
+  public set setImageProduct(value: string) {
+    this.nameImage = value
+  }
+
+  public get getCategoryId(): number {
+    return this.categoryId
+  }
+
+  public get getSupplierId(): number {
+    return this.supplierId
+  }
+
+  public  getVariants() {
+    return this.variants;
+  }
+
 }

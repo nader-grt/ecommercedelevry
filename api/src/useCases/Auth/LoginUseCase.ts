@@ -55,27 +55,51 @@ export default class LoginUseCase
 
 
 
- const accessToken = await generateAccessToken(user.email, user.role, user.id);
- const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
+//  const accessToken = await generateAccessToken(user.email, user.role, user.id);
+//  const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
 
 
 
 
   
-  const hash = crypto
-    .createHash("sha256")
-    .update(refreshToken)
-    .digest("hex")
+//   const hash = crypto
+//     .createHash("sha256")
+//     .update(refreshToken)
+//     .digest("hex")
   
-    await this._refreshTokenRepo.createToken(
+//     await this._refreshTokenRepo.createToken(
+//         user.id,
+//         hash,
+//         new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+//       )
+                
+// const resultLogin = { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } }
+
+//          return {success:true ,data:resultLogin}
+
+
+         // 1️⃣ توليد accessToken
+      const accessToken = await generateAccessToken(user.email, user.role, user.id);
+
+      // 2️⃣ توليد refreshToken
+      const refreshToken = await generateRefreshToken(user.email, user.role, user.id);
+
+      // 3️⃣ تخزين hash في DB
+      const hash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+      await this._refreshTokenRepo.createToken(
         user.id,
         hash,
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      )
-                
-const resultLogin = { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } }
-
-         return {success:true ,data:resultLogin}
+        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 أيام
+      );
+    //  return {success:true ,data:resultLogin}
+      return {
+        success: true,
+        data: {
+          accessToken,
+          refreshToken, // ترسل الـ cookie مباشرة للمتصفح
+          user: { id: user.id, email: user.email, role: user.role }
+        }
+      };
             } catch (error:any) {
                 console.log("eee ",error)
             }

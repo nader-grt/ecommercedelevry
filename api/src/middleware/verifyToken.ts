@@ -22,10 +22,9 @@ export function verifyToken(
   const headerToken = req.headers.authorization?.split(" ")[1];
   const cookieToken = req.cookies?.refreshToken;
 
-  console.log(req.cookies,"cccccccccccccccccco  ",cookieToken  ,"headerToken  " ,headerToken)
   const token = headerToken || cookieToken;
 
-
+console.log("token verfy token step 2 ",token)
 
   if (!token) {
     return res

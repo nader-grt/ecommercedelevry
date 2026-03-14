@@ -1,6 +1,6 @@
 
 
-import { RefreshToken } from "../../../models/main";
+import { RefreshToken, User } from "../../../models/main";
 
 
 export  default class RefreshTokenRepo {
@@ -10,7 +10,11 @@ export  default class RefreshTokenRepo {
   }
 
   async findToken(token: string) {
-    return RefreshToken.findOne({ where: { token } });
+    console.log("step 55 in repo 5  ",token )
+    const result = await RefreshToken.findOne({ where: { token } ,  include: [{ model: User, as: 'tokens' }]})
+   // console.log(" result repo  ", result)
+    const tokenRecord = await RefreshToken.findOne({ where: { token } });
+    return result;
   }
 
   async revokeToken(token: string) {

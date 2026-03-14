@@ -13,7 +13,7 @@ const getDayWorkUseCase = new GetDayWorkUseCase(repo);
 
 const getWorkDayRoute = new GetDayWorkController(getDayWorkUseCase);
 
-router.get("/get/nameday", verifyToken, (req: Request, res: Response) => {
+router.get("/days", verifyToken, (req: Request, res: Response) => {
   getWorkDayRoute.execute(req, res);
 });
 
