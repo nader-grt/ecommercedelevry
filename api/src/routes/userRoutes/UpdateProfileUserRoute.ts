@@ -9,7 +9,7 @@ const router = Router();
 
 
 router.put("/update/user/", verifyToken, (req: Request, res: Response) => {
-    UserControllerFactory.createGetProfileController().execute(req, res);
+    UserControllerFactory.UpdateProfileUserrController().execute(req, res);
 });
 
 export default router;

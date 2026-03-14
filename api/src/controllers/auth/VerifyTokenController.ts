@@ -1,19 +1,13 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../infra/BaseCOntroller";
 
-export default class VerifyTokenController extends BaseController
-{
+export default class VerifyTokenController extends BaseController {
+  constructor() {
+    super();
+  }
 
-       constructor()
-       {super()}
-
-       protected async executeImpl(req: Request, res: Response): Promise<any> {
-           
-
-                          try {
-                            
-                          } catch (error) {
-                            
-                          }
-       }
+  protected async executeImpl(req: Request, res: Response): Promise<any> {
+    try {
+    } catch (error) {}
+  }
 }

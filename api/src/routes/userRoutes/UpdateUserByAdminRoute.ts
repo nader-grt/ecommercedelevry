@@ -7,7 +7,7 @@ import { verifyToken } from "../../middleware/verifyToken";
 
 const router = Router();
 
-router.put("/admin/user/:id", verifyToken, (req: Request, res: Response) => {
+router.put("/users/:id", verifyToken, (req: Request, res: Response) => {
     UserControllerFactory.UpdateUserByAdminrController().execute(req, res);
   });
 

@@ -73,7 +73,8 @@ export default class updateUserByAdminController extends BaseController {
       if (!result.success) {
         return this.fail(res, result.message);
       }
-      return this.resultValue(res, "user updated with success ",{      
+      return this.resultValue(res, "user updated with success ",{ 
+        id:result.user.id,
                       firstName:result.user.firstName,
                       lastName: result.user.lastName,
                       phone: result.user.phone,

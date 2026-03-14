@@ -60,6 +60,7 @@ export default class GetUserByAdminController extends BaseController {
       }
 
       return this.resultValue(res, "user fetched", {
+        id:result.user[0].id,
         firstName: result.user[0].firstName,
         lastName: result.user[0].lastName,
         email: result.user[0].email,

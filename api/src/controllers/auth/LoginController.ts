@@ -7,15 +7,11 @@ import { RequestAuth } from "../../middleware/verifyToken";
 import LoginUseCase from "../../useCases/Auth/LoginUseCase";
 
 export default class LoginController extends BaseController {
+  private _loginUserUseCase!: LoginUseCase;
 
-
-
-  private _loginUserUseCase!:LoginUseCase
-
-  constructor(loginUserUseCase:LoginUseCase) {
+  constructor(loginUserUseCase: LoginUseCase) {
     super();
-    this._loginUserUseCase =loginUserUseCase;
- 
+    this._loginUserUseCase = loginUserUseCase;
   }
 
   protected async executeImpl(req: RequestAuth, res: Response): Promise<any> {
@@ -30,7 +26,6 @@ export default class LoginController extends BaseController {
      * 5. send response
      */
 
-
     const userInputLogin: any = {
       email: email,
       password: password,
@@ -42,54 +37,37 @@ export default class LoginController extends BaseController {
     });
 
     try {
-     
-
       const { error, value } = userSchemaLogin.validate(userInputLogin);
 
-     
       if (error) {
-            return this.badRequest(res, error.details[0].message);
-          }
+        return this.badRequest(res, error.details[0].message);
+      }
 
+      const result = await this._loginUserUseCase.execute(value);
 
-
-
-
-  const result =   await this._loginUserUseCase.execute(value)
-  
-   console.log("result one   ",result)
-        if(!result.success)
-        {
-          return this.fail(res,result.message)
-        }
-
-
-
-
-
-
+      console.log("result one   ", result);
+      if (!result.success) {
+        return this.fail(res, result.message);
+      }
 
       res.cookie("accessToken", result.data.accessToken, {
         httpOnly: true,
         secure: false, // localhost
         sameSite: "lax",
-       // path: "/",
-        maxAge: 1000 * 60 * 60 * 7
+        // path: "/",
+        maxAge: 1000 * 60 * 60 * 7,
       });
-      
+
       res.cookie("refreshToken", result.data.refreshToken, {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
-       // path: "/",
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        // path: "/",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       });
-      console.log("rrrrrrrrrrrrrr aaaaaaaaaaaa ",result , result.data)
- return this.resultValue(res,"login with success ",result.data);
+      return this.resultValue(res, "login with success ", result.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 }
-
-

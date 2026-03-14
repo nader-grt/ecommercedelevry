@@ -9,31 +9,35 @@ export default class RefreshTokenUseCase {
 
   async execute(refreshToken: string) {
     try {
+      console.log("step 3 usecasee ", refreshToken);
 
-console.log("step 3 usecasee ",refreshToken)
-
-      
-    
-      const hash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+      const hash = crypto
+        .createHash("sha256")
+        .update(refreshToken)
+        .digest("hex");
 
       const tokenRecord = await this._refreshTokenRepo.findToken(hash);
 
-      console.log("tokenRecord 6 ",tokenRecord)
+      console.log("tokenRecord 6 ", tokenRecord);
       if (!tokenRecord) return { success: false, message: "Token not found" };
-      if (tokenRecord.revoked) return { success: false, message: "Token revoked" };
+      if (tokenRecord.revoked)
+        return { success: false, message: "Token revoked" };
 
-     
-      const payload: any = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+      const payload: any = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET!
+      );
 
       const { email, role, id } = payload;
 
-     
       const newAccessToken = await generateAccessToken(email, role, id);
       const newRefreshToken = await generateRefreshToken(email, role, id);
 
-      
-      const newHash = crypto.createHash("sha256").update(newRefreshToken).digest("hex");
-      await this._refreshTokenRepo.revokeToken(hash); //  
+      const newHash = crypto
+        .createHash("sha256")
+        .update(newRefreshToken)
+        .digest("hex");
+      await this._refreshTokenRepo.revokeToken(hash); //
       await this._refreshTokenRepo.createToken(
         id,
         newHash,
@@ -44,8 +48,8 @@ console.log("step 3 usecasee ",refreshToken)
         success: true,
         data: {
           accessToken: newAccessToken,
-          refreshToken: newRefreshToken
-        }
+          refreshToken: newRefreshToken,
+        },
       };
     } catch (err) {
       return { success: false, message: "Invalid or expired refresh token" };
