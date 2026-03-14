@@ -1,12 +1,12 @@
 
+let accessToken: string | any = null;
+let user: any = null;
 
-let accessToken: string | null = null;
 const authProvider = {
   login: async ({ email, password }: { email: string; password: string }) => {
-    
     const res = await fetch("http://localhost:4000/api/login", {
       method: "POST",
-      credentials: "include", //   
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
@@ -17,49 +17,71 @@ const authProvider = {
     }
 
     const data = await res.json();
-    authProvider.updateAccessToken(data.accessToken); // 
-    return data;
+    accessToken = data.data.accessToken;
+    user = data.data.user;
+
+    sessionStorage.setItem("accessToken", accessToken);
+    sessionStorage.setItem("user", JSON.stringify(user));
+
+    return Promise.resolve();
   },
- 
-  updateAccessToken: (token: string) => {
+
+  logout: async () => {
+    await fetch("http://localhost:4000/api/logout", { credentials: "include" });
+    authProvider.clear();
+    return Promise.resolve();
+  },
+
+  clear: () => {
+    accessToken = null;
+    user = null;
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("user");
+  },
+
+  updateAccessToken: (token: string, userData?: any) => {
     accessToken = token;
+    if (userData) user = userData;
+    sessionStorage.setItem("accessToken", token);
+    if (userData) sessionStorage.setItem("user", JSON.stringify(userData));
   },
 
- 
-  getAccessToken: (): string | null => {
-    return accessToken;
-  },
+  getAccessToken: () => accessToken ?? sessionStorage.getItem("accessToken"),
 
-
-  // logout:async () => {
-  //   const res = await fetch("http://localhost:4000/api/logout", {
-  //     credentials: "include",
-  //   });
-  //   return Promise.resolve();
-  // },
+  getUser: () => user ?? JSON.parse(sessionStorage.getItem("user") || "null"),
 
   checkAuth: async () => {
-    const res = await fetch("http://localhost:4000/api/me", {
-      credentials: "include",
-    });
-  
-    if (res.status === 401) {
+    const token = authProvider.getAccessToken();
+    if (!token) return Promise.reject();
+
+    // optional: get fresh user info from backend
+    try {
+      const res = await fetch("http://localhost:4000/api/me", {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Unauthorized");
+      const userData = await res.json();
+      user = userData;
+      return Promise.resolve();
+    } catch {
+      authProvider.clear();
       return Promise.reject();
     }
-  
-    return Promise.resolve();
   },
+
   checkError: (error: any) => {
     if (error.status === 401 || error.status === 403) {
-      localStorage.removeItem("token");
+      authProvider.clear();
       return Promise.reject();
     }
     return Promise.resolve();
   },
 
-
-
-  getPermissions: () => Promise.resolve(),
+  getPermissions: () => {
+    const u = authProvider.getUser();
+    return Promise.resolve(u?.role);
+  },
 };
 
 export default authProvider;

@@ -1,121 +1,88 @@
-// // src/auth/httpclient/httpClient.ts
-// import authProvider from "../../core/providers/authProvider";
-
-// export async function httpclientService(
-//   url: string,
-//   options: RequestInit = {}
-// ): Promise<{ json: any }> {
-//   const opts: RequestInit = {
-//     ...options,
-//     credentials: "include",
-//     headers: {
-//       "Content-Type": "application/json",
-//       ...(options.headers || {}),
-//       ...(authProvider.getAccessToken()
-//         ? { Authorization: `Bearer ${authProvider.getAccessToken()}` }
-//         : {}),
-//     },
-//   };
-
-//   try {
-//     let res = await fetch(url, opts);
-//     let data = await res.json(); // 
-
-//     if (res.status === 401) {
-//       const refreshRes = await fetch("/api/refresh-token", {
-//         method: "POST",
-//         credentials: "include",
-//       });
-
-//       if (!refreshRes.ok) {
-//         throw new Error("Session expired, login again");
-//       }
-
-//       const refreshData = await refreshRes.json();
-//       authProvider.updateAccessToken(refreshData.accessToken);
-
-//       const retryOpts: RequestInit = {
-//         ...opts,
-//         headers: {
-//           ...opts.headers,
-//           Authorization: `Bearer ${refreshData.accessToken}`,
-//         },
-//       };
-
-//       res = await fetch(url, retryOpts);
-//       data = await res.json(); //
-
-//       if (!res.ok) {
-//         throw new Error(data.message || "Request failed after refresh");
-//       }
-
-//       return { json: data };
-//     }
-
-//     if (!res.ok) {
-//       throw new Error(data.message || "Request failed");
-//     }
-
-//     console.log("ddddddddddd  ",data)
-
-//     return { json: data };
-//   } catch (err) {
-//     throw err;
-//   }
-// }
-
-
 import authProvider from "../../core/providers/authProvider";
 
-export async function httpclientService(
-  url: string,
-  options: RequestInit = {}
-): Promise<{ json: any }> {
-  
-  // Helper to build headers dynamically
-  const getOptions = (token?: string | null): RequestInit => ({
+let refreshPromise: Promise<string | null> | null = null;
+
+const API_REFRESH = "http://localhost:4000/api/refresh-token";
+/**
+ * Build fetch options
+ */
+function buildOptions(options: RequestInit, token?: string | null): RequestInit {
+  const accessToken = token ?? authProvider.getAccessToken();
+
+  return {
     ...options,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
-      ...(token || authProvider.getAccessToken()
-        ? { Authorization: `Bearer ${token || authProvider.getAccessToken()}` }
-        : {}),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     },
-  });
+  };
+}
 
-  try {
-    let res = await fetch(url, getOptions());
+/**
+ * Refresh Access Token
+ */
+async function refreshAccessToken(): Promise<string | null> {
+  if (!refreshPromise) {
+    refreshPromise = fetch(API_REFRESH, {
+      method: "POST",
+      credentials: "include",
+    
+    })
+      .then(async (res) => {
+        if (!res.ok) return null;
 
-    // 1. Handle Token Refresh if 401
-    if (res.status === 401) {
-      const refreshRes = await fetch("/api/refresh-token", {
-        method: "POST",
-        credentials: "include",
+        const data = await res.json();
+       console.log("dataaaa  of user ",data.user)
+        authProvider.updateAccessToken(data.accessToken, data.user);
+        
+
+        return data.accessToken;
+      })
+      .catch(() => null)
+      .finally(() => {
+        refreshPromise = null;
       });
+  }
 
-      if (!refreshRes.ok) {
-        throw new Error("Session expired, login again");
+  return refreshPromise;
+}
+
+/**
+ * HTTP Client
+ */
+export async function httpclientService(
+  url: string,
+  options: RequestInit = {}
+): Promise<{ json: any }> {
+  try {
+    let res = await fetch(url, buildOptions(options));
+
+    // AccessToken expired
+    if (res.status === 401) {
+      const newToken = await refreshAccessToken();
+console.log("newwwwwwwww  ",newToken)
+      // refresh failed → redirect login
+      if (!newToken) {
+        authProvider.clear?.();
+        window.location.href = "/login";
+        throw new Error("Authentication required");
       }
 
-      const refreshData = await refreshRes.json();
-      authProvider.updateAccessToken(refreshData.accessToken);
-
-      // 2. Retry original request with the NEW token
-      res = await fetch(url, getOptions(refreshData.accessToken));
+      // retry original request
+      res = await fetch(url, buildOptions(options, newToken));
     }
 
-    // 3. Parse JSON only once at the very end
-    const data = await res.json();
+    const data = await res.json().catch(() => null);
 
     if (!res.ok) {
-      throw new Error(data.message || "Request failed");
+      throw new Error(data?.message || "Request failed");
     }
 
     return { json: data };
-  } catch (err) {
-    console.error("HTTP Client Error:", err);
-    throw err;
+  } catch (error) {
+    console.error("HTTP Client Error:", error);
+    throw error;
   }
 }

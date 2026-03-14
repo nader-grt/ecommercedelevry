@@ -10,9 +10,17 @@ import { LoginPage } from "./auth/pages/LoginPage";
 import MyLayout from "./core/layout/MyLayout";
 import themes from "./modules/themes";
 import dataProvider from "./core/providers/dataProvider";
-import { CreateUser, EditUser, ListUsers, ShowUser } from "./modules/users";
+
+import { EditCategorie, ListCategories } from "./modules/categories";
+import { CreateUser, EditUser, ListUsers } from "./modules/users";
+import { ListWeekDays, CreateWeekDay } from "./modules/weekDay";
+
+
 
 const App = () => {
+
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -35,8 +43,24 @@ const App = () => {
     list={ListUsers}
     create={CreateUser}
     edit={EditUser}
-    show={ShowUser}
+   // show={showUser}
   />
+
+ <Resource
+    name="categories" 
+    //categories
+    list={ListCategories}
+    edit={EditCategorie}
+    
+  /> 
+
+ <Resource
+    name="days" 
+    //days
+     list={ListWeekDays}
+     create={CreateWeekDay}
+    
+  />  
               <Resource name="dashboard"  />
             </Admin>
           }
